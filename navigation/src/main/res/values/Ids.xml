@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <id name="nav_feed" type="id" />
+    <id name="nav_games" type="id" />
+    <id name="nav_tests" type="id" />
+    <id name="nav_top" type="id" />
+
+</resources>

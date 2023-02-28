@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            style="@style/Widget.MaterialComponents.Toolbar.Surface"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="@string/app_name"
+                app:titleCentered="true"
+                app:titleTextAppearance="@style/ActionTitle">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_round_arrow_back_24"
+                        app:tint="#000" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="Гра"
+                        android:textAppearance="@style/ActionTitle" />
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btn_shop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        app:cardBackgroundColor="#2D3047"
+                        app:cardCornerRadius="16dp" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="materialCardView5" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView5"
+            style="@style/Widget.Material3.CardView.Elevated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="11dp"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/card_book"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_timer">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_qa"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/e_ukraine_regular"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Обери правильний варіант" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/e_ukraine_medium"
+                    android:gravity="start"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                    android:textColor="#000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_qa"
+                    tools:text="словослово\" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="false"
+                    android:overScrollMode="never"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                    tools:itemCount="3" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_account"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_score"
+            app:layout_constraintEnd_toStartOf="@+id/tv_score"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_score"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_account_other"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_score"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_score"
+            app:layout_constraintTop_toTopOf="@+id/tv_score"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:fontFamily="@font/e_ukraine_bold"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+            android:textColor="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+        <TextView
+            android:id="@+id/tv_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/e_ukraine_regular"
+            android:text="01:00"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_score" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_book"
+            style="@style/Widget.Material3.CardView.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:visibility="gone"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/image"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/CircleImage" />
+
+                <ImageView
+                    android:id="@+id/tv_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/image"
+                    app:layout_constraintEnd_toEndOf="@+id/image"
+                    app:layout_constraintStart_toStartOf="@+id/image"
+                    app:layout_constraintTop_toTopOf="@+id/image"
+                    tools:src="@drawable/ic_outline_account_circle_24" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_title_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/e_ukraine_medium"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                    android:textColor="#000"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_description_card"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="123" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_description_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/e_ukraine_thin"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="#000"
+                    app:layout_constraintBottom_toBottomOf="@+id/image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title_card"
+                    tools:text="123" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loading_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:visibility="gone">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_view"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginBottom="36dp"
+            android:background="#90CAF9"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/tv_title_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_outline_downloading_24"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view"
+            app:layout_constraintEnd_toEndOf="@+id/image_view"
+            app:layout_constraintStart_toStartOf="@+id/image_view"
+            app:layout_constraintTop_toTopOf="@+id/image_view"
+            app:tint="#fff" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:text="Завантаження"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+            android:textColor="#000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/e_ukraine_regular"
+            android:text="Завантажуємо дані для гри"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_view" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_exit_3"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:text="Вийти"
+            android:textColor="#2D3047"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loading_waiting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:visibility="gone">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_view_waiting"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginBottom="36dp"
+            android:background="#90CAF9"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/tv_title_view_waiting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <ImageView
+            android:id="@+id/imageView_waiting"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_round_check_circle_outline_24"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view_waiting"
+            app:layout_constraintEnd_toEndOf="@+id/image_view_waiting"
+            app:layout_constraintStart_toStartOf="@+id/image_view_waiting"
+            app:layout_constraintTop_toTopOf="@+id/image_view_waiting"
+            app:tint="#fff" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title_view_waiting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:text="Ти готовий!"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+            android:textColor="#000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_price_waiting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/e_ukraine_regular"
+            android:text="Очікуємо на іншого гравця"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_view_waiting" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_exit_2"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:text="Вийти"
+            android:textColor="#2D3047"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_winner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:visibility="gone">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_view_winner"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginBottom="36dp"
+            android:background="#90CAF9"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/tv_title_view_waiting_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_view_winner_2"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="#FFECB3"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view_winner"
+            app:layout_constraintEnd_toEndOf="@+id/image_view_winner"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/e_ukraine_bold"
+            android:text="🎉"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view_winner_2"
+            app:layout_constraintEnd_toEndOf="@+id/image_view_winner_2"
+            app:layout_constraintStart_toStartOf="@+id/image_view_winner_2"
+            app:layout_constraintTop_toTopOf="@+id/image_view_winner_2" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title_view_waiting_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:text="Переможець!"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+            android:textColor="#000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_price_waiting_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/e_ukraine_regular"
+            android:text="Очікуємо на іншого гравця"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_view_waiting_2" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/e_ukraine_regular"
+            android:text="Повторити"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:textColor="@color/md_theme_light_onPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/btn_exit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_exit"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:text="Вийти"
+            android:textColor="#2D3047"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

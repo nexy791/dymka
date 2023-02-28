@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_feed"
+    app:startDestination="@id/feedFragment">
+
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.ribsky.feed.ui.FeedFragment" />
+
+    <fragment
+        android:id="@+id/lessonsFragment"
+        android:name="com.ribsky.lessons.ui.LessonsFragment">
+        <argument
+            android:name="paragraphId"
+            app:argType="string" />
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/lessonInfoDialog"
+        android:name="com.ribsky.lessons.dialogs.info.LessonInfoDialog">
+        <argument
+            android:name="lessonId"
+            app:argType="string" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/lessonSuccessDialog"
+        android:name="com.ribsky.lessons.dialogs.success.SuccessPassedDialog" />
+
+
+    <dialog
+        android:id="@+id/messagePickActionDialog"
+        android:name="com.ribsky.lessons.dialogs.success.SuccessPassedDialog" />
+
+
+</navigation>

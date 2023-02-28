@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_light_primary"
+    android:fitsSystemWindows="true">
+
+    <com.scwang.wave.MultiWaveHeader
+        android:id="@+id/waveHeader"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="128dp"
+        android:rotationX="180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivAccount"
+        app:mwhCloseColor="#ffffff"
+        app:mwhCornerRadius="16dp"
+        app:mwhStartColor="#ffffff"
+        app:mwhWaveHeight="60dp" />
+
+    <zhan.rippleview.RippleView
+        android:id="@+id/root_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:duration="1500"
+        app:layout_constraintBottom_toTopOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:max_more_radius_times="1.5"
+        app:radius="300"
+        app:repeat_count="999"
+        app:stroke_width="1"
+        app:three_ripple_times="2.0"
+        app:two_ripple_times="1.5" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivAccount"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:src="@drawable/cat"
+        app:layout_constraintBottom_toTopOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/CircleImage" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/e_ukraine_medium"
+        android:gravity="center"
+        android:text="Пошук 🔍"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/tv_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:gravity="center"
+        android:text="Попроси друга увімкнути режим очікування, ваші телефони мають бути на відстані до 10 метрів"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/btn_exit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_exit"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="#fff"
+        android:fontFamily="@font/e_ukraine_medium"
+        android:text="Вийти"
+        android:textColor="#2D3047"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

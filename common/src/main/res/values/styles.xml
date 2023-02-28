@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="CircleImage">
+        <item name="cornerSize">50%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="SquareImage">
+        <item name="cornerSize">10%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="ActionTitle" parent="TextAppearance.Material3.ActionBar.Title">
+        <item name="fontFamily">@font/e_ukraine_regular</item>
+        <item name="android:fontFamily">@font/e_ukraine_regular</item>
+    </style>
+
+    <style name="TextAppearance.BottomBar" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">@font/e_ukraine_regular</item>
+    </style>
+
+    <style name="TextAppearance.Chip" parent="">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/e_ukraine_medium</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">#8ECAFA</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">#ACACAC</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_light_primaryInverse</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <item name="textAllCaps">false</item>
+
+        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="materialAlertDialogTheme">@style/MaterialAlertDialog_rounded</item>
+
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+
+
+    <style name="ShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16sp</item>
+    </style>
+
+    <style name="ChipText" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/e_ukraine_medium</item>
+        <item name="android:fontFamily">@font/e_ukraine_medium</item>
+    </style>
+
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/ChipText</item>
+        <item name="chipBackgroundColor">#fff</item>
+        <item name="chipCornerRadius">8dp</item>
+        <item name="chipStrokeColor">@color/md_theme_light_outline</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/e_ukraine_medium</item>
+        <item name="android:fontFamily">@font/e_ukraine_medium</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="fontFamily">@font/e_ukraine_bold</item>
+        <item name="android:fontFamily">@font/e_ukraine_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Message.Text" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="fontFamily">@font/e_ukraine_regular</item>
+        <item name="android:fontFamily">@font/e_ukraine_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Widget.Dymka.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="Widget.Dymka.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="MessageImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="TabItemTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/e_ukraine_regular</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:fontFamily">@font/e_ukraine_regular</item>
+    </style>
+
+    <style name="image_account">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">21dp</item>
+        <item name="cornerSizeBottomRight">21dp</item>
+    </style>
+
+</resources>

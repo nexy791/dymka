@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Outlined"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="72dp">
+
+        <ImageView
+            android:id="@+id/ic_next"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_round_navigate_next_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <io.getstream.avatarview.AvatarView
+            android:id="@+id/image_view"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerCrop"
+            app:avatarViewInitialsBackgroundColor="@color/md_theme_light_primary"
+            app:avatarViewInitialsTextStyle="bold"
+            app:avatarViewShape="circle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="36dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/e_ukraine_regular"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintEnd_toStartOf="@+id/ic_next"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            tools:text="Що це таке" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintEnd_toStartOf="@+id/ic_next"
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Урок 1\n33" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_dev"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:padding="0dp"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_outline_draw_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="21dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_checked"
+            app:layout_constraintEnd_toStartOf="@+id/btn_prem"
+            app:layout_constraintTop_toTopOf="@+id/btn_checked"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_prem"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:padding="0dp"
+            app:backgroundTint="#2c3377"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_round_hotel_class_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="21dp"
+            app:iconTint="#f0be45"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_checked"
+            app:layout_constraintEnd_toStartOf="@+id/btn_checked"
+            app:layout_constraintTop_toTopOf="@+id/btn_checked" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_checked"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:textColor="#000"
+            android:textSize="11sp"
+            app:cornerRadius="16dp"
+            app:iconGravity="end"
+            app:iconSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description"
+            tools:text="Не пройдено" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

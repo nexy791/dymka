@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ribsky.dymka">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+
+    <application
+        android:name="com.ribsky.core.App"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Dymka"
+        tools:ignore="DataExtractionRules,LockedOrientationActivity"
+        tools:replace="android:allowBackup">
+
+        <meta-data
+            android:name="default-url"
+            android:value="https://dymka.me/app" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_round_pets_24" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/md_theme_light_primary" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="Notifications" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.ribsky.dymka"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name="com.ribsky.lesson.ui.LessonActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.ribsky.shop.ui.ShopActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.test.ui.TestDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.auth.ui.AuthActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.share.ui.word.ShareWordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.share.ui.message.ShareMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.settings.ui.settings.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.main.ui.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.game.ui.game.GameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.settings.ui.library.LibraryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.beta.ui.BetaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.game.ui.lobby.LobbyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/LobbyTheme" />
+        <activity
+            android:name="com.ribsky.loader.ui.LoaderActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="dymka.me"
+                    android:pathPrefix="/app"
+                    android:scheme="http" />
+                <data
+                    android:host="dymka.me"
+                    android:pathPrefix="/app"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

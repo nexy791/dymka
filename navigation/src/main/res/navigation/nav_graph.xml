@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_feed">
+
+    <include app:graph="@navigation/nav_feed" />
+    <include app:graph="@navigation/nav_games" />
+    <include app:graph="@navigation/nav_tests" />
+    <include app:graph="@navigation/nav_top" />
+
+    <dialog
+        android:id="@+id/accountDialog"
+        android:name="com.ribsky.account.dialog.account.AccountDialog" />
+
+    <dialog
+        android:id="@+id/profileDialog"
+        android:name="com.ribsky.account.dialog.profile.ProfileDialog">
+        <argument
+            android:name="profileId"
+            app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/subPromptDialog"
+        android:name="com.ribsky.shop.dialogs.prompt.SubPromptDialog" />
+
+    <dialog
+        android:id="@+id/progressDialog"
+        android:name="com.ribsky.dialogs.progress.ProgressDialog" />
+
+    <dialog
+        android:id="@+id/messagePickActionDialog"
+        android:name="com.ribsky.lesson.dialogs.action.MessageActionDialog">
+        <argument
+            android:name="messageText"
+            app:argType="string" />
+    </dialog>
+
+
+    <dialog
+        android:id="@+id/checkConnectionDialog"
+        android:name="com.ribsky.dialogs.connection.CheckConnectionDialog" />
+
+</navigation>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btn_shop"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#2D3047"
+    app:cardCornerRadius="50dp"
+    app:strokeColor="#2D3047">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_heart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/e_ukraine_medium"
+            android:text="Преміум"
+            android:paddingEnd="4dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="#fff" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:shimmer_base_alpha="1"
+            app:shimmer_base_color="#f0be45"
+            app:shimmer_colored="true"
+            app:shimmer_duration="2000"
+            app:shimmer_highlight_color="#CA9414">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:src="@drawable/ic_round_hotel_class_24"
+                app:tint="#f0be45" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

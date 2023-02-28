@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_games"
+    app:startDestination="@id/gamesFragment">
+
+    <fragment
+        android:id="@+id/gamesFragment"
+        android:name="com.ribsky.games.ui.games.GamesFragment" />
+
+    <dialog
+        android:id="@+id/gameConfirmDialog"
+        android:name="com.ribsky.game.dialogs.GameConfirmDialog">
+        <argument
+            android:name="code"
+            app:argType="string" />
+        <argument
+            android:name="endPointId"
+            app:argType="string" />
+    </dialog>
+
+</navigation>

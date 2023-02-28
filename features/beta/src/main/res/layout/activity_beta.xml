@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_permission"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/cat_like"
+        app:layout_constraintBottom_toTopOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/e_ukraine_medium"
+        android:text="Бета-тестування"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/tv_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:text="Ми тільки починаємо рости й розвиватись!\n\nЗараз ми ще в процесі створення нового крутого контенту, яким поступово заповнюватимемо наші уроки.\n\nЯкщо ти маєш бажання нас підтримати, ми будемо дуже вдячні!\n\n💙💛\n"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/btn_rate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_rate"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:text="Залишити відгук"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/btn_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_close"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:text="Закрити"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

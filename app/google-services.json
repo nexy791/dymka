@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "420910559899",
+    "project_id": "dymka-ua",
+    "storage_bucket": "dymka-ua.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420910559899:android:7e0e996f3902ebb9298c3e",
+        "android_client_info": {
+          "package_name": "com.ribsky.dymka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420910559899-ogkgcilmkrm524brhk681smde2bac7gj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ribsky.dymka",
+            "certificate_hash": "fa8fcc7584aeb71d88edd58da7d67ba13ea87b85"
+          }
+        },
+        {
+          "client_id": "420910559899-1utjr6b15imfnj9vjo27v9imd5e3fiaq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClJlHrYVG5PwaGB02GgUiwj-NOOqMj3Us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420910559899-1utjr6b15imfnj9vjo27v9imd5e3fiaq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:minHeight="96dp"
+    android:paddingEnd="56dp">
+
+
+    <com.ribsky.common.ui.textview.SelectableTextView
+        android:id="@+id/text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/incoming_bubble"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:lineSpacingExtra="2dp"
+        android:minWidth="150dp"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+        android:text="Message Message Message Message Message Message Message "
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="30dp"
+        android:minHeight="30dp"
+        android:padding="0dp"
+        android:text="Продовжити"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="@color/md_theme_light_primary"
+        android:textSize="11sp"
+        app:backgroundTint="#ffffff"
+        app:layout_constraintEnd_toEndOf="@+id/text"
+        app:layout_constraintStart_toStartOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:strokeColor="@color/md_theme_light_primary"
+        app:strokeWidth="1dp" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shapeableImageView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cat"
+        app:layout_constraintBottom_toBottomOf="@+id/text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/CircleImage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

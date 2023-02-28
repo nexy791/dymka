@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_tests"
+    app:startDestination="@id/testsFragment">
+
+    <fragment
+        android:id="@+id/testsFragment"
+        android:name="com.ribsky.tests.ui.TestsFragment" />
+
+    <dialog
+        android:id="@+id/testInfoDialog"
+        android:name="com.ribsky.tests.dialogs.info.TestInfoDialog">
+        <argument
+            android:name="testId"
+            app:argType="string" />
+    </dialog>
+
+    <activity
+        android:id="@+id/testDetailsActivity"
+        android:name="com.ribsky.test.ui.TestDetailsActivity">
+        <argument
+            android:name="testId"
+            app:argType="string" />
+    </activity>
+</navigation>

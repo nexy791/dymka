@@ -1,4 +1,4 @@
-# [dymka](https://github.com/pandao/editor.md "Heading link")
+# [dymka](https://play.google.com/store/apps/details?id=com.ribsky.dymka)
 
 [![XXXXXX](https://img.shields.io/badge/-Android-3DDC84?style=for-the-badge&&logo=Android&logoColor=white)](#) [![XXXXXX](https://img.shields.io/badge/-Kotlin-0095D5?style=for-the-badge&&logo=Kotlin&logoColor=white)](#)
 

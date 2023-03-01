@@ -31,7 +31,6 @@ class FeedViewModel(
             _bestWordStatus.value = Resource.loading()
             val word = getBestWordUseCase.getCurrentWord()
             _bestWordStatus.value = Resource.success(word)
-            _bestWordStatus.value = Resource.success(word)
         }
     }
 

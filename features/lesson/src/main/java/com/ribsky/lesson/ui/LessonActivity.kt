@@ -224,13 +224,15 @@ class LessonActivity :
     }
 
     private fun updateKeyBoardAndBtnVisibility(element: ChatModel) {
-        enableButton()
         when (element) {
             is ChatModel.TranslateText -> {
                 showKeyBoard()
                 disableButton()
             }
-            is ChatModel.Text, is ChatModel.Image -> showButton()
+            is ChatModel.Text, is ChatModel.Image -> {
+                showButton()
+                enableButton()
+            }
             is ChatModel.Chips,
             is ChatModel.Mistake,
             is ChatModel.Test,

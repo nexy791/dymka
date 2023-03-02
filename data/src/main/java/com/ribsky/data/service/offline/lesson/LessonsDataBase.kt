@@ -7,7 +7,7 @@ import com.ribsky.data.converters.Converters
 import com.ribsky.data.model.LessonApiModel
 
 @TypeConverters(Converters::class)
-@Database(entities = [LessonApiModel::class], version = 2, exportSchema = false)
+@Database(entities = [LessonApiModel::class], version = 3, exportSchema = false)
 abstract class LessonsDataBase : RoomDatabase() {
     abstract val dao: LessonsDao
 

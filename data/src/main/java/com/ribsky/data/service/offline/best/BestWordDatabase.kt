@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.ribsky.data.model.BestWordApiModel
 
-@Database(entities = [BestWordApiModel::class], version = 1, exportSchema = false)
+@Database(entities = [BestWordApiModel::class], version = 3, exportSchema = false)
 abstract class BestWordDatabase : RoomDatabase() {
     abstract val dao: BestWordDao
 

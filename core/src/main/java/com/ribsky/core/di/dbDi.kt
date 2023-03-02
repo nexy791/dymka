@@ -21,7 +21,7 @@ val dbDi = module {
 
     single { lessonsDb(get()) }
 
-    single { booksDb(get()) }
+    single { testsDb(get()) }
 
     single { paragraphDb(get()) }
 
@@ -33,7 +33,7 @@ val dbDi = module {
 
     single { lessonsDao(get()) }
 
-    single { booksDao(get()) }
+    single { testsDao(get()) }
 
     single { paragraphDao(get()) }
 
@@ -46,7 +46,7 @@ fun bestWordDao(bestWordDatabase: BestWordDatabase): BestWordDao = bestWordDatab
 
 fun lessonsDao(lessonsDatabase: LessonsDataBase): LessonsDao = lessonsDatabase.dao
 
-fun booksDao(testsDatabase: TestsDataBase): TestsDao = testsDatabase.dao
+fun testsDao(testsDatabase: TestsDataBase): TestsDao = testsDatabase.dao
 
 fun paragraphDao(paragraphDatabase: ParagraphDataBase): ParagraphDao = paragraphDatabase.dao
 
@@ -65,7 +65,7 @@ fun activeBestWordDb(context: Context): BestWordDatabase {
         .build()
 }
 
-fun booksDb(context: Context): TestsDataBase {
+fun testsDb(context: Context): TestsDataBase {
     return Room.databaseBuilder(context, TestsDataBase::class.java, TestsDataBase.DATABASE_NAME)
         .fallbackToDestructiveMigration()
         .build()

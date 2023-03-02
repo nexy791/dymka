@@ -161,6 +161,10 @@ dymka – новий застосунок, за допомогою якого в
       "hasPrem": false,
       "image": "string",
       "lessonsCount": 0,
+      "lessons": {
+        "uid0": "lessonId",
+        "uid1": "lessonId"
+      },
       "name": "кіт Думка",
       "score": 0,
       "version": 0

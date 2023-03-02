@@ -35,7 +35,7 @@ class FeedFragment :
     private var adapterPrem: PremAdapter? = null
     private var state: LoadingStateDelegate? = null
 
-    override fun initView() = with(binding) {
+    override fun initView() {
         initState()
         initAdapter()
         initRecycler()

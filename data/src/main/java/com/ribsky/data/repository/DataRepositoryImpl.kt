@@ -1,8 +1,7 @@
 package com.ribsky.data.repository
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import com.ribsky.common.utils.internet.InternetManager
+import com.ribsky.data.service.offline.time.TimeService
 import com.ribsky.domain.exceptions.Exceptions
 import com.ribsky.domain.repository.*
 import java.util.*
@@ -12,13 +11,13 @@ class DataRepositoryImpl(
     private val testRepository: TestRepository,
     private val paragraphRepository: ParagraphRepository,
     private val bestWordRepository: BestWordRepository,
-    private val sharedPreferences: SharedPreferences,
+    private val timeService: TimeService,
     private val topRepository: TopRepository,
     private val internetManager: InternetManager,
 ) : DataRepository {
 
     override suspend fun getData(): Result<Unit> = runCatching {
-        if (!isNeedUpdate()) {
+        if (!timeService.isNeedUpdate()) {
             val result = loadOffline()
             result.fold(
                 onSuccess = {
@@ -28,7 +27,7 @@ class DataRepositoryImpl(
                     val newResult = loadOnline()
                     newResult.fold(
                         onSuccess = {
-                            saveLastTimeUpdate()
+                            timeService.saveLastTimeUpdate()
                             return Result.success(Unit)
                         },
                         onFailure = {
@@ -41,7 +40,7 @@ class DataRepositoryImpl(
             val result = loadOnline()
             result.fold(
                 onSuccess = {
-                    saveLastTimeUpdate()
+                    timeService.saveLastTimeUpdate()
                     return Result.success(Unit)
                 },
                 onFailure = { error ->
@@ -67,18 +66,18 @@ class DataRepositoryImpl(
             val best = bestWordRepository.loadWords()
             val players = topRepository.loadUsers()
             val result = !lessons.getOrNull().isNullOrEmpty() &&
-                !words.getOrNull().isNullOrEmpty() &&
-                !paragraphs.getOrNull().isNullOrEmpty() &&
-                !best.getOrNull().isNullOrEmpty() &&
-                !players.getOrNull().isNullOrEmpty()
+                    !words.getOrNull().isNullOrEmpty() &&
+                    !paragraphs.getOrNull().isNullOrEmpty() &&
+                    !best.getOrNull().isNullOrEmpty() &&
+                    !players.getOrNull().isNullOrEmpty()
             return if (result) {
                 Result.success(Unit)
             } else {
                 val error: Result<Unit> = Result.failure(
                     lessons.exceptionOrNull() ?: words.exceptionOrNull()
-                        ?: paragraphs.exceptionOrNull()
-                        ?: best.exceptionOrNull() ?: players.exceptionOrNull()
-                        ?: Exception(Exceptions.UnknownException())
+                    ?: paragraphs.exceptionOrNull()
+                    ?: best.exceptionOrNull() ?: players.exceptionOrNull()
+                    ?: Exception(Exceptions.UnknownException())
                 )
                 error
             }
@@ -101,21 +100,4 @@ class DataRepositoryImpl(
         }
     }
 
-    private fun saveLastTimeUpdate() {
-        sharedPreferences.edit {
-            putLong(KEY_LAST_UPDATE, Date().time)
-        }
-    }
-
-    private fun getLastTimeUpdate(): Long = sharedPreferences.getLong(KEY_LAST_UPDATE, 0)
-    private fun isNeedUpdate(): Boolean {
-        val lastTimeUpdate = getLastTimeUpdate()
-        if (lastTimeUpdate <= 0L) return true
-        val currentTime = Date().time
-        return currentTime - lastTimeUpdate > 21600000 || currentTime < lastTimeUpdate
-    }
-
-    companion object {
-        const val KEY_LAST_UPDATE = "last_update"
-    }
 }

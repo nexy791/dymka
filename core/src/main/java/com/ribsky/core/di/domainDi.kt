@@ -28,12 +28,14 @@ import com.ribsky.domain.usecase.score.AddTestScoreUseCase
 import com.ribsky.domain.usecase.score.AddTestScoreUseCaseImpl
 import com.ribsky.domain.usecase.score.GetTestScoreUseCase
 import com.ribsky.domain.usecase.score.GetTestScoreUseCaseImpl
-import com.ribsky.domain.usecase.sp.SharedPrefsInteractor
-import com.ribsky.domain.usecase.sp.SharedPrefsInteractorImpl
+import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCase
+import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCaseImpl
 import com.ribsky.domain.usecase.test.GetTestContentUseCase
 import com.ribsky.domain.usecase.test.GetTestContentUseCaseImpl
 import com.ribsky.domain.usecase.test.TestInteractor
 import com.ribsky.domain.usecase.test.TestInteractorImpl
+import com.ribsky.domain.usecase.time.GetLastTimeUseCase
+import com.ribsky.domain.usecase.time.GetLastTimeUseCaseImpl
 import com.ribsky.domain.usecase.top.TopInteractor
 import com.ribsky.domain.usecase.top.TopInteractorImpl
 import com.ribsky.domain.usecase.user.GetUserUseCase
@@ -132,9 +134,15 @@ val domainUi = module {
         )
     }
 
-    factory<SharedPrefsInteractor> {
-        SharedPrefsInteractorImpl(
-            sharedRepository = get()
+    factory<GetLastTimeUseCase> {
+        GetLastTimeUseCaseImpl(
+            settingsRepository = get()
+        )
+    }
+
+    factory<GetRateDialogStatusUseCase> {
+        GetRateDialogStatusUseCaseImpl(
+            settingsRepository = get()
         )
     }
 

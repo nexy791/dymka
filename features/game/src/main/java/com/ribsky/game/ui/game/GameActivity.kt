@@ -21,6 +21,7 @@ import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showErrorAlert
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
+import com.ribsky.common.utils.ext.TimerExt.Companion.formatTimeUntilFinished
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
 import com.ribsky.domain.model.test.BaseTestModel
 import com.ribsky.domain.model.word.BaseWordModel
@@ -30,7 +31,6 @@ import com.ribsky.game.manager.connection.ConnectionManager
 import com.ribsky.game.manager.game.GameManager
 import com.ribsky.game.manager.game.GameManagerImpl
 import com.ribsky.game.model.PayLoadModel
-import com.ribsky.game.utils.ext.TimerExt.Companion.formatTime
 import com.ribsky.navigation.features.GameNavigation
 import com.ribsky.navigation.features.GameNavigation.Companion.KEY_GAME_END_POINT_ID
 import com.ribsky.navigation.features.GameNavigation.Companion.KEY_GAME_TEST_ID
@@ -225,7 +225,7 @@ class GameActivity :
         }
         timer = object : CountDownTimer(60 * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                binding.tvTimer.text = formatTime(millisUntilFinished)
+                binding.tvTimer.text = formatTimeUntilFinished(millisUntilFinished)
             }
 
             override fun onFinish() {

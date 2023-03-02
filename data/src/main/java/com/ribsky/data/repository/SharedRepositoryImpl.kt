@@ -2,30 +2,19 @@ package com.ribsky.data.repository
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.ribsky.domain.repository.SharedRepository
-import java.text.SimpleDateFormat
-import java.util.*
+import com.ribsky.data.service.offline.time.TimeService
+import com.ribsky.domain.repository.SettingsRepository
 
-class SharedRepositoryImpl(
+class SettingsRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
-) : SharedRepository {
+    private val timeService: TimeService,
+) : SettingsRepository {
 
     override val isShouldShowRateDialog: Boolean
         get() = calculateRateDialog()
 
-    override val lastTimeUpdate: String
-        get() = calculateLastTime()
-
-    private fun calculateLastTime(): String {
-        return try {
-            val lastTime = sharedPreferences.getLong(DataRepositoryImpl.KEY_LAST_UPDATE, 0)
-            val formatter = SimpleDateFormat("dd MMMM HH:ss", Locale("uk"))
-            val mDate = formatter.format(lastTime)
-            mDate
-        } catch (e: Exception) {
-            "Невизначено"
-        }
-    }
+    override val lastTimeUpdate: Long
+        get() = timeService.getLastTimeUpdate()
 
     private fun calculateRateDialog(): Boolean {
         val currentCount = sharedPreferences.getInt(KEY_RATE_DIALOG, 0)

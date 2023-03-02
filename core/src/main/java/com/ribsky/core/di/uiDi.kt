@@ -33,7 +33,7 @@ val uiDi = module {
         MainViewModel(
             getUserUseCase = get(),
             subManager = get(),
-            sharedPrefsInteractor = get()
+            getRateDialogStatusUseCase = get()
         )
     }
 
@@ -88,7 +88,7 @@ val uiDi = module {
     viewModel {
         TopTestsViewModel(
             getUserUseCase = get(),
-            sharedPrefsInteractor = get(),
+            getLastTimeUseCase = get(),
             topInteractor = get()
         )
     }
@@ -96,7 +96,7 @@ val uiDi = module {
     viewModel {
         TopLessonsViewModel(
             getUserUseCase = get(),
-            sharedPrefsInteractor = get(),
+            getLastTimeUseCase = get(),
             topInteractor = get()
         )
     }

@@ -1,11 +1,11 @@
 package com.ribsky.core.di
 
-import com.ribsky.common.utils.internet.InternetManager
-import com.ribsky.common.utils.internet.InternetManagerImpl
 import com.ribsky.data.repository.*
 import com.ribsky.data.repository.test.TestRepositoryImpl
 import com.ribsky.data.service.file.FileService
 import com.ribsky.data.service.file.FileServiceImpl
+import com.ribsky.data.service.offline.time.TimeService
+import com.ribsky.data.service.offline.time.TimeServiceImpl
 import com.ribsky.data.service.online.best.BestWordService
 import com.ribsky.data.service.online.best.BestWordServiceImpl
 import com.ribsky.data.service.online.lesson.LessonService
@@ -42,6 +42,7 @@ val dataDi = module {
         )
     }
 
+
     single<AuthRepository> {
         AuthRepositoryImpl(
             auth = get(),
@@ -65,9 +66,25 @@ val dataDi = module {
         )
     }
 
+    single<ParagraphRepository> {
+        ParagraphRepositoryImpl(
+            dao = get(),
+            paragraphService = get(),
+            mapper = get(),
+        )
+    }
+
     factory<ParagraphService> {
         ParagraphServiceImpl(
             db = get()
+        )
+    }
+
+    single<BestWordRepository> {
+        BestWordRepositoryImpl(
+            bestWordDao = get(),
+            bestWordService = get(),
+            mapper = get()
         )
     }
 
@@ -81,17 +98,9 @@ val dataDi = module {
         )
     }
 
+
     factory<CryptoManager> {
         CryptoManagerImpl(context = get())
-    }
-
-    single<FileService> {
-        FileServiceImpl(
-            context = get(),
-            storage = get(),
-            internetManager = get(),
-            cryptoManager = get()
-        )
     }
 
     single<TestRepository> {
@@ -104,57 +113,9 @@ val dataDi = module {
         )
     }
 
-    single<BestWordRepository> {
-        BestWordRepositoryImpl(
-            bestWordDao = get(),
-            bestWordService = get(),
-            mapper = get()
-        )
-    }
-
-    single<DataRepository> {
-        DataRepositoryImpl(
-            lessonsRepository = get(),
-            testRepository = get(),
-            paragraphRepository = get(),
-            bestWordRepository = get(),
-            sharedPreferences = get(),
-            topRepository = get(),
-            internetManager = get(),
-        )
-    }
-
-    single<ParagraphRepository> {
-        ParagraphRepositoryImpl(
-            dao = get(),
-            paragraphService = get(),
-            mapper = get(),
-        )
-    }
-
-    single<ClearRepository> {
-        ClearRepositoryImpl(
-            firebaseAuth = get(),
-            sharedPreferences = get(),
-            fileService = get(),
-            bestWordDao = get(),
-            lessonsDao = get(),
-            testsDao = get(),
-            paragraphDao = get(),
-            activeLessonDao = get()
-        )
-    }
-
-    single<ActiveRepository> {
-        ActiveRepositoryImpl(
-            sharedPreferences = get(),
-            activeLessonDao = get()
-        )
-    }
-
-    single<SaveRepository> {
-        SaveRepositoryImpl(
-            sharedPreferences = get(),
+    factory<TestService> {
+        TestServiceImpl(
+            db = get()
         )
     }
 
@@ -172,21 +133,69 @@ val dataDi = module {
         )
     }
 
-    factory<TestService> {
-        TestServiceImpl(
-            db = get()
+    single<FileRepository> {
+        FileRepositoryImpl(
+            fileService = get()
         )
     }
 
-    single<SharedRepository> {
-        SharedRepositoryImpl(
+    single<FileService> {
+        FileServiceImpl(
+            context = get(),
+            storage = get(),
+            internetManager = get(),
+            cryptoManager = get()
+        )
+    }
+
+    single<DataRepository> {
+        DataRepositoryImpl(
+            lessonsRepository = get(),
+            testRepository = get(),
+            paragraphRepository = get(),
+            bestWordRepository = get(),
+            topRepository = get(),
+            internetManager = get(),
+            timeService = get()
+        )
+    }
+
+    single<ClearRepository> {
+        ClearRepositoryImpl(
+            firebaseAuth = get(),
+            sharedPreferences = get(),
+            fileService = get(),
+            bestWordDao = get(),
+            lessonsDao = get(),
+            testsDao = get(),
+            paragraphDao = get(),
+            activeLessonDao = get()
+        )
+    }
+
+    factory<SettingsRepository> {
+        SettingsRepositoryImpl(
+            sharedPreferences = get(),
+            timeService = get()
+        )
+    }
+
+    single<ActiveRepository> {
+        ActiveRepositoryImpl(
+            sharedPreferences = get(),
+            activeLessonDao = get()
+        )
+    }
+
+    single<SaveRepository> {
+        SaveRepositoryImpl(
             sharedPreferences = get(),
         )
     }
 
-    single<FileRepository> {
-        FileRepositoryImpl(
-            fileService = get()
+    single<TimeService> {
+        TimeServiceImpl(
+            sharedPreferences = get(),
         )
     }
 }

@@ -7,14 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.livedata.ResultMapper.Companion.asResource
 import com.ribsky.domain.exceptions.Exceptions
-import com.ribsky.domain.usecase.sp.SharedPrefsInteractor
+import com.ribsky.domain.usecase.time.GetLastTimeUseCase
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import com.ribsky.top.model.TopModel
 import kotlinx.coroutines.launch
 
 abstract class BaseTopViewModel(
     private val getUserUseCase: GetUserUseCase,
-    private val sharedPrefsInteractor: SharedPrefsInteractor,
+    private val getLastTimeUseCase: GetLastTimeUseCase,
 ) : ViewModel() {
 
     private val _userStatus: MutableLiveData<Resource<TopModel>> = MutableLiveData()
@@ -25,7 +25,7 @@ abstract class BaseTopViewModel(
 
     private val users get() = _usersStatus.value?.data
 
-    val time = sharedPrefsInteractor.getLastTimeUpdate()
+    val time = getLastTimeUseCase.invoke()
 
     abstract val type: TopModel.ViewType
 

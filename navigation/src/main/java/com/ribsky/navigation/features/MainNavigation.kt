@@ -1,14 +1,6 @@
 package com.ribsky.navigation.features
 
-import com.ribsky.common.navigation.Navigation
+import android.content.Context
+import com.ribsky.navigation.base.Navigation
 
-interface MainNavigation : Navigation {
-
-    fun navigateBeta(betaNavigation: BetaNavigation)
-
-    fun navigateAuth(authNavigation: AuthNavigation)
-
-    fun navigateShop(shopNavigation: ShopNavigation)
-
-    fun navigateAccount(accountNavigation: AccountNavigation)
-}
+interface MainNavigation : Navigation<Context>

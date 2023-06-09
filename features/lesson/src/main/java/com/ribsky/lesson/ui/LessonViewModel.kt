@@ -1,10 +1,12 @@
 package com.ribsky.lesson.ui
 
-import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ribsky.analytics.Analytics
+import com.ribsky.billing.manager.SubManager
 import com.ribsky.common.livedata.Event
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.livedata.ResultMapper.Companion.asResource
@@ -27,9 +29,12 @@ class LessonViewModel(
     private val getUserUseCase: GetUserUseCase,
     private val chatMapperFactory: ChatMapperFactory,
     private val checkerFactory: CheckerFactory,
+    private val subManager: SubManager,
 ) : ViewModel() {
 
+    var errorCount: Int = 0
     private var currentContentIndex = -1
+    private var lessonId: String = ""
 
     private val _contentStatus: MutableLiveData<Resource<BaseContentModel>> = MutableLiveData()
     val contentStatus: LiveData<Resource<BaseContentModel>> get() = _contentStatus
@@ -56,6 +61,7 @@ class LessonViewModel(
     private val answers get() = content.getOrNull(currentContentIndex)?.answers
 
     fun getLesson(lessonId: String) {
+        this.lessonId = lessonId
         viewModelScope.launch {
             _lessonStatus.value = Resource.loading()
             val lesson = lessonInteractor.getLesson(lessonId)
@@ -159,18 +165,37 @@ class LessonViewModel(
     }
 
     private fun sendCorrectAnswer() {
-        val message = chatMapperFactory.createAnswer("\uD83C\uDF89 Все правильно!")
+        Analytics.logEvent(
+            Analytics.Event.LESSON_ANSWER_CORRECT,
+            bundle = bundleOf("lesson_id" to lessonId)
+        )
+        val message = chatMapperFactory.createAnswer("\uD83C\uDF89 Все правильно!", true)
         addMessageToChat(message)
     }
 
     private fun sendWrongAnswer() {
+        Analytics.logEvent(
+            Analytics.Event.LESSON_ANSWER_INCORRECT,
+            bundle = bundleOf("lesson_id" to lessonId)
+        )
+        errorCount++
         val message =
-            chatMapperFactory.createAnswer("\uD83D\uDE35\u200D\uD83D\uDCAB Спробуй інший варіант")
+            chatMapperFactory.createAnswer(
+                "\uD83D\uDE35\u200D\uD83D\uDCAB Спробуй інший варіант",
+                false
+            )
         addMessageToChat(message)
     }
 
     private fun addMessageToChat(message: ChatModel) {
-        Log.e("TAG1112", "updateChat: $message")
         _chatStatus.value = _chatStatus.value.orEmpty() + message
     }
+
+    fun hint(): String = when (val item = content.getOrNull(currentContentIndex)) {
+        is BaseContentModel.BaseContentType.TestPick -> item.text.firstOrNull()?.translatedText?.filter { it.value }
+            ?.map { it.text }
+        else -> answers
+    }?.joinToString(" • ").orEmpty()
+
+    val isSub get() = subManager.isSub()
 }

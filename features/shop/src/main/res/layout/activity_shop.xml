@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -50,9 +51,136 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_discount"
+                    android:visibility="gone"
+                    style="@style/Widget.Material3.CardView.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#EFBD46"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="0dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_title_price2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16sp"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/e_ukraine_medium"
+                            android:text="Знижка на підписку!"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_desc_price2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_desc_price2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginStart="16sp"
+                            android:fontFamily="@font/e_ukraine_medium"
+                            android:text="Вітаємо! Ти маєш знижку на підписку"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_title_price2" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_sub23"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:backgroundTint="#0F1547"
+                            android:clickable="false"
+                            android:fontFamily="@font/e_ukraine_medium"
+                            android:text="Оформити підписку"
+                            android:textColor="#FEFEFE"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_desc_price2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_share"
+                    style="@style/Widget.Material3.CardView.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_title_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16sp"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/e_ukraine_medium"
+                            android:text="Знижка 🔥"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_desc_price"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_desc_price"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:fontFamily="@font/e_ukraine_medium"
+                            android:text="Відмічай нас в Інстаграмі\nта отримуй знижку на підписку"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_title_price" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_sub2"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:backgroundTint="#EFBD46"
+                            android:clickable="false"
+                            android:fontFamily="@font/e_ukraine_medium"
+                            android:text="Зробити сторіс"
+                            android:textColor="#0F1547"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_desc_price" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/materialCardView9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     app:cardBackgroundColor="#0f1547"
                     app:cardCornerRadius="16sp"
                     app:cardElevation="0dp"
@@ -124,7 +252,7 @@
                             android:layout_marginEnd="16dp"
                             android:fontFamily="@font/e_ukraine_medium"
                             android:gravity="center"
-                            android:text="Оформить подписку"
+                            android:text="Оформити підписку"
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                             android:textColor="#FFFFFF"
@@ -161,492 +289,78 @@
                 </com.google.android.material.card.MaterialCardView>
 
 
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Outlined"
+                <com.ribsky.shop.view.ItemShopView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:cardCornerRadius="16dp">
+                    custom:shopColor="#D1C4E9"
+                    custom:shopDescription="Доступ до всіх уроків"
+                    custom:shopIcon="🔔"
+                    custom:shopTitle="Уроки 🔔" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageView45"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_marginStart="16sp"
-                            android:background="#D1C4E9"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/CircleImage" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="🔔"
-                            android:textColor="#000000"
-                            android:textSize="21dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView45"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView45"
-                            app:layout_constraintStart_toStartOf="@+id/imageView45"
-                            app:layout_constraintTop_toTopOf="@+id/imageView45" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tv_title_lessons"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Уроки 🔔"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            app:layout_constraintBottom_toTopOf="@+id/tv_desc_lessons"
-                            app:layout_constraintStart_toEndOf="@+id/imageView45"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tv_desc_lessons"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Доступ до всіх уроків"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView45"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_title_lessons" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Outlined"
+                <com.ribsky.shop.view.ItemShopView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="16dp">
+                    custom:shopColor="#B3E5FC"
+                    custom:shopDescription="Доступ до всіх тестів"
+                    custom:shopIcon="📚"
+                    custom:shopTitle="Тести 📚" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageView4"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_marginStart="16sp"
-                            android:background="#B3E5FC"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/CircleImage" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="📚"
-                            android:textColor="#000000"
-                            android:textSize="21dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                            app:layout_constraintStart_toStartOf="@+id/imageView4"
-                            app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView85"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Тести 📚"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            app:layout_constraintBottom_toTopOf="@+id/materialTextView10"
-                            app:layout_constraintStart_toEndOf="@+id/imageView4"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView10"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Доступ до всіх тестів"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView4"
-                            app:layout_constraintTop_toBottomOf="@+id/materialTextView85" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Outlined"
+                <com.ribsky.shop.view.ItemShopView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="16dp">
+                    custom:shopColor="#C7E5C8"
+                    custom:shopDescription="Доступ до всіх режимів гри"
+                    custom:shopIcon="🎮"
+                    custom:shopTitle="Ігри 🎮" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageView4111"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_marginStart="16sp"
-                            android:background="#C8E6C9"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/CircleImage" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="🎮"
-                            android:textColor="#000000"
-                            android:textSize="21dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView4111"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView4111"
-                            app:layout_constraintStart_toStartOf="@+id/imageView4111"
-                            app:layout_constraintTop_toTopOf="@+id/imageView4111" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView85111"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Ігри 🎮"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            app:layout_constraintBottom_toTopOf="@+id/materialTextView10111"
-                            app:layout_constraintStart_toEndOf="@+id/imageView4111"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView10111"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Доступ до всіх режимів гри"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView4111"
-                            app:layout_constraintTop_toBottomOf="@+id/materialTextView85111" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Outlined"
+                <com.ribsky.shop.view.ItemShopView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:visibility="gone"
-                    app:cardCornerRadius="16dp">
+                    custom:shopColor="#E0BCFF"
+                    custom:shopDescription="Можливість зберігати слова для роботи над помилками"
+                    custom:shopIcon="❤"
+                    custom:shopTitle="Обране ❤" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageView451"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_marginStart="16sp"
-                            android:background="#FFCCBC"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/CircleImage" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="🌴"
-                            android:textColor="#000000"
-                            android:textSize="21dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView451"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView451"
-                            app:layout_constraintStart_toStartOf="@+id/imageView451"
-                            app:layout_constraintTop_toTopOf="@+id/imageView451" />
-
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView8513"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Офлайн 🌴"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            app:layout_constraintBottom_toTopOf="@+id/materialTextView104"
-                            app:layout_constraintStart_toEndOf="@+id/imageView451"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView104"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Режим роботи без інтернету"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView451"
-                            app:layout_constraintTop_toBottomOf="@+id/materialTextView8513" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Outlined"
+                <com.ribsky.shop.view.ItemShopView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="16dp">
+                    custom:shopColor="#FFEB3B"
+                    custom:shopDescription="Невиличкий прапорець біля твого імені, котрий виділяє тебе"
+                    custom:shopIcon="🇺🇦"
+                    custom:shopTitle="Прапорець 🇺🇦" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageView45114"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_marginStart="16sp"
-                            android:background="#E0BCFF"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/CircleImage" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="❤"
-                            android:textColor="#000000"
-                            android:textSize="21dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView45114"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView45114"
-                            app:layout_constraintStart_toStartOf="@+id/imageView45114"
-                            app:layout_constraintTop_toTopOf="@+id/imageView45114" />
-
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView851345"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Обране ❤"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            app:layout_constraintBottom_toTopOf="@+id/materialTextView10433"
-                            app:layout_constraintStart_toEndOf="@+id/imageView45114"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView10433"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Можливість зберігати слова для роботи над помилками"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView45114"
-                            app:layout_constraintTop_toBottomOf="@+id/materialTextView851345" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Outlined"
+                <com.ribsky.shop.view.ItemShopView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="16dp">
+                    custom:shopColor="#DCEDC8"
+                    custom:shopDescription="Підказки в уроках, які допоможуть проходити їх швидше"
+                    custom:shopIcon="💡"
+                    custom:shopTitle="Підказки 💡" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageView451145"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_marginStart="16sp"
-                            android:background="#FFEB3B"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/CircleImage" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="🇺🇦"
-                            android:textColor="#000000"
-                            android:textSize="21dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView451145"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView451145"
-                            app:layout_constraintStart_toStartOf="@+id/imageView451145"
-                            app:layout_constraintTop_toTopOf="@+id/imageView451145" />
-
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView8513455"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Прапорець 🇺🇦"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            app:layout_constraintBottom_toTopOf="@+id/materialTextView1043355"
-                            app:layout_constraintStart_toEndOf="@+id/imageView451145"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView1043355"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Невиличкий прапорець біля твого імені, котрий виділяє тебе"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView451145"
-                            app:layout_constraintTop_toBottomOf="@+id/materialTextView8513455" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Outlined"
+                <com.ribsky.shop.view.ItemShopView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="16dp">
+                    custom:shopColor="#FF8A65"
+                    custom:shopDescription="До 25 відповідей від кота-помічника на день"
+                    custom:shopIcon="😺"
+                    custom:shopTitle="Кіт-помічник 😺" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp">
+                <com.ribsky.shop.view.ItemShopView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#FFECB3"
+                    custom:shopDescription="Менша ніж один урок у репетитора"
+                    custom:shopIcon="🎁"
+                    custom:shopTitle="Ціна 🎁" />
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/imageView4511"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_marginStart="16sp"
-                            android:background="#FFECB3"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/CircleImage" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:text="🎁"
-                            android:textColor="#000000"
-                            android:textSize="21dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView4511"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView4511"
-                            app:layout_constraintStart_toStartOf="@+id/imageView4511"
-                            app:layout_constraintTop_toTopOf="@+id/imageView4511" />
-
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView85134"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Ціна 🎁"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            app:layout_constraintBottom_toTopOf="@+id/materialTextView1043"
-                            app:layout_constraintStart_toEndOf="@+id/imageView4511"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/materialTextView1043"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16sp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Менша ніж один урок у репетитора"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView4511"
-                            app:layout_constraintTop_toBottomOf="@+id/materialTextView85134" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"

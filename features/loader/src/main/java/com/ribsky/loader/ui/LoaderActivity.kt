@@ -9,19 +9,18 @@ import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
 import com.ribsky.domain.exceptions.Exceptions
 import com.ribsky.loader.databinding.ActivityLoaderBinding
 import com.ribsky.navigation.features.AuthNavigation
-import com.ribsky.navigation.features.LoaderNavigation
 import com.ribsky.navigation.features.MainNavigation
 import jp.alessandro.android.iab.handler.PurchaseHandler
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoaderActivity :
-    BaseActivity<LoaderNavigation, LoaderViewModel, ActivityLoaderBinding>(ActivityLoaderBinding::inflate) {
+    BaseActivity<LoaderViewModel, ActivityLoaderBinding>(ActivityLoaderBinding::inflate) {
 
     override val viewModel: LoaderViewModel by viewModel()
-    override val navigation: LoaderNavigation by inject()
-    private val authNavigation: AuthNavigation by inject()
+
     private val mainNavigation: MainNavigation by inject()
+    private val authNavigation: AuthNavigation by inject()
 
     private val purchaseHandler = PurchaseHandler {}
     private val billingClientWrapper: BillingClientWrapper by inject()
@@ -58,10 +57,10 @@ class LoaderActivity :
         status.observe(this@LoaderActivity) {
             when (it.status) {
                 Resource.Status.LOADING -> {}
-                Resource.Status.SUCCESS -> navigation.navigateMain(mainNavigation)
+                Resource.Status.SUCCESS -> mainNavigation.navigate(this@LoaderActivity)
                 Resource.Status.ERROR -> {
                     when (val ex = it.exception) {
-                        is Exceptions.AuthException -> navigation.navigateAuth(authNavigation)
+                        is Exceptions.AuthException -> authNavigation.navigate(this@LoaderActivity)
                         else -> showError(ex?.localizedMessage.orEmpty()) {
                             viewModel.loadData()
                         }
@@ -78,7 +77,7 @@ class LoaderActivity :
             positiveButton = "Повторити",
             positiveAction = callback,
             negativeButton = "Вихід",
-            negativeAction = { navigation.navigateAuth(authNavigation) },
+            negativeAction = { authNavigation.navigate(this) },
         )
     }
 

@@ -27,7 +27,15 @@
 
     <dialog
         android:id="@+id/progressDialog"
-        android:name="com.ribsky.dialogs.progress.ProgressDialog" />
+        android:name="ProgressDialog" />
+
+    <dialog
+        android:id="@+id/errorDialog"
+        android:name="ErrorDialog">
+        <argument
+            android:name="REQUEST_ERROR"
+            app:argType="string" />
+    </dialog>
 
     <dialog
         android:id="@+id/messagePickActionDialog"
@@ -40,6 +48,10 @@
 
     <dialog
         android:id="@+id/checkConnectionDialog"
-        android:name="com.ribsky.dialogs.connection.CheckConnectionDialog" />
+        android:name="CheckConnectionDialog" />
+
+    <dialog
+        android:id="@+id/addWidgetDialog"
+        android:name="com.ribsky.widget.dialog.word.AddWidgetDialog" />
 
 </navigation>

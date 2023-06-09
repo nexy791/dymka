@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_feed"
+        android:icon="@drawable/ic_outline_history_edu_24"
+        android:title="Курси"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/nav_tests"
+        android:icon="@drawable/ic_outline_collections_bookmark_24"
+        android:title="Тести"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/nav_bot"
+        android:icon="@drawable/ic_cat_bot"
+        android:title="Кіт"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/nav_games"
+        android:icon="@drawable/ic_outline_sports_esports_24"
+        android:title="Ігри"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/nav_top"
+        android:icon="@drawable/ic_outline_emoji_events_24"
+        android:title="Рейтинг"
+        app:showAsAction="always" />
+
+
+</menu>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ItemShop">
+        <attr name="shopTitle" format="string"  />
+        <attr name="shopDescription" format="string" />
+        <attr name="shopIcon" format="string" />
+        <attr name="shopColor" format="color" />
+    </declare-styleable>
+</resources>

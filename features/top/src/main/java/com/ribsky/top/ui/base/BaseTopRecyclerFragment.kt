@@ -1,5 +1,6 @@
 package com.ribsky.top.ui.base
 
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
@@ -8,9 +9,9 @@ import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.TimerExt.Companion.formatTimeDDMMMMHHMM
-import com.ribsky.domain.exceptions.Exceptions
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.AccountNavigation
-import com.ribsky.navigation.features.TopNavigation
+import com.ribsky.navigation.features.ProfileNavigation
 import com.ribsky.top.adapter.bottom.TopBottomAdapter
 import com.ribsky.top.adapter.header.TopHeaderAdapter
 import com.ribsky.top.adapter.top.TopAdapter
@@ -18,12 +19,12 @@ import com.ribsky.top.databinding.FragmentTopRecyclerBinding
 import org.koin.android.ext.android.inject
 
 abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
-    BaseFragment<TopNavigation, BaseTopViewModel, FragmentTopRecyclerBinding>(
+    BaseFragment<BaseTopViewModel, FragmentTopRecyclerBinding>(
         FragmentTopRecyclerBinding::inflate
     ) {
 
-    override val navigation: TopNavigation by inject()
     private val accountNavigation: AccountNavigation by inject()
+    private val profileNavigation: ProfileNavigation by inject()
 
     private var state: LoadingStateDelegate? = null
     private var adapterHeader: TopHeaderAdapter? = null
@@ -48,10 +49,10 @@ abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
 
     private fun initAdapter() {
         adapterTop = TopAdapter() { id ->
-            navigation.navigateProfile(accountNavigation, id)
+            profileNavigation.navigate(findNavController(), ProfileNavigation.Params(id))
         }
         adapterHeader = TopHeaderAdapter(viewType, formatTimeDDMMMMHHMM(viewModel.time)) {
-            navigation.navigateAccount(accountNavigation)
+            accountNavigation.navigate(findNavController())
         }
         adapterTopBottom = TopBottomAdapter()
         concatAdapter = ConcatAdapter(adapterHeader, adapterTop, adapterTopBottom)
@@ -77,13 +78,7 @@ abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
                     adapterHeader?.submitList(listOf(it.data!!))
                     state?.showContent()
                 }
-                Resource.Status.ERROR -> {
-                    when (val ex = it.exception) {
-                        is Exceptions.AuthException -> {
-                        }
-                        else -> TODO()
-                    }
-                }
+                Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
 
@@ -98,8 +93,7 @@ abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
                     adapterTopBottom?.submitList(listOf(Unit))
                     getUser()
                 }
-                Resource.Status.ERROR -> {
-                }
+                Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
     }

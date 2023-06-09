@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":navigation"))
     implementation(project(":common"))
     implementation(project(":domain"))
+    implementation(project(":dialogs"))
 
     implementation(Deps.auth)
 }

@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":analytics"))
     implementation(project(":billing"))
+    implementation(project(":dialogs"))
 
     implementation(Deps.avatarView)
     implementation(Deps.progressCircle)

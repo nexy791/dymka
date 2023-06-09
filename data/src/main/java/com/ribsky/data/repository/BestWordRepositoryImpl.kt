@@ -15,7 +15,7 @@ class BestWordRepositoryImpl(
     override suspend fun loadWords(): Result<List<BaseBestWordModel>> {
         val result = bestWordService.loadWords()
         result.onSuccess {
-            bestWordDao.insert(it)
+            bestWordDao._insert(it)
         }
         return result.mapCatching { list -> list.map { mapper.map(it) } }
     }
@@ -27,7 +27,7 @@ class BestWordRepositoryImpl(
 
     override suspend fun getWordById(id: Int): BaseBestWordModel {
         val word = bestWordDao.get(id)
-        return mapper.map(word)
+        return mapper.map(word!!)
     }
 
     override suspend fun isNotEmpty(): Boolean = bestWordDao.getOneWord().isNotEmpty()

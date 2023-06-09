@@ -23,7 +23,8 @@ class ChatMapperFactoryImpl(
             else -> throw IllegalArgumentException("Unknown type of BaseContentType")
         }
 
-    override fun createAnswer(text: String): ChatModel.Answer = ChatModel.Answer(text)
+    override fun createAnswer(text: String, isCorrect: Boolean): ChatModel.Answer =
+        ChatModel.Answer(text, isCorrect = isCorrect)
 
     override fun createTextFromUser(text: String): ChatModel.TextFromUser =
         ChatModel.TextFromUser(text)

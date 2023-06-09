@@ -41,4 +41,5 @@ dependencies {
     implementation(project(":analytics"))
     implementation(project(":domain"))
     implementation(project(":billing"))
+    implementation(project(":dialogs"))
 }

@@ -25,7 +25,7 @@
         tools:targetApi="s" />
 
     <application
-        android:name="com.ribsky.core.App"
+        android:name="com.ribsky.dymka.App"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -52,6 +52,7 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="Notifications" />
 
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.ribsky.dymka"
@@ -61,6 +62,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <provider
+            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
+            android:authorities="${applicationId}.mlkitinitprovider"
+            tools:node="remove" />
 
         <activity
             android:name="com.ribsky.lesson.ui.LessonActivity"
@@ -85,7 +91,7 @@
             android:name="com.ribsky.settings.ui.settings.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.ribsky.main.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.ribsky.game.ui.game.GameActivity"
@@ -100,6 +106,10 @@
             android:name="com.ribsky.game.ui.lobby.LobbyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LobbyTheme" />
+        <activity
+            android:name="com.ribsky.share.ui.story.ShareStoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/StoryTheme" />
         <activity
             android:name="com.ribsky.loader.ui.LoaderActivity"
             android:exported="true"

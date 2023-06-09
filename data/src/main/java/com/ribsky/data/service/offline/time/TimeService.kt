@@ -5,5 +5,4 @@ interface TimeService {
     fun isNeedUpdate(): Boolean
     fun saveLastTimeUpdate()
     fun getLastTimeUpdate(): Long
-
 }

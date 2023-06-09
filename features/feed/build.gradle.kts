@@ -42,5 +42,7 @@ dependencies {
     implementation(project(":navigation"))
     implementation(project(":domain"))
     implementation(project(":billing"))
+    implementation(project(":dialogs"))
+    implementation(project(":analytics"))
     kapt(Deps.roomCompiler)
 }

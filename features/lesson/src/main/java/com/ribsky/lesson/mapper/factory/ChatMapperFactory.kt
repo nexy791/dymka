@@ -7,7 +7,7 @@ interface ChatMapperFactory {
 
     fun create(baseContentModel: BaseContentModel.BaseContentType): ChatModel
 
-    fun createAnswer(text: String): ChatModel.Answer
+    fun createAnswer(text: String, isCorrect: Boolean): ChatModel.Answer
 
     fun createTextFromUser(text: String): ChatModel.TextFromUser
 }

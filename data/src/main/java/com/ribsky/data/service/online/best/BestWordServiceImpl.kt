@@ -39,7 +39,13 @@ class BestWordServiceImpl(
     override suspend fun getCurrentBestWord(): BestWordApiModel {
         val id = getWordIdFromSharedPref()
         if (!isCurrentWordNeedUpdate() && id != null) {
-            return bestWordDao.get(id)
+            val word = bestWordDao.get(id)
+            if (word != null) {
+                return word
+            } else {
+                val newId = bestWordDao.get().shuffled().first().id
+                saveWordIdToSharedPref(newId)
+            }
         } else {
             val newId = bestWordDao.get().shuffled().first().id
             saveWordIdToSharedPref(newId)

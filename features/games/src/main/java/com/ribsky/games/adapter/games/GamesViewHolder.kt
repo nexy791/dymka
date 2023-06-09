@@ -31,25 +31,26 @@ class GamesViewHolder(private val binding: ItemGameBinding) :
             error(null)
         }
 
-        if (item.isActive) {
-            tvIcon.setColorFilter(item.getPrimaryColor().toColor(), PorterDuff.Mode.SRC_IN)
-            image.setBackgroundColor(item.getBackgroundColor().toColor())
-        } else {
-            tvIcon.setColorFilter("#989898".toColor(), PorterDuff.Mode.SRC_IN)
-            image.setBackgroundColor("#CCCCCC".toColor())
-            checkbox.load(commonDrawable.ic_outline_lock_24)
-            checkbox.setColorFilter("#666666".toColor(), PorterDuff.Mode.SRC_IN)
-        }
-
         if (item.isPicked) {
             checkbox.setImageResource(commonDrawable.ic_round_check_circle_24)
         } else {
             checkbox.setImageResource(commonDrawable.ic_round_check_circle_outline_24)
         }
 
+        if (item.isActive) {
+            tvIcon.setColorFilter(item.getPrimaryColor().toColor(), PorterDuff.Mode.SRC_IN)
+            image.setBackgroundColor(item.getBackgroundColor().toColor())
+            checkbox.setColorFilter("#64B5F6".toColor(), PorterDuff.Mode.SRC_IN)
+        } else {
+            tvIcon.setColorFilter("#989898".toColor(), PorterDuff.Mode.SRC_IN)
+            image.setBackgroundColor("#CCCCCC".toColor())
+            checkbox.setImageResource(commonDrawable.ic_outline_lock_24)
+            checkbox.setColorFilter("#CCCCCC".toColor(), PorterDuff.Mode.SRC_IN)
+        }
+
         if (item.isInProgress()) {
-            checkbox.load(commonDrawable.ic_outline_draw_24)
-            checkbox.setColorFilter("#666666".toColor(), PorterDuff.Mode.SRC_IN)
+            checkbox.setImageResource(commonDrawable.ic_outline_draw_24)
+            checkbox.setColorFilter("#CCCCCC".toColor(), PorterDuff.Mode.SRC_IN)
         }
     }
 }

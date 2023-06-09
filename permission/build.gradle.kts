@@ -35,6 +35,5 @@ dependencies {
     implementation(Deps.androidxAppCompat)
     implementation(Deps.androidxCore)
     implementation(Deps.material)
-
     implementation(Deps.kPermissions)
 }

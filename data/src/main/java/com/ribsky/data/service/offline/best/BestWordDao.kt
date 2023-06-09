@@ -22,7 +22,7 @@ interface BestWordDao {
     suspend fun get(): List<BestWordApiModel>
 
     @Query("SELECT * FROM bestwordapimodel WHERE id = :id")
-    suspend fun get(id: Int): BestWordApiModel
+    suspend fun get(id: Int): BestWordApiModel?
 
     @Query("SELECT * FROM bestwordapimodel LIMIT 1")
     suspend fun getOneWord(): List<BestWordApiModel>

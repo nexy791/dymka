@@ -18,11 +18,11 @@ import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.livedata.Resource
-import com.ribsky.common.utils.ext.AlertsExt.Companion.showErrorAlert
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
 import com.ribsky.common.utils.ext.TimerExt.Companion.formatTimeUntilFinished
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.test.BaseTestModel
 import com.ribsky.domain.model.word.BaseWordModel
 import com.ribsky.game.adapter.test.TestAdapter
@@ -40,9 +40,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
 class GameActivity :
-    BaseActivity<GameNavigation, GameViewModel, ActivityGameBinding>(ActivityGameBinding::inflate) {
+    BaseActivity<GameViewModel, ActivityGameBinding>(ActivityGameBinding::inflate) {
 
-    override val navigation: GameNavigation by inject()
     override val viewModel: GameViewModel by viewModel()
     private val connectionManager: ConnectionManager by inject()
     private val gameManager: GameManager by lazy {
@@ -91,11 +90,7 @@ class GameActivity :
             // TODO: show dialog on back activity
             override fun onDisconnected(endpointId: String) {
                 try {
-                    showErrorAlert(
-                        message = "Гравець вийшов з гри",
-                        positiveAction = null,
-                        negativeAction = { finish() },
-                    )
+                    showErrorDialog("Гравець вийшов з гри") { finish() }
                 } catch (ex: Exception) {
                     finish()
                 }
@@ -162,13 +157,15 @@ class GameActivity :
         userHostStatus.observe(this@GameActivity) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateUsersUi(userHost, userQuest)
-                else -> {}
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
         userQuestStatus.observe(this@GameActivity) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateUsersUi(userHost, userQuest)
-                else -> {}
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
 
@@ -186,7 +183,8 @@ class GameActivity :
         bookStatus.observe(this@GameActivity) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> drawBook(result.data!!)
-                else -> {}
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
 
@@ -197,7 +195,8 @@ class GameActivity :
         wordStatus.observe(this@GameActivity) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateTest(result.data!!)
-                else -> {}
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
     }
@@ -235,6 +234,7 @@ class GameActivity :
     }
 
     private fun getWinner() {
+        Analytics.logEvent(Analytics.Event.END_GAME)
         val scoreHost = viewModel.scoreHost?.score ?: 0
         val scoreQuest = viewModel.scoreQuest?.score ?: 0
 

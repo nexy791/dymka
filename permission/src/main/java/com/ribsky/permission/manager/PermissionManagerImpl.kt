@@ -40,7 +40,8 @@ class PermissionManagerImpl(
             Intent.createChooser(
                 Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", activity.packageName, null)
-                }, ""
+                },
+                ""
             )
         )
     }

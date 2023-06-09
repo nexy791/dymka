@@ -66,18 +66,18 @@ class DataRepositoryImpl(
             val best = bestWordRepository.loadWords()
             val players = topRepository.loadUsers()
             val result = !lessons.getOrNull().isNullOrEmpty() &&
-                    !words.getOrNull().isNullOrEmpty() &&
-                    !paragraphs.getOrNull().isNullOrEmpty() &&
-                    !best.getOrNull().isNullOrEmpty() &&
-                    !players.getOrNull().isNullOrEmpty()
+                !words.getOrNull().isNullOrEmpty() &&
+                !paragraphs.getOrNull().isNullOrEmpty() &&
+                !best.getOrNull().isNullOrEmpty() &&
+                !players.getOrNull().isNullOrEmpty()
             return if (result) {
                 Result.success(Unit)
             } else {
                 val error: Result<Unit> = Result.failure(
                     lessons.exceptionOrNull() ?: words.exceptionOrNull()
-                    ?: paragraphs.exceptionOrNull()
-                    ?: best.exceptionOrNull() ?: players.exceptionOrNull()
-                    ?: Exception(Exceptions.UnknownException())
+                        ?: paragraphs.exceptionOrNull()
+                        ?: best.exceptionOrNull() ?: players.exceptionOrNull()
+                        ?: Exception(Exceptions.UnknownException())
                 )
                 error
             }
@@ -99,5 +99,4 @@ class DataRepositoryImpl(
             Result.failure(Exceptions.NoInternetException())
         }
     }
-
 }

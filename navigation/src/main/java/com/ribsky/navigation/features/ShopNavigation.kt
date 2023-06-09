@@ -1,16 +1,6 @@
 package com.ribsky.navigation.features
 
-import com.ribsky.common.navigation.Navigation
+import android.content.Context
+import com.ribsky.navigation.base.Navigation
 
-interface ShopNavigation : Navigation {
-
-    fun navigateLoader(loaderNavigation: LoaderNavigation)
-
-    fun navigateMain(mainNavigation: MainNavigation)
-
-    fun navigatePromptSub()
-
-    companion object {
-        const val RESULT_KEY_PROMPT_SUB = "RESULT_KEY_PROMPT_SUB"
-    }
-}
+interface ShopNavigation : Navigation<Context>

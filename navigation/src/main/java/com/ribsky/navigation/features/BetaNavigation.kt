@@ -1,5 +1,6 @@
 package com.ribsky.navigation.features
 
-import com.ribsky.common.navigation.Navigation
+import android.content.Context
+import com.ribsky.navigation.base.Navigation
 
-interface BetaNavigation : Navigation
+interface BetaNavigation : Navigation<Context>

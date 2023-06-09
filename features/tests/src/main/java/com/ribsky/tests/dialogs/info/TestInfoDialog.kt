@@ -3,27 +3,25 @@ package com.ribsky.tests.dialogs.info
 import android.graphics.PorterDuff
 import androidx.core.os.bundleOf
 import androidx.core.text.parseAsHtml
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.common.base.BaseSheet
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.test.BaseTestModel
-import com.ribsky.navigation.features.TestsNavigation.Companion.RESULT_KEY_TEST_INFO
-import com.ribsky.navigation.features.TestsNavigation.Companion.RESULT_KEY_TEST_INFO_ID
 import com.ribsky.tests.databinding.DialogTestInfoBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent.inject
 
-class TestInfoDialog : BaseSheet<DialogTestInfoBinding>(DialogTestInfoBinding::inflate) {
+class TestInfoDialog(
+    private val callback: (String) -> Unit,
+) : BaseSheet<DialogTestInfoBinding>(DialogTestInfoBinding::inflate) {
 
     private val storage: FirebaseStorage by inject(FirebaseStorage::class.java)
     private val viewModel: TestInfoViewModel by viewModel()
 
-    private val args: TestInfoDialogArgs by navArgs()
-    private val testId by lazy { args.testId }
+    private val testId by lazy { arguments?.getString(KEY_TEST_ID)!! }
 
     override fun initViews() {
         initBtns()
@@ -34,7 +32,7 @@ class TestInfoDialog : BaseSheet<DialogTestInfoBinding>(DialogTestInfoBinding::i
             dismiss()
         }
         btnNext.setOnClickListener {
-            setFragmentResult(RESULT_KEY_TEST_INFO, bundleOf(RESULT_KEY_TEST_INFO_ID to testId))
+            callback(testId)
             dismiss()
         }
     }
@@ -56,10 +54,23 @@ class TestInfoDialog : BaseSheet<DialogTestInfoBinding>(DialogTestInfoBinding::i
         testStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateUi(result.data!!)
-                else -> {}
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { dismiss() }
             }
         }
     }
 
     override fun clear() {}
+
+    companion object {
+
+        private const val KEY_TEST_ID = "KEY_TEST_ID"
+
+        fun newInstance(
+            testId: String,
+            callback: (String) -> Unit,
+        ): TestInfoDialog = TestInfoDialog(callback).apply {
+            arguments = bundleOf(KEY_TEST_ID to testId)
+        }
+    }
 }

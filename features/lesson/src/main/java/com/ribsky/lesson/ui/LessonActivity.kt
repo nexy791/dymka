@@ -1,39 +1,43 @@
 package com.ribsky.lesson.ui
 
 import android.content.Intent
-import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
-import com.ribsky.common.utils.ext.AlertsExt.Companion.showErrorAlert
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.drawable
 import com.ribsky.common.utils.ext.ViewExt.Companion.copy
 import com.ribsky.common.utils.ext.ViewExt.Companion.hideKeyboard
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.ext.ViewExt.Companion.showKeyboard
+import com.ribsky.common.utils.ext.ViewExt.Companion.snackbar
+import com.ribsky.dialogs.base.ListDialog
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.message.MessageActionFactory
+import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.databinding.ActivityLessonBinding
 import com.ribsky.lesson.model.ChatModel
 import com.ribsky.navigation.features.LessonNavigation
 import com.ribsky.navigation.features.ShareMessageNavigation
+import com.ribsky.navigation.features.ShopNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LessonActivity :
-    BaseActivity<LessonNavigation, LessonViewModel, ActivityLessonBinding>(ActivityLessonBinding::inflate) {
+    BaseActivity<LessonViewModel, ActivityLessonBinding>(ActivityLessonBinding::inflate) {
 
     override val viewModel: LessonViewModel by viewModel()
-    override val navigation: LessonNavigation by inject()
-    private val shareWordNavigation: ShareMessageNavigation by inject()
+    private val shareMessageNavigation: ShareMessageNavigation by inject()
+    private val shopNavigation: ShopNavigation by inject()
 
     private var state: LoadingStateDelegate? = null
 
@@ -109,6 +113,11 @@ class LessonActivity :
                 override fun onChipsClick(chips: List<String>) {
                     viewModel.checkAnswer(chips)
                 }
+
+                override fun onHintClick() {
+                    Analytics.logEvent(Analytics.Event.LESSON_HINT_CLICK)
+                    showHint()
+                }
             }
         )
     }
@@ -121,7 +130,24 @@ class LessonActivity :
     }
 
     private fun showSmsDialog(text: String) {
-        navigation.navigateMessageAction(text)
+        showBottomSheetDialog(
+            MessageActionFactory(
+                listOf(
+                    ListDialog.Item("\uD83D\uDCE3 Поділитися") {
+                        shareMessageNavigation.navigate(this, ShareMessageNavigation.Params(text))
+                    },
+                    ListDialog.Item("\uD83D\uDCDD Скопіювати") {
+                        copy(text.parseAsHtml().toString())
+                    },
+                    ListDialog.Item("\uD83D\uDC08 Підтримка") {
+                        sendEmail(
+                            subject = "dymka повідомити про проблему ",
+                            text = "Урок #${lessonId}\n\n«${text.parseAsHtml()}»"
+                        )
+                    },
+                )
+            ).createDialog()
+        )
     }
 
     private fun initAdapterAndRecycler(photo: String) {
@@ -138,14 +164,14 @@ class LessonActivity :
                     initAdapterAndRecycler(result.data!!.image)
                     getLesson(lessonId)
                 }
-                Resource.Status.ERROR -> showError(result.exception?.localizedMessage.orEmpty())
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage.orEmpty()) { finish() }
             }
         }
         lessonStatus.observe(this@LessonActivity) { result ->
             when (result.status) {
                 Resource.Status.LOADING -> {}
                 Resource.Status.SUCCESS -> getContent(result.data!!.content)
-                Resource.Status.ERROR -> showError(result.exception?.localizedMessage.orEmpty())
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage.orEmpty()) { finish() }
             }
         }
         contentStatus.observe(this@LessonActivity) { result ->
@@ -155,7 +181,7 @@ class LessonActivity :
                     state?.showLoading()
                 }
                 Resource.Status.SUCCESS -> state?.showContent()
-                Resource.Status.ERROR -> showError(result.exception?.localizedMessage.orEmpty())
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage.orEmpty()) { finish() }
             }
         }
         chatStatus.observe(this@LessonActivity) { list ->
@@ -173,34 +199,10 @@ class LessonActivity :
         actionStatus.observe(this@LessonActivity) { result ->
             binding.btnNext.text = result
         }
-
-        supportFragmentManager.setFragmentResultListener(
-            LessonNavigation.RESULT_KEY_MESSAGE_ACTION,
-            this@LessonActivity
-        ) { _, bundle ->
-            val action =
-                bundle.getParcelable<LessonNavigation.ResultAction>(LessonNavigation.RESULT_KEY_MESSAGE_ACTION_ID)!!
-            processAction(action)
-        }
-    }
-
-    private fun processAction(action: LessonNavigation.ResultAction) {
-        when (action) {
-            is LessonNavigation.ResultAction.COPY -> copy(action.message.parseAsHtml().toString())
-            is LessonNavigation.ResultAction.SHARE -> navigation.shareMessage(
-                shareWordNavigation,
-                action.message
-            )
-            is LessonNavigation.ResultAction.SUPPORT -> sendEmail(
-                subject = "dymka повідомити про проблему ",
-                text = "Урок #${lessonId}\n\n«${action.message.parseAsHtml()}»"
-            )
-        }
     }
 
     private fun updateChat(item: List<ChatModel>) {
         val element = item.lastOrNull()
-        Log.e("TAG111", "updateChat: $element")
         if (element != null) {
             adapter?.submitList(item) {
                 updateKeyBoardAndBtnVisibility(element)
@@ -209,14 +211,6 @@ class LessonActivity :
         } else {
             endLesson()
         }
-    }
-
-    private fun enableButton() = with(binding) {
-        btnNext.isEnabled = true
-    }
-
-    private fun disableButton() = with(binding) {
-        btnNext.isEnabled = false
     }
 
     private fun clearEditText() = with(binding.tilDescription) {
@@ -233,17 +227,20 @@ class LessonActivity :
                 showButton()
                 enableButton()
             }
-            is ChatModel.Chips,
-            is ChatModel.Mistake,
-            is ChatModel.Test,
-            -> {
+            is ChatModel.Chips -> {
                 showButton()
                 disableButton()
             }
-            is ChatModel.Answer,
-            is ChatModel.TextFromUser,
-            -> {
+            is ChatModel.Mistake -> {
+                showButton()
+                disableButton()
             }
+            is ChatModel.Test -> {
+                showButton()
+                disableButton()
+            }
+            is ChatModel.Answer -> {}
+            is ChatModel.TextFromUser -> {}
         }
     }
 
@@ -261,11 +258,37 @@ class LessonActivity :
         hideKeyboard(binding.root)
     }
 
+    private fun showHint() {
+        if (viewModel.isSub) {
+            binding.snackbar(
+                title = "Підказка",
+                message = viewModel.hint()
+            ).apply {
+                anchorView = if (binding.btnNext.isGone) binding.tilDescription else binding.btnNext
+            }.show()
+        } else {
+            showBottomSheetDialog(
+                SubPromptFactory {
+                    Analytics.logEvent(Analytics.Event.PREMIUM_FROM_HINT)
+                    shopNavigation.navigate(this@LessonActivity)
+                }.createDialog()
+            )
+        }
+    }
+
+    private fun enableButton() = with(binding) {
+        btnNext.isEnabled = true
+    }
+
+    private fun disableButton() = with(binding) {
+        btnNext.isEnabled = false
+    }
+
     private fun endLesson() {
         setResult(
             RESULT_OK,
             Intent().apply {
-                putExtra(LessonNavigation.RESULT_KEY_LESSON_ID, lessonId)
+                putExtra(LessonNavigation.KEY_LESSON_RESULT, lessonId)
             }
         )
         finish()
@@ -275,15 +298,15 @@ class LessonActivity :
         binding.recyclerView.smoothScrollToPosition(position)
     }
 
-    private fun showError(error: String) = showErrorAlert(
-        message = error,
-        positiveAction = null,
-        negativeAction = { finish() }
-    )
-
     override fun onBackPressed() {
         showExitAlert(
-            positiveAction = { finish() },
+            positiveAction = {
+                Analytics.logEvent(Analytics.Event.END_LESSON_UNFINISHED, bundle = bundleOf(
+                    "lesson_id" to lessonId,
+                    "errors" to viewModel.errorCount
+                ))
+                finish()
+            },
             negativeAction = { }
         )
     }

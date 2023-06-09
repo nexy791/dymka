@@ -60,7 +60,9 @@
                     android:text="Урок"
                     android:textAppearance="@style/ActionTitle" />
 
+
                 <ImageView
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/ic_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

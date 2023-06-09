@@ -42,4 +42,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":billing"))
     implementation(project(":permission"))
+    implementation(project(":dialogs"))
+    implementation(project(":analytics"))
 }

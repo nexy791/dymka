@@ -37,20 +37,5 @@ class AlertsExt {
                 .setCancelable(true)
                 .show()
         }
-
-        fun Context.showErrorAlert(
-            message: String?,
-            positiveAction: (() -> Unit)?,
-            negativeAction: () -> Unit,
-        ) {
-            MaterialAlertDialogBuilder(this).apply {
-                setTitle("Помилка")
-                setMessage(message.orEmpty().ifEmpty { "Невідома помилка" })
-                positiveAction?.let { setPositiveButton("Спробувати ще раз") { _, _ -> it() } }
-                setNegativeButton("Відхилити") { _, _ -> negativeAction() }
-                setCancelable(false)
-                show()
-            }
-        }
     }
 }

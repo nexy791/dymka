@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.common.utils.internet.InternetManager
 import com.ribsky.data.utils.crypto.CryptoManager
+import com.ribsky.domain.exceptions.Exceptions
 import kotlinx.coroutines.tasks.await
 import java.io.File
 import java.util.*
@@ -28,6 +29,7 @@ class FileServiceImpl(
                 Result.success(File(localFile.path))
             }
         } else {
+            if (!internetManager.isOnline()) return Result.failure(Exceptions.NoInternetException())
             val result = runCatching {
                 gsRef.getFile(localFile).await()
             }

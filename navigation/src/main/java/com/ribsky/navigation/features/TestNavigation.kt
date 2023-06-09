@@ -1,12 +1,17 @@
 package com.ribsky.navigation.features
 
-import com.ribsky.common.navigation.Navigation
+import android.content.Context
+import android.os.Parcelable
+import com.ribsky.navigation.base.Base
+import com.ribsky.navigation.base.NavigationWithParams
+import kotlinx.parcelize.Parcelize
 
-interface TestNavigation : Navigation {
+interface TestNavigation : NavigationWithParams<Context, TestNavigation.Params> {
 
-    fun navigateShop(shopNavigation: ShopNavigation)
-
-    fun navigatePromptSub(shopNavigation: ShopNavigation)
+    @Parcelize
+    data class Params(
+        val testId: String,
+    ) : Base.Params, Parcelable
 
     companion object {
         const val KEY_TEST_ID = "testId"

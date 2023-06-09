@@ -1,39 +1,29 @@
 package com.ribsky.game.dialogs
 
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.navArgs
 import com.ribsky.common.base.BaseSheet
 import com.ribsky.game.databinding.DialogGamesConfirmBinding
-import com.ribsky.navigation.features.GameNavigation
-import com.ribsky.navigation.features.GameNavigation.Companion.RESULT_KEY_RESULT_CONFIRM
-import com.ribsky.navigation.features.GameNavigation.Companion.RESULT_KEY_RESULT_CONFIRM_ACTION
 
-class GameConfirmDialog :
+class GameConfirmDialog(
+    private val positiveButtonCallback: () -> Unit,
+    private val negativeButtonCallback: () -> Unit,
+) :
     BaseSheet<DialogGamesConfirmBinding>(DialogGamesConfirmBinding::inflate) {
 
-    private val args: GameConfirmDialogArgs by navArgs()
-
-    private val code by lazy { args.code }
-
-    private val endPointId by lazy { args.endPointId }
+    private val code by lazy {
+        arguments?.getString(KEY_CONFIRM_CODE) ?: ""
+    }
 
     override fun initViews(): Unit = with(binding) {
         btnCancel.setOnClickListener {
-            dismissWithResult(GameNavigation.ConfirmResult.REJECT(endPointId))
+            negativeButtonCallback()
+            dismiss()
         }
         btnNext.setOnClickListener {
-            dismissWithResult(GameNavigation.ConfirmResult.ACCEPT(endPointId))
+            positiveButtonCallback()
+            dismiss()
         }
         tvTitle.text = code
-    }
-
-    private fun dismissWithResult(result: GameNavigation.ConfirmResult) {
-        setFragmentResult(
-            RESULT_KEY_RESULT_CONFIRM,
-            bundleOf(RESULT_KEY_RESULT_CONFIRM_ACTION to result)
-        )
-        dismiss()
     }
 
     override fun initObserves() {
@@ -43,13 +33,16 @@ class GameConfirmDialog :
     }
 
     companion object {
-        const val TAG = "GameConfirmDialog"
-        fun newInstance(code: String, endPointId: String): GameConfirmDialog {
-            return GameConfirmDialog().apply {
-                arguments = bundleOf(
-                    GameNavigation.KEY_CONFIRM_CODE to code,
-                    GameNavigation.KEY_CONFIRM_END_POINT_ID to endPointId
-                )
+
+        private const val KEY_CONFIRM_CODE = "code"
+
+        fun newInstance(
+            code: String,
+            positiveButtonCallback: () -> Unit,
+            negativeButtonCallback: () -> Unit,
+        ): GameConfirmDialog {
+            return GameConfirmDialog(positiveButtonCallback, negativeButtonCallback).apply {
+                arguments = bundleOf(KEY_CONFIRM_CODE to code)
             }
         }
     }

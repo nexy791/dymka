@@ -37,7 +37,6 @@ class ChatChipsViewHolder(private val binding: ItemChatChipsBinding) :
         }
     }
 
-
     private fun ChipGroup.getCheckedChips(): List<String> =
         children.map { it as Chip }.filter { it.isChecked }.map { it.text.toString() }.toList()
 

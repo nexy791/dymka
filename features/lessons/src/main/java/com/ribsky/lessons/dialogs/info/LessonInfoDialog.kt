@@ -1,21 +1,19 @@
 package com.ribsky.lessons.dialogs.info
 
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.navArgs
 import com.ribsky.common.base.BaseSheet
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ViewExt.Companion.getInitials
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.lessons.databinding.DialogLessonInfoBinding
-import com.ribsky.navigation.features.LessonsNavigation.Companion.RESULT_KEY_LESSON_INFO
-import com.ribsky.navigation.features.LessonsNavigation.Companion.RESULT_KEY_LESSON_INFO_ID
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LessonInfoDialog : BaseSheet<DialogLessonInfoBinding>(DialogLessonInfoBinding::inflate) {
+class LessonInfoDialog(
+    private val callback: (String) -> Unit,
+) : BaseSheet<DialogLessonInfoBinding>(DialogLessonInfoBinding::inflate) {
 
-    private val args: LessonInfoDialogArgs by navArgs()
-    private val lessonId by lazy { args.lessonId }
+    private val lessonId by lazy { requireArguments().getString(KEY_LESSON_ID)!! }
     private val viewModel: LessonInfoViewModel by viewModel()
 
     override fun initViews() {
@@ -27,10 +25,7 @@ class LessonInfoDialog : BaseSheet<DialogLessonInfoBinding>(DialogLessonInfoBind
             dismiss()
         }
         btnNext.setOnClickListener {
-            setFragmentResult(
-                RESULT_KEY_LESSON_INFO,
-                bundleOf(RESULT_KEY_LESSON_INFO_ID to lessonId)
-            )
+            callback(lessonId)
             dismiss()
         }
     }
@@ -47,10 +42,19 @@ class LessonInfoDialog : BaseSheet<DialogLessonInfoBinding>(DialogLessonInfoBind
         lessonStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateUi(result.data!!)
-                else -> {}
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { dismiss() }
             }
         }
     }
 
     override fun clear() {}
+
+    companion object {
+        private const val KEY_LESSON_ID = "KEY_LESSON_ID"
+        fun newInstance(lessonId: String, callback: (String) -> Unit) =
+            LessonInfoDialog(callback).apply {
+                arguments = bundleOf(KEY_LESSON_ID to lessonId)
+            }
+    }
 }

@@ -115,7 +115,6 @@ class TestDetailsViewModel(
         return result
     }
 
-
     private suspend fun getFavWords(): List<WordModel> {
         val ids = saveWordInteractor.getWordsIds()
         val allWords = getContentAll()

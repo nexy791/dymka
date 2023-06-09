@@ -13,6 +13,8 @@ data class UserModel(
     override val saved: Map<String, String> = mapOf(),
     override var version: Long = 0,
     override var hasPrem: Boolean,
+    override var hasDiscount: Boolean,
+    override var botTotalCount: Long,
 ) : BaseUserModel {
 
     constructor(user: BaseTopModel) : this(
@@ -21,5 +23,7 @@ data class UserModel(
         score = user.score,
         lessonsCount = user.lessonsCount,
         hasPrem = user.hasPrem,
+        hasDiscount = false,
+        botTotalCount = 0,
     )
 }

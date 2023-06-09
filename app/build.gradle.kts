@@ -40,16 +40,36 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    setDynamicFeatures(setOf(":features:bot"))
 }
 
 dependencies {
 
-    implementation(project(":data"))
-    implementation(project(":domain"))
-    implementation(project(":core"))
-    implementation(project(":common"))
-    implementation(project(":features"))
+    api(project(":data"))
+    api(project(":domain"))
+    api(project(":common"))
+    implementation(project(":navigation"))
+    implementation(project(":billing"))
     implementation(project(":features:lesson"))
-    implementation(project(":features:test"))
+    implementation(project(":features:games"))
     implementation(project(":features:game"))
+    implementation(project(":features:share"))
+    implementation(project(":features:share"))
+    implementation(project(":features:share"))
+    implementation(project(":features:top"))
+    implementation(project(":features:test"))
+    implementation(project(":features:tests"))
+    implementation(project(":features:lessons"))
+    implementation(project(":features:settings"))
+    implementation(project(":features:settings"))
+    implementation(project(":features:account"))
+    implementation(project(":features:beta"))
+    implementation(project(":features:feed"))
+    implementation(project(":features:shop"))
+    implementation(project(":features:auth"))
+    implementation(project(":features:loader"))
+    implementation(project(":features:loader"))
+    implementation(project(":dialogs"))
+    implementation(project(":widget"))
+    implementation(project(":analytics"))
 }

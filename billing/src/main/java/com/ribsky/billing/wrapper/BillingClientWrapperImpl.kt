@@ -24,17 +24,37 @@ class BillingClientWrapperImpl(
             BillingClientWrapper.Product.WEEKLY -> PurchaseType.SUBSCRIPTION
             BillingClientWrapper.Product.MONTHLY -> PurchaseType.SUBSCRIPTION
             BillingClientWrapper.Product.LIFETIME -> PurchaseType.IN_APP
+
+            BillingClientWrapper.Product.WEEKLY_FULL -> PurchaseType.SUBSCRIPTION
+            BillingClientWrapper.Product.MONTHLY_FULL -> PurchaseType.SUBSCRIPTION
+            BillingClientWrapper.Product.YEARLY_FULL -> PurchaseType.SUBSCRIPTION
+            BillingClientWrapper.Product.LIFETIME_FULL -> PurchaseType.IN_APP
+
+            BillingClientWrapper.Product.WEEKLY_LITE -> PurchaseType.SUBSCRIPTION
+            BillingClientWrapper.Product.MONTHLY_LITE -> PurchaseType.SUBSCRIPTION
+            BillingClientWrapper.Product.YEARLY_LITE -> PurchaseType.SUBSCRIPTION
+            BillingClientWrapper.Product.LIFETIME_LITE -> PurchaseType.IN_APP
+
+
         }
         billingClient.purchase(sku.sku, type, callback)
     }
 
     override fun getPurchasesList(callback: (Result<List<Item>>) -> Unit) {
-        val listInApp = listOf(
-            BillingClientWrapper.Product.LIFETIME.sku
+        val listInApp: List<String> = listOf(
+            BillingClientWrapper.Product.LIFETIME.sku,
+            BillingClientWrapper.Product.LIFETIME_FULL.sku,
+            BillingClientWrapper.Product.LIFETIME_LITE.sku
         )
-        val listSubs = listOf(
+        val listSubs: List<String> = listOf(
             BillingClientWrapper.Product.WEEKLY.sku,
-            BillingClientWrapper.Product.MONTHLY.sku
+            BillingClientWrapper.Product.MONTHLY.sku,
+            BillingClientWrapper.Product.WEEKLY_FULL.sku,
+            BillingClientWrapper.Product.MONTHLY_FULL.sku,
+            BillingClientWrapper.Product.WEEKLY_LITE.sku,
+            BillingClientWrapper.Product.MONTHLY_LITE.sku,
+            BillingClientWrapper.Product.YEARLY_LITE.sku,
+            BillingClientWrapper.Product.YEARLY_FULL.sku
         )
         billingClient.getPurchasesList(listInApp, PurchaseType.IN_APP) { r ->
             r.fold(
@@ -101,11 +121,11 @@ class BillingClientWrapperImpl(
     }
 
     private fun saveSubInfoToCache(inventoryList: MutableList<BillingClientWrapper.Product>) {
-        if (inventoryList.isNotEmpty()) {
-            subManager.saveSub(true)
+        val isSub = inventoryList.isNotEmpty()
+        subManager.saveSub(isSub)
+        if (isSub) {
             subManager.updateSku(BillingClientWrapper.Product.fromSku(inventoryList.first().sku))
         } else {
-            subManager.saveSub(false)
             subManager.updateSku(null)
         }
     }

@@ -1,13 +1,17 @@
 package com.ribsky.feed.ui
 
-import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
+import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.livedata.Resource.Status
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
+import com.ribsky.dialogs.factory.common.ProgressFactory
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.feed.adapter.lm.FeedSpanSizeLookup
@@ -15,15 +19,17 @@ import com.ribsky.feed.adapter.paragraph.ParagraphAdapter
 import com.ribsky.feed.adapter.prem.PremAdapter
 import com.ribsky.feed.adapter.word.BestWordAdapter
 import com.ribsky.feed.databinding.FragmentFeedBinding
-import com.ribsky.navigation.features.*
+import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.LessonsNavigation
+import com.ribsky.navigation.features.ShareWordNavigation
+import com.ribsky.navigation.features.ShopNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FeedFragment :
-    BaseFragment<FeedNavigation, FeedViewModel, FragmentFeedBinding>(FragmentFeedBinding::inflate) {
+    BaseFragment<FeedViewModel, FragmentFeedBinding>(FragmentFeedBinding::inflate) {
     override val viewModel: FeedViewModel by viewModel()
-    override val navigation: FeedNavigation by inject()
-    private val dialogsNavigation: DialogsNavigation by inject()
+
     private val shopNavigation: ShopNavigation by inject()
     private val lessonsNavigation: LessonsNavigation by inject()
     private val betaNavigation: BetaNavigation by inject()
@@ -44,18 +50,19 @@ class FeedFragment :
 
     private fun initAdapter() {
         adapterBestWord = BestWordAdapter { id ->
-            navigation.navigateShareWord(shareNavigation, id)
+            shareNavigation.navigate(requireContext(), ShareWordNavigation.Params(id))
         }
 
         adapterPrem = PremAdapter() {
-            navigation.navigateShop(shopNavigation)
+            Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MAIN)
+            shopNavigation.navigate(requireContext())
         }
 
         adapterParagraph = ParagraphAdapter { model ->
             if (!model.isEmpty) {
-                navigation.navigateLessons(lessonsNavigation, model.id)
+                lessonsNavigation.navigate(findNavController(), LessonsNavigation.Params(model.id))
             } else {
-                navigation.navigateProgress(dialogsNavigation)
+                showBottomSheetDialog(ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog())
             }
         }
 
@@ -84,7 +91,7 @@ class FeedFragment :
                     updateBestWordContent(listOf(result.data!!))
                     getParagraphs()
                 }
-                Status.ERROR -> {}
+                Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
         lessonsStatus.observe(viewLifecycleOwner) { result ->
@@ -93,11 +100,9 @@ class FeedFragment :
                     adapterPrem?.submitList(listOf(viewModel.isSub))
                     updateLessonsContent(result.data!!)
                 }
-                else -> {}
+                Status.LOADING -> {}
+                Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
-        }
-        setFragmentResultListener(DialogsNavigation.RESULT_KEY_PROGRESS) { _, _ ->
-            navigation.navigateBeta(betaNavigation)
         }
     }
 

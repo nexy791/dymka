@@ -21,12 +21,14 @@ import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColorState
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.ext.ViewExt.Companion.snackbar
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.test.BaseTestModel
 import com.ribsky.domain.model.word.BaseWordModel
 import com.ribsky.navigation.features.ShopNavigation
-import com.ribsky.navigation.features.TestNavigation
 import com.ribsky.test.adapter.test.TestAdapter
 import com.ribsky.test.databinding.ActivityTestDetailsBinding
 import com.ribsky.test.model.WordModel
@@ -35,12 +37,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
 class TestDetailsActivity :
-    BaseActivity<TestNavigation, TestDetailsViewModel, ActivityTestDetailsBinding>(
+    BaseActivity<TestDetailsViewModel, ActivityTestDetailsBinding>(
         ActivityTestDetailsBinding::inflate
     ) {
 
     override val viewModel: TestDetailsViewModel by viewModel()
-    override val navigation: TestNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
 
     private var state: LoadingStateDelegate? = null
@@ -72,8 +73,10 @@ class TestDetailsActivity :
         mAdapter = TestAdapter { isCorrect, position ->
             isLoading = true
             if (isCorrect) {
+                Analytics.logEvent(Analytics.Event.WORDS_ANSWER_CORRECT)
                 viewModel.addScore()
             } else {
+                Analytics.logEvent(Analytics.Event.WORDS_ANSWER_INCORRECT)
                 vibrate()
             }
             mAdapter?.showAll(position)
@@ -97,7 +100,8 @@ class TestDetailsActivity :
 
         btnPremium.apply {
             setOnClickListener {
-                navigation.navigateShop(shopNavigation)
+                Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MENU)
+                shopNavigation.navigate(this@TestDetailsActivity)
             }
             setPremium(viewModel.isSub)
         }
@@ -106,7 +110,10 @@ class TestDetailsActivity :
 
     private fun likeTest() {
         if (!viewModel.isSub) {
-            navigation.navigatePromptSub(shopNavigation)
+            showBottomSheetDialog(SubPromptFactory {
+                Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LIKE)
+                shopNavigation.navigate(this@TestDetailsActivity)
+            }.createDialog())
         } else {
             val isSaved = viewModel.toggleWord()
             updateLikeButton(isSaved)
@@ -132,7 +139,7 @@ class TestDetailsActivity :
                     state?.showLoading()
                 }
                 Resource.Status.SUCCESS -> getTestInfo(testId)
-                Resource.Status.ERROR -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
         testStatus.observe(this@TestDetailsActivity) { result ->
@@ -146,7 +153,7 @@ class TestDetailsActivity :
                     getContent(test)
                     updateUi(test)
                 }
-                Resource.Status.ERROR -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
         wordStatus.observe(this@TestDetailsActivity) { result ->
@@ -156,17 +163,8 @@ class TestDetailsActivity :
                     state?.showLoading()
                 }
                 Resource.Status.SUCCESS -> updateList(result.data!!)
-                Resource.Status.ERROR -> {
-                }
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
-        }
-
-        supportFragmentManager.setFragmentResultListener(
-            ShopNavigation.RESULT_KEY_PROMPT_SUB,
-            this@TestDetailsActivity
-        )
-        { _, _ ->
-            navigation.navigateShop(shopNavigation)
         }
     }
 
@@ -221,7 +219,10 @@ class TestDetailsActivity :
 
     override fun onBackPressed() {
         showExitAlert(
-            positiveAction = { finish() },
+            positiveAction = {
+                Analytics.logEvent(Analytics.Event.END_WORDS)
+                finish()
+            },
             negativeAction = { }
         )
     }

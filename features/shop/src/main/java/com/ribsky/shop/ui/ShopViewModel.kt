@@ -7,6 +7,8 @@ class ShopViewModel(
     private val subManager: SubManager,
 ) : ViewModel() {
 
+    val isDiscount: Boolean get() = subManager.isDiscount()
+
     val isSub get() = subManager.isSub()
 
     val sku get() = subManager.getSku()

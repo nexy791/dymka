@@ -31,7 +31,6 @@ class GamesViewModel(
 
     fun isFileExists(content: String) = isContentExistsUseCase.invoke(content)
 
-
     fun getProfile() {
         viewModelScope.launch {
             _userStatus.value = Resource.loading()

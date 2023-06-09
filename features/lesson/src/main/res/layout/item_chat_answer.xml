@@ -14,9 +14,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="11dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/shapeableImageView">
+        app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text"
@@ -35,7 +36,32 @@
             android:textColor="#000000"
             tools:text="Message" />
 
+
     </FrameLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="30dp"
+        android:minHeight="30dp"
+        android:text="Підказка"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="@color/md_theme_light_primary"
+        android:textSize="11sp"
+        android:visibility="gone"
+        app:backgroundTint="#ffffff"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toBottomOf="@+id/container"
+        app:strokeColor="@color/md_theme_light_primary"
+        app:strokeWidth="1dp" />
 
 
     <com.google.android.material.imageview.ShapeableImageView

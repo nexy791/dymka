@@ -40,6 +40,10 @@ class ActionExt {
             }
         }
 
+        fun Fragment.sendEmail(email: String = Const.EMAIL, subject: String, text: String) {
+            requireContext().sendEmail(email, subject, text)
+        }
+
         fun Context.openWifiSettings() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 try {

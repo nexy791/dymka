@@ -24,6 +24,7 @@ class ChatAdapter(
         fun onMistakeClick(text: String)
         fun onTestClick(test: ChatModel.Test.TestModel)
         fun onChipsClick(chips: List<String>)
+        fun onHintClick()
     }
 
     fun disableActiveLastElement() {

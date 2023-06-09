@@ -7,7 +7,6 @@ import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.ActionExt.Companion.shareApp
 import com.ribsky.navigation.features.LibraryNavigation
 import com.ribsky.navigation.features.LoaderNavigation
-import com.ribsky.navigation.features.SettingsNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.settings.adapter.settings.SettingsAdapter
 import com.ribsky.settings.databinding.ActivitySettingsBinding
@@ -16,12 +15,11 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity :
-    BaseActivity<SettingsNavigation, SettingsViewModel, ActivitySettingsBinding>(
+    BaseActivity<SettingsViewModel, ActivitySettingsBinding>(
         ActivitySettingsBinding::inflate
     ) {
 
     override val viewModel: SettingsViewModel by viewModel()
-    override val navigation: SettingsNavigation by inject()
 
     private val shopNavigation: ShopNavigation by inject()
     private val libraryNavigation: LibraryNavigation by inject()
@@ -57,13 +55,13 @@ class SettingsActivity :
     private fun processClick(type: Settings.Type) {
         when (type) {
             Settings.Type.SHARE -> shareApp()
-            Settings.Type.SUPPORT -> navigation.navigateShop(shopNavigation)
+            Settings.Type.SUPPORT -> shopNavigation.navigate(this@SettingsActivity)
             Settings.Type.CONTACT -> contact()
             Settings.Type.RATE -> openAppPage()
             Settings.Type.UPDATE -> openAppPage()
             Settings.Type.EXIT -> viewModel.signOut()
             Settings.Type.DELETE -> delete()
-            Settings.Type.LIBRARY -> navigation.navigateLibrary(libraryNavigation)
+            Settings.Type.LIBRARY -> libraryNavigation.navigate(this@SettingsActivity)
         }
     }
 
@@ -83,9 +81,7 @@ class SettingsActivity :
 
     override fun initObs() = with(viewModel) {
         status.observe(this@SettingsActivity) {
-            if (it) {
-                navigation.navigateLoad(loaderNavigation)
-            }
+            if (it) loaderNavigation.navigate(this@SettingsActivity)
         }
     }
 

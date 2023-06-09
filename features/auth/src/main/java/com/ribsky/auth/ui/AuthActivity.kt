@@ -11,18 +11,16 @@ import com.ribsky.auth.utils.auth.helpers.AuthHelperSignInImpl
 import com.ribsky.auth.utils.auth.helpers.base.AuthHelper
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.livedata.Resource
-import com.ribsky.common.utils.ext.AlertsExt.Companion.showErrorAlert
-import com.ribsky.navigation.features.AuthNavigation
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.LoaderNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthActivity :
-    BaseActivity<AuthNavigation, AuthViewModel, ActivityAuthBinding>(ActivityAuthBinding::inflate),
+    BaseActivity<AuthViewModel, ActivityAuthBinding>(ActivityAuthBinding::inflate),
     AuthHelper.AuthCallback {
 
     override val viewModel: AuthViewModel by viewModel()
-    override val navigation: AuthNavigation by inject()
     private val loaderNavigation: LoaderNavigation by inject()
 
     private var authHelperOneTap: AuthHelper? = null
@@ -82,8 +80,8 @@ class AuthActivity :
                     TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                     state!!.showLoading()
                 }
-                Resource.Status.SUCCESS -> navigation.navigateLoader(loaderNavigation)
-                Resource.Status.ERROR -> showErrorMessage(result.exception?.localizedMessage.orEmpty())
+                Resource.Status.SUCCESS -> loaderNavigation.navigate(this@AuthActivity)
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage)
             }
         }
     }
@@ -103,16 +101,8 @@ class AuthActivity :
 
         when (type) {
             AuthHelper.AuthType.ONE_TAP -> authHelperSignIn!!.auth()
-            AuthHelper.AuthType.SIGN_IN -> showErrorMessage(error.localizedMessage.orEmpty())
+            AuthHelper.AuthType.SIGN_IN -> showErrorDialog(error.localizedMessage)
         }
-    }
-
-    private fun showErrorMessage(message: String) {
-        showErrorAlert(
-            message = message,
-            positiveAction = {},
-            negativeAction = { finish() },
-        )
     }
 
     override fun clear() {

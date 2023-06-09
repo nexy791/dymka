@@ -1,27 +1,34 @@
 package com.ribsky.tests.ui
 
-import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
+import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
-import com.ribsky.navigation.features.*
+import com.ribsky.dialogs.factory.common.ProgressFactory
+import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.sub.SubPromptFactory
+import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.TestNavigation
 import com.ribsky.tests.adapter.test.TestAdapter
 import com.ribsky.tests.databinding.FragmentTestsBinding
+import com.ribsky.tests.dialogs.info.TestInfoDialog
 import com.ribsky.tests.model.TestModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TestsFragment :
-    BaseFragment<TestsNavigation, TestsViewModel, FragmentTestsBinding>(FragmentTestsBinding::inflate) {
+    BaseFragment<TestsViewModel, FragmentTestsBinding>(FragmentTestsBinding::inflate) {
 
     override val viewModel: TestsViewModel by viewModel()
-    override val navigation: TestsNavigation by inject()
-    private val dialogsNavigation: DialogsNavigation by inject()
     private val betaNavigation: BetaNavigation by inject()
     private val testNavigation: TestNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
@@ -52,17 +59,21 @@ class TestsFragment :
 
     private fun processTestClick(test: TestModel) {
         if (internetManager.isOnline() || viewModel.isFileExists(test.content)) {
-            if (!test.isInProgress()) {
-                if (test.isActive) {
-                    navigation.navigateTestInfoDialog(test.id)
-                } else {
-                    navigation.navigateSubPrompt(shopNavigation)
-                }
+            val dialog = if (test.isInProgress()) {
+                ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog()
+            } else if (!test.isActive) {
+                SubPromptFactory {
+                    Analytics.logEvent(Analytics.Event.PREMIUM_FROM_WORDS)
+                    shopNavigation.navigate(requireContext())
+                }.createDialog()
             } else {
-                navigation.navigateProgress(dialogsNavigation)
+                TestInfoDialog.newInstance(test.id) {
+                    testNavigation.navigate(requireContext(), TestNavigation.Params(test.id))
+                }
             }
+            showBottomSheetDialog(dialog)
         } else {
-            navigation.navigateInternetError(dialogsNavigation)
+            showBottomSheetDialog(ConnectionErrorFactory({ openWifiSettings() }).createDialog())
         }
     }
 
@@ -86,21 +97,8 @@ class TestsFragment :
                         state?.showContent()
                     }
                 }
-                Resource.Status.ERROR -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
-        }
-        setFragmentResultListener(TestsNavigation.RESULT_KEY_TEST_INFO) { _, bundle ->
-            val testId = bundle.getString(TestsNavigation.RESULT_KEY_TEST_INFO_ID)!!
-            navigation.navigateDetails(testNavigation, testId)
-        }
-        setFragmentResultListener(ShopNavigation.RESULT_KEY_PROMPT_SUB) { _, _ ->
-            navigation.navigateShop(shopNavigation)
-        }
-        setFragmentResultListener(DialogsNavigation.RESULT_KEY_PROGRESS) { _, _ ->
-            navigation.navigateBeta(betaNavigation)
-        }
-        setFragmentResultListener(DialogsNavigation.RESULT_KEY_CONNECTION) { _, _ ->
-            openWifiSettings()
         }
     }
 

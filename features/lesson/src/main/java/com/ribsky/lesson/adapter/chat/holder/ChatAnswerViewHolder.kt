@@ -3,6 +3,7 @@ package com.ribsky.lesson.adapter.chat.holder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
+import androidx.core.view.isGone
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.adapter.chat.holder.base.BaseViewHolder
 import com.ribsky.lesson.databinding.ItemChatAnswerBinding
@@ -16,9 +17,10 @@ class ChatAnswerViewHolder(private val binding: ItemChatAnswerBinding) :
     ) = with(binding) {
         text.text = item.text.parseAsHtml()
 
-        root.setOnClickListener {
-            callback.onTextClick(item.text)
+        btnNext.setOnClickListener {
+            callback.onHintClick()
         }
+        btnNext.isGone = item.isCorrect
     }
 
     companion object {

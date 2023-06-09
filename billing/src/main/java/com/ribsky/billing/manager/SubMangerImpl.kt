@@ -11,6 +11,7 @@ class SubMangerImpl(
     companion object {
         private const val TAG = "SUB_KEY"
         private const val TAG_SKU = "SUB_KEY_SKU"
+        private const val TAG_DISCOUNT = "SUB_KEY_DISCOUNT"
     }
 
     override fun isSub(): Boolean = sharedPreferences.getBoolean(TAG, false)
@@ -30,5 +31,15 @@ class SubMangerImpl(
         sharedPreferences.edit {
             putString(TAG_SKU, sku?.sku)
         }
+    }
+
+    override fun saveDiscountState(isDiscount: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(TAG_DISCOUNT, isDiscount)
+        }
+    }
+
+    override fun isDiscount(): Boolean {
+        return sharedPreferences.getBoolean(TAG_DISCOUNT, false)
     }
 }

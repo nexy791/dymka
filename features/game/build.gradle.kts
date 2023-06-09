@@ -45,8 +45,9 @@ dependencies {
     implementation(project(":navigation"))
     implementation(project(":analytics"))
 
+    implementation(project(":dialogs"))
+
     implementation(Deps.nearby)
     implementation(Deps.multiWave)
     implementation(Deps.rippleView)
-
 }

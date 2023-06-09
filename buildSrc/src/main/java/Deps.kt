@@ -55,6 +55,12 @@ object Deps {
 
         const val avatarView = "1.0.6"
 
+        const val mlKitSmartReply = "17.0.2"
+        const val mlKitTranslate = "17.0.1"
+        const val openAi = "1.1.5"
+
+        const val loadingDots = "1.3.0"
+
 
     }
 
@@ -73,6 +79,7 @@ object Deps {
     const val firebaseAppCheck = "com.google.firebase:firebase-appcheck-ktx:${Versions.appCheck}"
     const val firebaseAppCheckPlayIntegrity =
         "com.google.firebase:firebase-appcheck-playintegrity:${Versions.appCheck}"
+    const val firebaseRemoteConfig = "com.google.firebase:firebase-config-ktx"
 
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
@@ -143,5 +150,13 @@ object Deps {
     const val rippleView = "com.github.ruzhan123:RippleView:${Versions.rippleView}"
 
     const val avatarView = "io.getstream:avatarview-coil:${Versions.avatarView}"
+
+    const val mlKitSmartReply = "com.google.mlkit:smart-reply:${Versions.mlKitSmartReply}"
+    const val mlKitTranslate = "com.google.mlkit:translate:${Versions.mlKitTranslate}"
+
+    const val openAi = "com.github.mardillu:OpenAI-Client-Android:${Versions.openAi}"
+
+    const val loadingDots = "com.github.razaghimahdi:Android-Loading-Dots:${Versions.loadingDots}"
+
 
 }

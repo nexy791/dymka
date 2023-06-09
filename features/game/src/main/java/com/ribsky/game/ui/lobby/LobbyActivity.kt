@@ -1,26 +1,29 @@
 package com.ribsky.game.ui.lobby
 
-import android.util.Log
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.google.android.gms.nearby.connection.ConnectionResolution
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.utils.ext.ViewExt.Companion.toast
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.game.databinding.ActivityLobbyBinding
+import com.ribsky.game.dialogs.GameConfirmDialog
 import com.ribsky.game.manager.connection.ConnectionManager
 import com.ribsky.navigation.features.GameNavigation
+import com.ribsky.navigation.features.LobbyNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LobbyActivity :
-    BaseActivity<GameNavigation, LobbyViewModel, ActivityLobbyBinding>(ActivityLobbyBinding::inflate) {
+    BaseActivity<LobbyViewModel, ActivityLobbyBinding>(ActivityLobbyBinding::inflate) {
 
     override val viewModel: LobbyViewModel by viewModel()
-    override val navigation: GameNavigation by inject()
 
-    private val state: GameNavigation.LobbyState by lazy {
+    private val gameNavigation: GameNavigation by inject()
+
+    private val state: LobbyNavigation.LobbyState by lazy {
         intent.getParcelableExtra(GameNavigation.KEY_LOBBY_STATE)!!
     }
 
@@ -40,7 +43,7 @@ class LobbyActivity :
             }
 
             override fun onFailure(error: Exception) {
-                finish()
+                showErrorDialog(error.localizedMessage) { finish() }
             }
         }
 
@@ -63,7 +66,7 @@ class LobbyActivity :
             override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
                 when (result.status.statusCode) {
                     ConnectionsStatusCodes.STATUS_OK -> startGame(endpointId)
-                    else -> finish()
+                    else -> showErrorDialog("Не вдалося підключитися до гравця") { finish() }
                 }
             }
 
@@ -71,10 +74,10 @@ class LobbyActivity :
             }
         }
 
-    private fun updateState(state: GameNavigation.LobbyState) {
+    private fun updateState(state: LobbyNavigation.LobbyState) {
         when (state) {
-            GameNavigation.LobbyState.WAITING -> switchToAdverting()
-            GameNavigation.LobbyState.SEARCHING -> switchToDiscovery()
+            LobbyNavigation.LobbyState.WAITING -> switchToAdverting()
+            LobbyNavigation.LobbyState.SEARCHING -> switchToDiscovery()
         }
     }
 
@@ -97,11 +100,24 @@ class LobbyActivity :
     }
 
     private fun showConfirmDialog(code: String, endPointId: String) {
-        navigation.navigateConfirmDialog(code, endPointId)
+        showBottomSheetDialog(
+            GameConfirmDialog.newInstance(
+                code,
+                positiveButtonCallback = {
+                    connectionManager.acceptConnection(endPointId)
+                },
+                negativeButtonCallback = {
+                    connectionManager.rejectConnection(endPointId)
+                }
+            )
+        )
     }
 
     private fun startGame(endPointId: String) {
-        navigation.navigateGame(endPointId, pickedId, state == GameNavigation.LobbyState.WAITING)
+        gameNavigation.navigate(
+            this,
+            GameNavigation.Params(endPointId, pickedId, state == LobbyNavigation.LobbyState.WAITING)
+        )
     }
 
     override fun initView() = with(binding) {
@@ -125,17 +141,6 @@ class LobbyActivity :
     }
 
     override fun initObs() = with(viewModel) {
-        supportFragmentManager.setFragmentResultListener(
-            GameNavigation.RESULT_KEY_RESULT_CONFIRM,
-            this@LobbyActivity
-        ) { _, bundle ->
-            val result =
-                bundle.getParcelable<GameNavigation.ConfirmResult>(GameNavigation.RESULT_KEY_RESULT_CONFIRM_ACTION)!!
-            when (result) {
-                is GameNavigation.ConfirmResult.REJECT -> connectionManager.rejectConnection(result.endPointId)
-                is GameNavigation.ConfirmResult.ACCEPT -> connectionManager.acceptConnection(result.endPointId)
-            }
-        }
     }
 
     override fun clear() {

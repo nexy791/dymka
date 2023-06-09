@@ -1,18 +1,21 @@
 package com.ribsky.shop.ui
 
 import android.content.Intent
+import androidx.core.view.isGone
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
+import com.ribsky.analytics.Analytics
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.ActionExt.Companion.openSubscriptions
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
-import com.ribsky.common.utils.ext.AlertsExt.Companion.showErrorAlert
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.party.Party
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.LoaderNavigation
-import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.ShareStoryNavigation
 import com.ribsky.shop.databinding.ActivityShopBinding
 import com.ribsky.shop.dialogs.sub.SubDialog
 import jp.alessandro.android.iab.Item
@@ -21,11 +24,11 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ShopActivity :
-    BaseActivity<ShopNavigation, ShopViewModel, ActivityShopBinding>(ActivityShopBinding::inflate) {
+    BaseActivity<ShopViewModel, ActivityShopBinding>(ActivityShopBinding::inflate) {
 
     override val viewModel: ShopViewModel by viewModel()
 
-    override val navigation: ShopNavigation by inject()
+    private val shareNavigation: ShareStoryNavigation by inject()
     private val loaderNavigation: LoaderNavigation by inject()
 
     private val itemList = mutableListOf<Item>()
@@ -33,24 +36,48 @@ class ShopActivity :
 
     private val purchaseHandler = PurchaseHandler {
         if (it.isSuccess) {
-            navigation.navigateLoader(loaderNavigation)
+            loaderNavigation.navigate(this)
         } else {
-            showErrorAlert(
-                message = it.exception?.message.toString(),
-                positiveAction = { },
-                negativeAction = { finish() }
-            )
+            showErrorDialog(it.exception?.localizedMessage) { finish() }
         }
     }
     private val billingClientWrapper: BillingClientWrapper by inject()
 
+    private val callback: SubDialog.Callback = object : SubDialog.Callback {
+
+        override fun onResult(product: BillingClientWrapper.Product) {
+            buyItem(product)
+        }
+
+        override fun onDiscount() {
+            shareNavigation.navigate(this@ShopActivity)
+        }
+    }
+
     override fun initView() {
+        Analytics.logEvent(Analytics.Event.PREMIUM_OPEN)
         initBilling()
         initState()
         initToolbar()
+        initShare()
         initSubBtn()
         initRestoreBtn()
         initTexts()
+        initDiscount()
+    }
+
+    private fun initDiscount() = with(binding) {
+        cardDiscount.isGone = !viewModel.isDiscount
+        cardShare.isGone = viewModel.isDiscount
+        if (viewModel.isSub) {
+            cardShare.isGone = true
+            cardDiscount.isGone = true
+        }
+        btnSub23.setOnClickListener {
+            showBottomSheetDialog(
+                SubDialog.newInstance(viewModel.isDiscount, itemList, callback),
+            )
+        }
     }
 
     private fun initBilling() {
@@ -71,17 +98,45 @@ class ShopActivity :
         }
     }
 
+    private fun initShare() = with(binding) {
+        cardShare.setOnClickListener {
+            shareNavigation.navigate(this@ShopActivity)
+        }
+    }
+
     private fun initSubBtn() = with(binding.btnSub) {
         setOnClickListener {
             if (viewModel.isSub) {
+                val weeklyList = listOf(
+                    BillingClientWrapper.Product.WEEKLY,
+                    BillingClientWrapper.Product.WEEKLY_LITE,
+                    BillingClientWrapper.Product.WEEKLY_FULL
+                )
+                val monthlyList = listOf(
+                    BillingClientWrapper.Product.MONTHLY,
+                    BillingClientWrapper.Product.MONTHLY_LITE,
+                    BillingClientWrapper.Product.MONTHLY_FULL
+                )
+                val yearList = listOf(
+                    BillingClientWrapper.Product.YEARLY_LITE,
+                    BillingClientWrapper.Product.YEARLY_FULL
+                )
+                val lifetimeList = listOf(
+                    BillingClientWrapper.Product.LIFETIME,
+                    BillingClientWrapper.Product.LIFETIME_LITE,
+                    BillingClientWrapper.Product.LIFETIME_FULL
+                )
                 when (val sku = viewModel.sku) {
-                    BillingClientWrapper.Product.WEEKLY -> showCancelDialog(sku.sku)
-                    BillingClientWrapper.Product.MONTHLY -> showCancelDialog(sku.sku)
-                    BillingClientWrapper.Product.LIFETIME -> showCancelDialogPermanent()
+                    in weeklyList -> sku?.sku?.let { showCancelDialog(it) } ?: showCancelDialog("")
+                    in monthlyList -> sku?.sku?.let { showCancelDialog(it) } ?: showCancelDialog("")
+                    in yearList -> sku?.sku?.let { showCancelDialog(it) } ?: showCancelDialog("")
+                    in lifetimeList -> showCancelDialogPermanent()
                     else -> showCancelDialog("")
                 }
             } else {
-                SubDialog.newInstance(itemList).show(supportFragmentManager, SubDialog.KEY)
+                showBottomSheetDialog(
+                    SubDialog.newInstance(viewModel.isDiscount, itemList, callback)
+                )
             }
         }
     }
@@ -113,7 +168,7 @@ class ShopActivity :
             positiveButton = "Відновити",
             negativeButton = "Підтримка",
             positiveAction = {
-                navigation.navigateLoader(loaderNavigation)
+                loaderNavigation.navigate(this@ShopActivity)
             },
             negativeAction = {
                 sendEmail(
@@ -153,18 +208,10 @@ class ShopActivity :
         )
     }
 
-    override fun initObs() {
-        supportFragmentManager.setFragmentResultListener(
-            SubDialog.KEY_RESULT,
-            this@ShopActivity
-        ) { _, bundle ->
-            val result: String = bundle.getString(SubDialog.KEY_RESULT)!!
-            BillingClientWrapper.Product.fromSku(result)?.let { buyItem(it) }
-        }
-    }
+    override fun initObs() {}
 
     private fun getPricesSubs() {
-        billingClientWrapper.getPurchasesList { r ->
+        billingClientWrapper.getPurchasesList() { r ->
             r.fold(
                 onSuccess = {
                     itemList.addAll(it)
@@ -172,11 +219,7 @@ class ShopActivity :
                     state?.showContent()
                 },
                 onFailure = {
-                    showErrorAlert(
-                        message = it.message.orEmpty(),
-                        positiveAction = { getPricesSubs() },
-                        negativeAction = { finish() }
-                    )
+                    showErrorDialog(it.localizedMessage) { finish() }
                 }
             )
         }
@@ -187,11 +230,7 @@ class ShopActivity :
             r.fold(
                 onSuccess = {},
                 onFailure = {
-                    showErrorAlert(
-                        message = it.message.orEmpty(),
-                        positiveAction = { buyItem(sku) },
-                        negativeAction = { finish() }
-                    )
+                    showErrorDialog(it.localizedMessage) { finish() }
                 }
             )
         }

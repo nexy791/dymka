@@ -53,7 +53,7 @@
             android:src="@drawable/ic_round_check_circle_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/md_theme_light_primary" />
+            app:tint="@color/md_theme_light_outline" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

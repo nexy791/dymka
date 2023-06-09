@@ -1,23 +1,33 @@
 package com.ribsky.games.ui.games
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.redmadrobot.lib.sd.LoadingStateDelegate
+import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.livedata.Resource
+import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
+import com.ribsky.dialogs.factory.common.ProgressFactory
+import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.games.adapter.games.GamesAdapter
 import com.ribsky.games.databinding.FragmentGamesBinding
 import com.ribsky.games.model.GameModel
 import com.ribsky.games.utils.geo.GeolocationHelper.Companion.isGeolocationEnabled
 import com.ribsky.games.utils.geo.GeolocationHelper.Companion.turnOnGeolocation
-import com.ribsky.navigation.features.*
+import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.LobbyNavigation
+import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.permission.manager.PermissionManager
 import com.ribsky.permission.manager.PermissionManagerImpl
 import com.ribsky.permission.permissions.GamePermissionChecker
@@ -25,22 +35,19 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GamesFragment :
-    BaseFragment<GamesNavigation, GamesViewModel, FragmentGamesBinding>(FragmentGamesBinding::inflate) {
+    BaseFragment<GamesViewModel, FragmentGamesBinding>(FragmentGamesBinding::inflate) {
 
     override val viewModel: GamesViewModel by viewModel()
 
-    override val navigation: GamesNavigation by inject()
-    private val dialogsNavigation: DialogsNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
     private val betaNavigation: BetaNavigation by inject()
-    private val gameNavigation: GameNavigation by inject()
+    private val lobbyNavigation: LobbyNavigation by inject()
 
     private var state: LoadingStateDelegate? = null
     private var adapter: GamesAdapter? = null
 
     private var _permissionManager: PermissionManager? = null
     private val permissionManager: PermissionManager get() = _permissionManager!!
-
 
     private val permissionCallback = object : PermissionManager.PermissionCallback {
         override fun onPermissionGranted() {
@@ -78,10 +85,10 @@ class GamesFragment :
 
     private fun initBtns() = with(binding) {
         btnWaiting.setOnClickListener {
-            startGameSearch(GamesNavigation.LobbyState.WAITING)
+            startGameSearch(LobbyNavigation.LobbyState.WAITING)
         }
         btnSearch.setOnClickListener {
-            startGameSearch(GamesNavigation.LobbyState.SEARCHING)
+            startGameSearch(LobbyNavigation.LobbyState.SEARCHING)
         }
         btnPermission.setOnClickListener {
             processRequestPermission()
@@ -100,22 +107,27 @@ class GamesFragment :
                 if (game.isActive) {
                     adapter?.setPicked(game)
                 } else {
-                    navigation.navigatePromptSub(shopNavigation)
+                    showBottomSheetDialog(SubPromptFactory {
+                        Analytics.logEvent(Analytics.Event.PREMIUM_FROM_GAME)
+                        shopNavigation.navigate(requireContext())
+                    }.createDialog())
                 }
             } else {
-                navigation.navigateProgress(dialogsNavigation)
+                showBottomSheetDialog(ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog())
             }
         } else {
-            navigation.navigateProgress(dialogsNavigation)
+            showBottomSheetDialog(ConnectionErrorFactory({ openWifiSettings() }).createDialog())
         }
     }
 
-    private fun startGameSearch(state: GamesNavigation.LobbyState) {
-        navigation.navigateLobby(
-            gameNavigation,
-            state,
-            viewModel.user!!.image,
-            adapter?.getPicked()!!.id
+    private fun startGameSearch(state: LobbyNavigation.LobbyState) {
+        lobbyNavigation.navigate(
+            requireContext(),
+            LobbyNavigation.LobbyInfo(
+                state,
+                viewModel.user!!.image,
+                adapter?.getPicked()!!.id
+            )
         )
     }
 
@@ -133,7 +145,7 @@ class GamesFragment :
                     updateProfile(result.data!!)
                     getTests()
                 }
-                Resource.Status.ERROR -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
         testStatus.observe(viewLifecycleOwner) { result ->
@@ -143,14 +155,8 @@ class GamesFragment :
                     updateUi()
                     adapter?.setPicked(result.data?.first()!!)
                 }
-                Resource.Status.ERROR -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
-        }
-        setFragmentResultListener(DialogsNavigation.RESULT_KEY_PROGRESS) { _, _ ->
-            navigation.navigateBeta(betaNavigation)
-        }
-        setFragmentResultListener(ShopNavigation.RESULT_KEY_PROMPT_SUB) { _, _ ->
-            navigation.navigateShop(shopNavigation)
         }
     }
 
@@ -175,7 +181,7 @@ class GamesFragment :
 
     private fun updateUi() {
         TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-        if (permissionManager!!.hasPermissions() && isGeolocationEnabled()) {
+        if (permissionManager.hasPermissions() && isGeolocationEnabled()) {
             state?.showContent()
         } else {
             state?.showStub()

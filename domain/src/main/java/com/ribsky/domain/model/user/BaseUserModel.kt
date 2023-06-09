@@ -11,4 +11,8 @@ interface BaseUserModel {
 
     var version: Long
     var hasPrem: Boolean
+
+    var hasDiscount: Boolean
+
+    var botTotalCount: Long
 }

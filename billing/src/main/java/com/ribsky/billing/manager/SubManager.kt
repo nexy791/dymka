@@ -11,4 +11,8 @@ interface SubManager {
     fun getSku(): BillingClientWrapper.Product?
 
     fun updateSku(sku: BillingClientWrapper.Product?)
+
+    fun saveDiscountState(isDiscount: Boolean)
+
+    fun isDiscount(): Boolean
 }

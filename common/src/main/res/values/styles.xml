@@ -6,11 +6,6 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
-    <style name="SquareImage">
-        <item name="cornerSize">10%</item>
-        <item name="cornerFamily">rounded</item>
-    </style>
-
     <style name="ActionTitle" parent="TextAppearance.Material3.ActionBar.Title">
         <item name="fontFamily">@font/e_ukraine_regular</item>
         <item name="android:fontFamily">@font/e_ukraine_regular</item>
@@ -18,11 +13,6 @@
 
     <style name="TextAppearance.BottomBar" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="fontFamily">@font/e_ukraine_regular</item>
-    </style>
-
-    <style name="TextAppearance.Chip" parent="">
-        <item name="android:textSize">14sp</item>
-        <item name="fontFamily">@font/e_ukraine_medium</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
@@ -73,11 +63,6 @@
     </style>
 
 
-    <style name="ShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16sp</item>
-    </style>
-
     <style name="ChipText" parent="TextAppearance.Material3.BodySmall">
         <item name="fontFamily">@font/e_ukraine_medium</item>
         <item name="android:fontFamily">@font/e_ukraine_medium</item>
@@ -118,11 +103,6 @@
     <style name="Widget.Dymka.AppWidget.Container" parent="android:Widget">
         <item name="android:id">@android:id/background</item>
         <item name="android:background">?android:attr/colorBackground</item>
-    </style>
-
-    <style name="Widget.Dymka.AppWidget.InnerView" parent="android:Widget">
-        <item name="android:background">?android:attr/colorBackground</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="MessageImage">

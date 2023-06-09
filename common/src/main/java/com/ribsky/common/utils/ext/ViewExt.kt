@@ -10,7 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.ribsky.common.ui.snackbar.CustomSnackbar
 
@@ -47,6 +50,8 @@ class ViewExt {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+
+        fun Fragment.hideKeyboard(view: View) = requireContext().hideKeyboard(view)
 
         fun Context.showKeyboard(view: View) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -96,5 +101,13 @@ class ViewExt {
 
         fun String.formatUserName(isPrem: Boolean): String =
             if (isPrem) "$this \uD83C\uDDFA\uD83C\uDDE6" else this
+
+        fun Fragment.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
+            dialog.show(childFragmentManager, dialog.tag)
+        }
+
+        fun AppCompatActivity.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
+            dialog.show(supportFragmentManager, dialog.tag)
+        }
     }
 }

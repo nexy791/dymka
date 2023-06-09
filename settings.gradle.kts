@@ -21,14 +21,12 @@ include(
     ":app",
     ":domain",
     ":data",
-    ":core",
     ":common",
     ":features",
     ":features:settings",
     ":features:account",
     ":features:loader",
     ":features:auth",
-    ":features:main",
     ":features:share",
     ":features:beta",
     ":features:shop",
@@ -42,8 +40,10 @@ include(
 )
 
 include(":navigation")
-include(":features:dialogs")
+include(":dialogs")
 include(":features:lesson")
 include(":features:test")
 include(":permission")
 include(":features:game")
+include(":widget")
+include(":features:bot")

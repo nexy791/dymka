@@ -5,7 +5,6 @@ import com.ribsky.domain.repository.SettingsRepository
 interface GetLastTimeUseCase {
 
     fun invoke(): Long
-
 }
 
 class GetLastTimeUseCaseImpl(
@@ -13,5 +12,4 @@ class GetLastTimeUseCaseImpl(
 ) : GetLastTimeUseCase {
 
     override fun invoke(): Long = settingsRepository.lastTimeUpdate
-
 }

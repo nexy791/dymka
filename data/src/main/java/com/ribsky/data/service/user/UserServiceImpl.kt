@@ -1,6 +1,7 @@
 package com.ribsky.data.service.user
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import com.google.firebase.database.FirebaseDatabase
 import com.ribsky.billing.manager.SubManager
@@ -9,6 +10,7 @@ import com.ribsky.data.model.UserApiModel
 import com.ribsky.data.utils.moshi.Adapters
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.domain.repository.ActiveRepository
+import com.ribsky.domain.repository.BotRepository
 import com.ribsky.domain.repository.SaveRepository
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -20,6 +22,7 @@ class UserServiceImpl(
     private val saveRepository: SaveRepository,
     private val subManager: SubManager,
     private val internetManager: InternetManager,
+    private var botRepository: BotRepository,
 ) : UserService {
 
     override suspend fun getUserOnline(token: String?): Result<UserApiModel?> = runCatching {
@@ -41,6 +44,7 @@ class UserServiceImpl(
             lessons = mLessons.transformToHashMapString()
             saved = saveRepository.getWordsList().transformToHashMapString()
             lessonsCount = mLessons.size
+            botTotalCount = botRepository.getTotalAnswers().toLong()
         }
     }.getOrNull()
 
@@ -48,10 +52,12 @@ class UserServiceImpl(
         runCatching {
             if (internetManager.isOnline()) {
                 database.reference.root.child("users").child(token!!)
-                    .setValue(
-                        user.apply {
+                    .updateChildren(
+                        UserApiModel.UserApiModelRequest(user).apply {
+                            hasPrem = subManager.isSub()
                             version += 1
-                        }
+                            botTotalCount = botRepository.getTotalAnswers().toLong()
+                        }.toMap()
                     ).await()
                 setUserToCache(user.apply { version += 1 })
             } else {
@@ -68,6 +74,11 @@ class UserServiceImpl(
             )
             putString(KEY_USER, json)
         }
+
+        botRepository.setDefaultTotalAnswers(user.botTotalCount.toInt())
+
+        Log.e("TAG", "setUserToCache: ${user.botTotalCount.toInt()}")
+
         activeRepository.setTestScore(user.score)
         activeRepository.setActiveLessons(user.lessons.transformToListString())
         saveRepository.setWordsList(user.saved.transformToListString())
@@ -75,19 +86,15 @@ class UserServiceImpl(
 
     override suspend fun sync(token: String?): Result<BaseUserModel> = runCatching {
         val user = getUserFromCache()!!
+        Log.e("TAG", "sync: ${user.botTotalCount}")
         if (internetManager.isOnline()) {
             val userOnline = getUserOnline(token!!).getOrNull()!!
+            subManager.saveDiscountState(userOnline.hasDiscount)
             return@runCatching if (userOnline.version > user.version) {
                 setUserToCache(userOnline)
                 userOnline
             } else {
-                database.reference.root.child("users").child(token)
-                    .setValue(
-                        user.apply {
-                            version += 1
-                            hasPrem = subManager.isSub()
-                        }
-                    ).await()
+                setUserOnline(token, user)
                 setUserToCache(user.apply { version += 1 })
                 user.apply { version += 1 }
             }

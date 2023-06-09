@@ -9,5 +9,4 @@ interface ImageMapper : Mapper<BaseContentModel.BaseContentType.Image, ChatModel
 class ImageMapperImpl : ImageMapper {
     override fun map(input: BaseContentModel.BaseContentType.Image): ChatModel.Image =
         ChatModel.Image(input.url)
-
 }

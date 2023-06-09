@@ -2,34 +2,40 @@ package com.ribsky.lessons.ui
 
 import android.app.Activity.RESULT_OK
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
+import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
+import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
+import com.ribsky.dialogs.factory.common.ProgressFactory
+import com.ribsky.dialogs.factory.common.SuccessFactory
+import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
+import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.lessons.adapter.lessons.header.LessonsHeaderAdapter
 import com.ribsky.lessons.adapter.lessons.item.LessonsAdapter
 import com.ribsky.lessons.databinding.FragmentLessonsBinding
+import com.ribsky.lessons.dialogs.info.LessonInfoDialog
 import com.ribsky.navigation.features.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LessonsFragment :
-    BaseFragment<LessonsNavigation, LessonsViewModel, FragmentLessonsBinding>(
+    BaseFragment<LessonsViewModel, FragmentLessonsBinding>(
         FragmentLessonsBinding::inflate
     ) {
     override val viewModel: LessonsViewModel by viewModel()
 
-    override val navigation: LessonsNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
-    private val dialogsNavigation: DialogsNavigation by inject()
     private val lessonNavigation: LessonNavigation by inject()
     private val betaNavigation: BetaNavigation by inject()
 
@@ -45,10 +51,10 @@ class LessonsFragment :
     private val lessonListener =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                val id = it.data?.getStringExtra(LessonNavigation.RESULT_KEY_LESSON_ID)!!
+                val id = it.data?.getStringExtra(LessonNavigation.KEY_LESSON_RESULT)!!
                 viewModel.updateLesson(id)
                 viewModel.getLessons(paragraphId)
-                navigation.navigateSuccess()
+                showBottomSheetDialog(SuccessFactory().createDialog())
             }
         }
 
@@ -67,7 +73,7 @@ class LessonsFragment :
 
     private fun initAdapter() {
         adapterHeader = LessonsHeaderAdapter {
-            navigation.navController?.navigateUp()
+            findNavController().navigateUp()
         }
         adapterItem = LessonsAdapter { model ->
             processLessonClick(model)
@@ -86,7 +92,7 @@ class LessonsFragment :
             when (result.status) {
                 Resource.Status.LOADING -> showLoading()
                 Resource.Status.SUCCESS -> adapterItem?.submitList(result.data)
-                Resource.Status.ERROR -> {}
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
         paragraphStatus.observe(viewLifecycleOwner) { result ->
@@ -98,22 +104,8 @@ class LessonsFragment :
                         state?.showContent()
                     }
                 }
-                Resource.Status.ERROR -> {
-                }
+                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
-        }
-        setFragmentResultListener(LessonsNavigation.RESULT_KEY_LESSON_INFO) { _, bundle ->
-            val lessonId = bundle.getString(LessonsNavigation.RESULT_KEY_LESSON_INFO_ID)!!
-            navigation.navigateLesson(lessonNavigation, lessonId, lessonListener)
-        }
-        setFragmentResultListener(ShopNavigation.RESULT_KEY_PROMPT_SUB) { _, _ ->
-            navigation.navigateShop(shopNavigation)
-        }
-        setFragmentResultListener(DialogsNavigation.RESULT_KEY_PROGRESS) { _, _ ->
-            navigation.navigateBeta(betaNavigation)
-        }
-        setFragmentResultListener(DialogsNavigation.RESULT_KEY_CONNECTION) { _, _ ->
-            openWifiSettings()
         }
     }
 
@@ -124,21 +116,25 @@ class LessonsFragment :
 
     private fun processLessonClick(model: BaseLessonModel) {
         if (internetManager.isOnline() || viewModel.isFileExists(model.content)) {
-            if (!model.isInProgress()) {
-                if (model.hasPrem) {
-                    if (viewModel.isSub) {
-                        navigation.navigateLessonInfoDialog(model.id)
-                    } else {
-                        navigation.navigatePromptSub(shopNavigation)
-                    }
-                } else {
-                    navigation.navigateLessonInfoDialog(model.id)
-                }
+            val dialog = if (model.isInProgress()) {
+                ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog()
+            } else if (model.hasPrem && !viewModel.isSub) {
+                SubPromptFactory {
+                    Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LESSON)
+                    shopNavigation.navigate(requireContext())
+                }.createDialog()
             } else {
-                navigation.navigateProgress(dialogsNavigation)
+                LessonInfoDialog.newInstance(model.id) {
+                    lessonNavigation.navigate(
+                        requireContext(),
+                        LessonNavigation.Params(it),
+                        lessonListener
+                    )
+                }
             }
+            showBottomSheetDialog(dialog)
         } else {
-            navigation.navigateInternetError(dialogsNavigation)
+            showBottomSheetDialog(ConnectionErrorFactory({ openWifiSettings() }).createDialog())
         }
     }
 

@@ -10,6 +10,10 @@ import com.ribsky.game.manager.connection.ConnectionManagerImpl
 import com.ribsky.game.ui.game.GameViewModel
 import com.ribsky.game.ui.lobby.LobbyViewModel
 import com.ribsky.games.ui.games.GamesViewModel
+import com.ribsky.intro.ui.IntroViewModel
+import com.ribsky.intro.ui.fragments.BaseViewModel
+import com.ribsky.intro.ui.fragments.goal.IntroGoalViewModel
+import com.ribsky.intro.ui.fragments.level.IntroLevelViewModel
 import com.ribsky.lesson.ui.LessonViewModel
 import com.ribsky.lesson.utils.checker.factory.CheckerFactory
 import com.ribsky.lesson.utils.checker.factory.CheckerFactoryImpl
@@ -17,6 +21,7 @@ import com.ribsky.lessons.dialogs.info.LessonInfoViewModel
 import com.ribsky.lessons.ui.LessonsViewModel
 import com.ribsky.loader.ui.LoaderViewModel
 import com.ribsky.settings.ui.settings.SettingsViewModel
+import com.ribsky.share.ui.share.ShareStreakViewModel
 import com.ribsky.share.ui.story.ShareStoryViewModel
 import com.ribsky.share.ui.word.ShareWordViewModel
 import com.ribsky.shop.ui.ShopViewModel
@@ -24,6 +29,7 @@ import com.ribsky.test.ui.TestDetailsViewModel
 import com.ribsky.tests.dialogs.info.TestInfoViewModel
 import com.ribsky.tests.ui.TestsViewModel
 import com.ribsky.top.ui.lessons.TopLessonsViewModel
+import com.ribsky.top.ui.streak.TopStreakViewModel
 import com.ribsky.top.ui.tests.TopTestsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -35,7 +41,9 @@ val uiDi = module {
             getUserUseCase = get(),
             subManager = get(),
             getRateDialogStatusUseCase = get(),
-            dynamicModule = get()
+            dynamicModule = get(),
+            getDiscountUseCase = get(),
+            isNeedToFillBioUseCase = get()
         )
     }
 
@@ -52,6 +60,10 @@ val uiDi = module {
             getTestScoreUseCase = get(),
             getActiveLessonsUseCase = get(),
             lessonInteractor = get(),
+            getStreakUseCase = get(),
+            isTodayStreakUseCase = get(),
+            getGoalBioUseCase = get(),
+            getLevelBioUseCase = get()
         )
     }
 
@@ -60,6 +72,8 @@ val uiDi = module {
             getBestWordUseCase = get(),
             subManager = get(),
             paragraphInteractor = get(),
+            isTodayStreakUseCase = get(),
+            getCurrentStreakUseCase = get(),
         )
     }
 
@@ -84,7 +98,9 @@ val uiDi = module {
             addActiveLessonUseCase = get(),
             isContentExistsUseCase = get(),
             lessonInteractor = get(),
-            paragraphInteractor = get()
+            paragraphInteractor = get(),
+            setTodayStreakUseCase = get(),
+            isTodayStreakUseCase = get()
         )
     }
 
@@ -107,6 +123,8 @@ val uiDi = module {
     viewModel {
         ShopViewModel(
             subManager = get(),
+            getDiscountUseCase = get(),
+            getUserUseCase = get()
         )
     }
 
@@ -150,7 +168,9 @@ val uiDi = module {
     viewModel {
         ProfileViewModel(
             topInteractor = get(),
-            lessonInteractor = get()
+            lessonInteractor = get(),
+            getLevelByIdUseCase = get(),
+            getGoalByIdUseCase = get(),
         )
     }
 
@@ -164,7 +184,9 @@ val uiDi = module {
         TestsViewModel(
             subManager = get(),
             isContentExistsUseCase = get(),
-            testInteractor = get()
+            testInteractor = get(),
+            setTodayStreakUseCase = get(),
+            isTodayStreakUseCase = get()
         )
     }
 
@@ -191,6 +213,40 @@ val uiDi = module {
 
     viewModel {
         LobbyViewModel()
+    }
+
+    viewModel {
+        BaseViewModel()
+    }
+
+    viewModel {
+        IntroViewModel()
+    }
+
+    viewModel {
+        TopStreakViewModel(
+            getUserUseCase = get(),
+            getLastTimeUseCase = get(),
+            topInteractor = get()
+        )
+    }
+
+    viewModel {
+        ShareStreakViewModel()
+    }
+
+    viewModel {
+        IntroGoalViewModel(
+            setGoalBioUseCase = get(),
+            getGoalsBioUseCase = get()
+        )
+    }
+
+    viewModel {
+        IntroLevelViewModel(
+            setLevelBioUseCase = get(),
+            getLevelsBioUseCase = get()
+        )
     }
 
     single<ConnectionManager> {

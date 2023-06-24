@@ -1,6 +1,7 @@
 package com.ribsky.settings.ui.settings
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.ActionExt.Companion.openAppPage
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
@@ -55,7 +56,10 @@ class SettingsActivity :
     private fun processClick(type: Settings.Type) {
         when (type) {
             Settings.Type.SHARE -> shareApp()
-            Settings.Type.SUPPORT -> shopNavigation.navigate(this@SettingsActivity)
+            Settings.Type.SUPPORT -> {
+                Analytics.logEvent(Analytics.Event.PREMIUM_FROM_SETTINGS)
+                shopNavigation.navigate(this@SettingsActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_SETTINGS))
+            }
             Settings.Type.CONTACT -> contact()
             Settings.Type.RATE -> openAppPage()
             Settings.Type.UPDATE -> openAppPage()

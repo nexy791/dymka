@@ -7,7 +7,9 @@ import com.ribsky.shop.ui.ShopActivity
 
 class ShopNavigationImpl : ShopNavigation {
 
-    override fun navigate(navigation: Context) {
-        navigation.startActivity(Intent(navigation, ShopActivity::class.java))
+    override fun navigate(navigation: Context, params: ShopNavigation.Params) {
+        navigation.startActivity(Intent(navigation, ShopActivity::class.java).apply {
+            putExtra(ShopNavigation.PARAM, params)
+        })
     }
 }

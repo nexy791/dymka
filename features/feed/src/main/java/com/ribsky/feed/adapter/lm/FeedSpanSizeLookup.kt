@@ -8,6 +8,7 @@ class FeedSpanSizeLookup : GridLayoutManager.SpanSizeLookup() {
         return when (position) {
             0 -> 2
             1 -> 2
+            2 -> 2
             else -> 1
         }
     }

@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":billing"))
     implementation(project(":domain"))
 
+    implementation(Deps.typeWriter)
     implementation(Deps.splashScreen)
     kapt(Deps.roomCompiler)
 }

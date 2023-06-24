@@ -4,7 +4,8 @@ interface AuthHelper {
 
     enum class AuthType {
         ONE_TAP,
-        SIGN_IN
+        SIGN_IN,
+        FACEBOOK
     }
 
     interface AuthCallback {

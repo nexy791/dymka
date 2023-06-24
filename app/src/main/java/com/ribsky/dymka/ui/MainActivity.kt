@@ -12,7 +12,7 @@ import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
-import com.ribsky.common.utils.ext.ViewExt.Companion.snackbar
+import com.ribsky.common.utils.party.ProfileBalloonFactory
 import com.ribsky.common.utils.update.AppUpdate
 import com.ribsky.dialogs.factory.dynamic.SuccessInstallFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
@@ -21,11 +21,8 @@ import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.dymka.R
 import com.ribsky.dymka.databinding.ActivityMainBinding
 import com.ribsky.dymka.dialogs.LoadingDialog
-import com.ribsky.dymka.utils.HintHelper
-import com.ribsky.navigation.features.AccountNavigation
-import com.ribsky.navigation.features.AuthNavigation
-import com.ribsky.navigation.features.BetaNavigation
-import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.*
+import com.skydoves.balloon.balloon
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -37,6 +34,7 @@ class MainActivity :
     private val betaNavigation: BetaNavigation by inject()
     private val authNavigation: AuthNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
+    private val introNavigation: IntroNavigation by inject()
 
     private val accountNavigation: AccountNavigation by inject()
 
@@ -52,13 +50,16 @@ class MainActivity :
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
     }
 
+    private val balloon by balloon<ProfileBalloonFactory>()
+
+
     override fun initView() {
         initToolbar()
         initInAppUpdate()
         initNavigation()
         initCallback()
-        initHint()
         checkRateDialog()
+        checkBioDialog()
     }
 
     private fun initToolbar() = with(binding) {
@@ -96,7 +97,7 @@ class MainActivity :
 
         btnPremium.setOnClickListener {
             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MENU)
-            shopNavigation.navigate(this@MainActivity)
+            shopNavigation.navigate(this@MainActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_FROM_MENU))
         }
     }
 
@@ -106,15 +107,16 @@ class MainActivity :
         }
     }
 
-    private fun initHint() = with(binding) {
-        snackbar(HintHelper.randomHint).apply {
-            anchorView = bottomBar
-            show()
+    private fun checkBioDialog() {
+        if (viewModel.isNeedToFillBio) {
+            introNavigation.navigate(this)
         }
     }
 
+
     override fun initObs() = with(viewModel) {
         getProfile()
+        getDiscount()
         userStatus.observe(this@MainActivity) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateUi(result.data!!)
@@ -125,6 +127,16 @@ class MainActivity :
                     }
                 }
                 Resource.Status.LOADING -> {}
+            }
+        }
+        discountStatus.observe(this@MainActivity) { result ->
+            when (result.status) {
+                Resource.Status.SUCCESS -> result.data?.let {
+                    if(!viewModel.isSub) {
+                        balloon.showAlignBottom(binding.btnPremium, yOff = 8)
+                    }
+                }
+                else -> {}
             }
         }
         dynamicModuleStatus.observe(this@MainActivity) { result ->

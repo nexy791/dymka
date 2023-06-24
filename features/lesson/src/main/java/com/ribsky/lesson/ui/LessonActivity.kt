@@ -270,7 +270,7 @@ class LessonActivity :
             showBottomSheetDialog(
                 SubPromptFactory {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_HINT)
-                    shopNavigation.navigate(this@LessonActivity)
+                    shopNavigation.navigate(this@LessonActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_HINT))
                 }.createDialog()
             )
         }

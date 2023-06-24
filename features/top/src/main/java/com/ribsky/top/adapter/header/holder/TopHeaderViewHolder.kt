@@ -51,6 +51,10 @@ class TopHeaderViewHolder(private val binding: ItemProfileBinding) :
                     setIconResource(commonDrawable.ic_outline_collections_bookmark_24)
                 }
             }
+            ViewType.STREAK ->btnPlace.apply {
+                text = item.streak.toString()
+                setIconResource(commonDrawable.ic_round_local_fire_department_24)
+            }
         }
     }
 

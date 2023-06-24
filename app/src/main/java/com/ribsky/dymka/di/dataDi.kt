@@ -2,6 +2,8 @@ package com.ribsky.dymka.di
 
 import com.ribsky.data.repository.*
 import com.ribsky.data.repository.test.TestRepositoryImpl
+import com.ribsky.data.service.config.ConfigService
+import com.ribsky.data.service.config.ConfigServiceImpl
 import com.ribsky.data.service.file.FileService
 import com.ribsky.data.service.file.FileServiceImpl
 import com.ribsky.data.service.offline.time.TimeService
@@ -39,7 +41,9 @@ val dataDi = module {
             saveRepository = get(),
             subManager = get(),
             internetManager = get(),
-            botRepository = get()
+            botRepository = get(),
+            streakRepository = get(),
+            bioRepository = get(),
         )
     }
 
@@ -202,6 +206,32 @@ val dataDi = module {
         BotRepositoryImpl(
             sharedPreferences = get(),
             subManager = get()
+        )
+    }
+
+    single<ConfigRepository> {
+        ConfigRepositoryImpl(
+            configService = get()
+        )
+    }
+
+    single<ConfigService> {
+        ConfigServiceImpl(
+            remoteConfig = get()
+        )
+    }
+
+    single<StreakRepository> {
+        StreakRepositoryImpl(
+            sharedPreferences = get()
+        )
+    }
+
+    single<BioRepository> {
+        BioRepositoryImpl(
+            sharedPreferences = get(),
+            goalMapper = get(),
+            levelMapper = get()
         )
     }
 }

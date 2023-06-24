@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
 import com.ribsky.common.livedata.Resource
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
+import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
+import com.ribsky.domain.usecase.streak.SetTodayStreakUseCase
 import com.ribsky.domain.usecase.test.TestInteractor
 import com.ribsky.tests.model.TestModel
 import kotlinx.coroutines.launch
@@ -15,6 +17,8 @@ class TestsViewModel(
     private val testInteractor: TestInteractor,
     private val subManager: SubManager,
     private val isContentExistsUseCase: IsContentExistsUseCase,
+    private val setTodayStreakUseCase: SetTodayStreakUseCase,
+    private val isTodayStreakUseCase: IsTodayStreakUseCase
 ) : ViewModel() {
 
     private val _testStatus: MutableLiveData<Resource<List<TestModel>>> =
@@ -22,6 +26,11 @@ class TestsViewModel(
     val testStatus: LiveData<Resource<List<TestModel>>> get() = _testStatus
 
     private val isSub get() = subManager.isSub()
+    val isTodayStreak get() = isTodayStreakUseCase.invoke()
+
+    fun updateTodayStreak() {
+        setTodayStreakUseCase.invoke()
+    }
 
     init {
         getTests()

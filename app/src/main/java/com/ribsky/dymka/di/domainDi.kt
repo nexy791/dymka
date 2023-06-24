@@ -10,9 +10,14 @@ import com.ribsky.domain.usecase.auth.SignOutUseCase
 import com.ribsky.domain.usecase.auth.SignOutUseCaseImpl
 import com.ribsky.domain.usecase.best.GetBestWordUseCase
 import com.ribsky.domain.usecase.best.GetBestWordUseCaseImpl
+import com.ribsky.domain.usecase.bio.*
 import com.ribsky.domain.usecase.bot.*
 import com.ribsky.domain.usecase.clear.ClearDataUseCase
 import com.ribsky.domain.usecase.clear.ClearDataUseCaseImpl
+import com.ribsky.domain.usecase.config.GetBotTokenUseCase
+import com.ribsky.domain.usecase.config.GetBotTokenUseCaseImpl
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
+import com.ribsky.domain.usecase.config.GetDiscountUseCaseImpl
 import com.ribsky.domain.usecase.data.LoadDataUseCase
 import com.ribsky.domain.usecase.data.LoadDataUseCaseImpl
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
@@ -31,6 +36,7 @@ import com.ribsky.domain.usecase.score.GetTestScoreUseCase
 import com.ribsky.domain.usecase.score.GetTestScoreUseCaseImpl
 import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCase
 import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCaseImpl
+import com.ribsky.domain.usecase.streak.*
 import com.ribsky.domain.usecase.test.GetTestContentUseCase
 import com.ribsky.domain.usecase.test.GetTestContentUseCaseImpl
 import com.ribsky.domain.usecase.test.TestInteractor
@@ -191,4 +197,90 @@ val domainUi = module {
             botRepository = get()
         )
     }
+
+    factory<GetDiscountUseCase> {
+        GetDiscountUseCaseImpl(
+            configRepository = get()
+        )
+    }
+
+    factory<GetBotTokenUseCase> {
+        GetBotTokenUseCaseImpl(
+            configRepository = get()
+        )
+    }
+
+    factory<IsTodayStreakUseCase> {
+        IsTodayStreakUseCaseImpl(
+            streakRepository = get()
+        )
+    }
+
+    factory<GetCurrentStreakUseCase> {
+        GetCurrentStreakUseCaseImpl(
+            streakRepository = get()
+        )
+    }
+
+    factory<SetTodayStreakUseCase> {
+        SetTodayStreakUseCaseImpl(
+            streakRepository = get()
+        )
+    }
+
+    factory<SetLevelBioUseCase> {
+        SetLevelBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<SetGoalBioUseCase> {
+        SetGoalBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<GetLevelsBioUseCase> {
+        GetLevelsBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<GetGoalsBioUseCase> {
+        GetGoalsBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<IsNeedToFillBioUseCase> {
+        IsNeedToFillBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<GetCurrentLevelBioUseCase> {
+        GetCurrentLevelBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<GetCurrentGoalBioUseCase> {
+        GetCurrentGoalBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<GetGoalByIdUseCase> {
+        GetGoalByIdUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<GetLevelByIdUseCase> {
+        GetLevelByIdUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+
 }

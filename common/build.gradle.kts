@@ -57,6 +57,8 @@ dependencies {
     api(Deps.firebaseAppCheck)
     api(Deps.firebaseAppCheckPlayIntegrity)
     api(Deps.firebaseRemoteConfig)
+    api(Deps.auth)
+
 
     // Lifecycle
     api(Deps.lifecycleRuntimeKtx)
@@ -101,17 +103,17 @@ dependencies {
     // CircleProgress
     api(Deps.progressCircle)
 
-    api(Deps.auth)
-
     // App Update
     implementation(Deps.appUpdate)
     implementation(Deps.appUpdateKtx)
 
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(Deps.splashScreen)
 
-    api("com.google.android.play:feature-delivery:2.1.0")
-    api("com.google.mlkit:common:18.8.0")
-    api("com.google.mlkit:playstore-dynamic-feature-support:16.0.0-beta2") {
+    api(Deps.delivery)
+    api(Deps.mlKit)
+    api(Deps.deliveryDynamic) {
         exclude(group = "com.google.android.play", module = "core")
     }
+
+    api(Deps.balloon)
 }

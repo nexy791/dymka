@@ -15,4 +15,10 @@ interface BaseUserModel {
     var hasDiscount: Boolean
 
     var botTotalCount: Long
+
+    var streak: Int
+    var streakLastDay: Long
+
+    var bioLevel: Int
+    var bioGoal: Int
 }

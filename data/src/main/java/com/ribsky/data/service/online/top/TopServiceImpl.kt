@@ -1,5 +1,6 @@
 package com.ribsky.data.service.online.top
 
+import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
 import com.ribsky.data.model.TopApiModel
@@ -21,6 +22,11 @@ class TopServiceImpl(
                 db.reference.root.child("users").orderByChild("lessonsCount").limitToLast(50).get()
                     .await()
                     .getValue(type)!!.values.map { it.copy(type = TopApiModel.Type.LESSON) }
+            )
+            users.addAll(
+                db.reference.root.child("users").orderByChild("streak").limitToLast(50).get()
+                    .await()
+                    .getValue(type)!!.values.map { it.copy(type = TopApiModel.Type.STREAK) }
             )
             users
         }

@@ -11,17 +11,21 @@ data class TopModel(
 
     enum class ViewType(val type: Int) {
         LESSON(0),
-        TEST(1)
+        TEST(1),
+        STREAK(2)
     }
 
     constructor(baseUserModel: BaseUserModel, position: Int, type: ViewType) : this(
         com.ribsky.domain.model.top.TopModel(
-            baseUserModel.name,
-            baseUserModel.image,
-            baseUserModel.score,
-            baseUserModel.lessonsCount,
-            baseUserModel.hasPrem,
-            0
+            name = baseUserModel.name,
+            image = baseUserModel.image,
+            score = baseUserModel.score,
+            lessonsCount = baseUserModel.lessonsCount,
+            hasPrem = baseUserModel.hasPrem,
+            id = 0,
+            streak = baseUserModel.streak,
+            bioLevel = baseUserModel.bioLevel,
+            bioGoal = baseUserModel.bioGoal,
         ),
         position,
         type

@@ -41,6 +41,10 @@ class TestDetailsViewModel(
         MutableLiveData()
     val userStatus: LiveData<Resource<BaseUserModel>> get() = _userStatus
 
+    private var score = 0
+    fun getScore(): Int = score
+
+
     fun getTestInfo(id: String) {
         viewModelScope.launch {
             _testStatus.value = Resource.loading()
@@ -138,6 +142,7 @@ class TestDetailsViewModel(
     fun addScore() {
         viewModelScope.launch {
             addTestScoreUseCase.invoke(1)
+            score++
         }
     }
 

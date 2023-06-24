@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feature_name" translatable="false">Кіт <думка></думка></string>
+    <string name="feature_name" translatable="false">Кіт думка</string>
+    <string name="facebook_app_id" translatable="false">674130541213851</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb674130541213851</string>
+    <string name="facebook_client_token" translatable="false">9d45e9786b923a6ef7a5fa0f4462a835</string>
 </resources>

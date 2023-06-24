@@ -102,6 +102,9 @@ class ViewExt {
         fun String.formatUserName(isPrem: Boolean): String =
             if (isPrem) "$this \uD83C\uDDFA\uD83C\uDDE6" else this
 
+        fun Int.formatDays(): String =
+            if (this == 1) "$this день" else "$this днів"
+
         fun Fragment.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
             dialog.show(childFragmentManager, dialog.tag)
         }

@@ -4,10 +4,12 @@ import android.content.Intent
 import androidx.core.view.isGone
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import coil.load
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseActivity
+import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.openSubscriptions
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
@@ -16,6 +18,7 @@ import com.ribsky.common.utils.party.Party
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.LoaderNavigation
 import com.ribsky.navigation.features.ShareStoryNavigation
+import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.shop.databinding.ActivityShopBinding
 import com.ribsky.shop.dialogs.sub.SubDialog
 import jp.alessandro.android.iab.Item
@@ -31,11 +34,16 @@ class ShopActivity :
     private val shareNavigation: ShareStoryNavigation by inject()
     private val loaderNavigation: LoaderNavigation by inject()
 
+    private val analyticEventFrom: Analytics.Event by lazy {
+        intent.getParcelableExtra(ShopNavigation.PARAM) ?: Analytics.Event.PREMIUM_BUY_FROM_UNKNOWN
+    }
+
     private val itemList = mutableListOf<Item>()
     private var state: LoadingStateDelegate? = null
 
     private val purchaseHandler = PurchaseHandler {
         if (it.isSuccess) {
+            Analytics.logEvent(analyticEventFrom)
             loaderNavigation.navigate(this)
         } else {
             showErrorDialog(it.exception?.localizedMessage) { finish() }
@@ -56,14 +64,23 @@ class ShopActivity :
 
     override fun initView() {
         Analytics.logEvent(Analytics.Event.PREMIUM_OPEN)
-        initBilling()
         initState()
         initToolbar()
         initShare()
         initSubBtn()
         initRestoreBtn()
         initTexts()
-        initDiscount()
+        initHeartAnimation()
+    }
+
+    private fun initHeartAnimation() {
+        binding.ivHeart.apply {
+            animate().scaleX(1.2f).scaleY(1.2f).setDuration(1000).withEndAction {
+                animate().scaleX(1f).scaleY(1f).setDuration(1000).withEndAction {
+                    initHeartAnimation()
+                }
+            }
+        }
     }
 
     private fun initDiscount() = with(binding) {
@@ -78,6 +95,11 @@ class ShopActivity :
                 SubDialog.newInstance(viewModel.isDiscount, itemList, callback),
             )
         }
+        if (viewModel.isDiscount) {
+            tvDescPrice2.text =
+                "Вітаємо! Ти маєш знижку на підписку ${viewModel.discountStatus.value!!.data!!}"
+        }
+
     }
 
     private fun initBilling() {
@@ -208,7 +230,40 @@ class ShopActivity :
         )
     }
 
-    override fun initObs() {}
+    override fun initObs() = with(viewModel) {
+        getUser()
+        discountStatus.observe(this@ShopActivity) {
+            when (it.status) {
+                Resource.Status.LOADING -> {}
+                Resource.Status.SUCCESS -> {
+                    initBilling()
+                    initDiscount()
+                }
+                Resource.Status.ERROR -> {
+                    initBilling()
+                    initDiscount()
+                }
+            }
+        }
+        userStatus.observe(this@ShopActivity) {
+            when (it.status) {
+                Resource.Status.LOADING -> {}
+                Resource.Status.SUCCESS -> {
+                    updateProfileImage(it.data?.image)
+                    getIsFreeDiscountAvailable()
+                }
+                Resource.Status.ERROR -> {
+                    showErrorDialog(it.exception?.localizedMessage) { finish() }
+                }
+            }
+        }
+    }
+
+    private fun updateProfileImage(image: String?) {
+        image?.let {
+            binding.imageAvatar.load(it)
+        }
+    }
 
     private fun getPricesSubs() {
         billingClientWrapper.getPurchasesList() { r ->

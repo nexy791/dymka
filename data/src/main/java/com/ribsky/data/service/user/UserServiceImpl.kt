@@ -1,7 +1,6 @@
 package com.ribsky.data.service.user
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.core.content.edit
 import com.google.firebase.database.FirebaseDatabase
 import com.ribsky.billing.manager.SubManager
@@ -9,9 +8,7 @@ import com.ribsky.common.utils.internet.InternetManager
 import com.ribsky.data.model.UserApiModel
 import com.ribsky.data.utils.moshi.Adapters
 import com.ribsky.domain.model.user.BaseUserModel
-import com.ribsky.domain.repository.ActiveRepository
-import com.ribsky.domain.repository.BotRepository
-import com.ribsky.domain.repository.SaveRepository
+import com.ribsky.domain.repository.*
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
@@ -23,6 +20,8 @@ class UserServiceImpl(
     private val subManager: SubManager,
     private val internetManager: InternetManager,
     private var botRepository: BotRepository,
+    private val streakRepository: StreakRepository,
+    private val bioRepository: BioRepository,
 ) : UserService {
 
     override suspend fun getUserOnline(token: String?): Result<UserApiModel?> = runCatching {
@@ -45,6 +44,10 @@ class UserServiceImpl(
             saved = saveRepository.getWordsList().transformToHashMapString()
             lessonsCount = mLessons.size
             botTotalCount = botRepository.getTotalAnswers().toLong()
+            streak = streakRepository.getCurrentStreak()
+            streakLastDay = streakRepository.getStreakLastDay()
+            bioLevel = bioRepository.getLevel() ?: -1
+            bioGoal = bioRepository.getGoal() ?: -1
         }
     }.getOrNull()
 
@@ -57,6 +60,10 @@ class UserServiceImpl(
                             hasPrem = subManager.isSub()
                             version += 1
                             botTotalCount = botRepository.getTotalAnswers().toLong()
+                            streak = streakRepository.getCurrentStreak()
+                            streakLastDay = streakRepository.getStreakLastDay()
+                            bioLevel = bioRepository.getLevel() ?: -1
+                            bioGoal = bioRepository.getGoal() ?: -1
                         }.toMap()
                     ).await()
                 setUserToCache(user.apply { version += 1 })
@@ -77,7 +84,11 @@ class UserServiceImpl(
 
         botRepository.setDefaultTotalAnswers(user.botTotalCount.toInt())
 
-        Log.e("TAG", "setUserToCache: ${user.botTotalCount.toInt()}")
+        streakRepository.setCurrentStreak(user.streak)
+        streakRepository.setStreakLastDay(user.streakLastDay)
+
+        bioRepository.saveGoal(user.bioGoal)
+        bioRepository.saveLevel(user.bioLevel)
 
         activeRepository.setTestScore(user.score)
         activeRepository.setActiveLessons(user.lessons.transformToListString())
@@ -86,7 +97,6 @@ class UserServiceImpl(
 
     override suspend fun sync(token: String?): Result<BaseUserModel> = runCatching {
         val user = getUserFromCache()!!
-        Log.e("TAG", "sync: ${user.botTotalCount}")
         if (internetManager.isOnline()) {
             val userOnline = getUserOnline(token!!).getOrNull()!!
             subManager.saveDiscountState(userOnline.hasDiscount)

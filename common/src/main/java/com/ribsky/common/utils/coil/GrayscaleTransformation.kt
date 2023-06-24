@@ -35,7 +35,7 @@ class GrayscaleTransformation(
             Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bmpMonochrome)
         val ma = ColorMatrix()
-        ma.setSaturation(0f)
+        ma.setSaturation(0.2f)
         val paint = Paint()
         paint.colorFilter = ColorMatrixColorFilter(ma)
         canvas.drawBitmap(bitmap, 0f, 0f, paint)
@@ -50,6 +50,6 @@ class GrayscaleTransformation(
     }
 
     private companion object {
-        val COLOR_FILTER = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
+        val COLOR_FILTER = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0.2f) })
     }
 }

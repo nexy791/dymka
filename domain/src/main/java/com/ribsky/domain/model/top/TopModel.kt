@@ -7,4 +7,7 @@ data class TopModel(
     override val lessonsCount: Int,
     override var hasPrem: Boolean,
     override var id: Int,
+    override val streak: Int,
+    override var bioLevel: Int,
+    override var bioGoal: Int,
 ) : BaseTopModel

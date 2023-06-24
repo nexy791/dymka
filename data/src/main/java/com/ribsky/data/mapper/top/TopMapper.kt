@@ -15,6 +15,9 @@ class TopMapperImpl : TopMapper {
             lessonsCount = input.lessonsCount,
             hasPrem = input.hasPrem,
             id = input.id,
+            streak = input.streak,
+            bioLevel = input.bioLevel,
+            bioGoal = input.bioGoal,
         )
     }
 }

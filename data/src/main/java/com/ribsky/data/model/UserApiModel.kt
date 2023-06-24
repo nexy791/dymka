@@ -17,7 +17,13 @@ data class UserApiModel(
     override var hasDiscount: Boolean = false,
 
     override var botTotalCount: Long = 0,
-) : BaseUserModel {
+    override var streak: Int = 0,
+    override var streakLastDay: Long = 0,
+
+    override var bioLevel: Int = -1,
+    override var bioGoal: Int = -1,
+
+    ) : BaseUserModel {
 
     @JsonClass(generateAdapter = true)
     data class UserApiModelRequest(
@@ -31,6 +37,10 @@ data class UserApiModel(
         var version: Long = 0,
         var hasPrem: Boolean = false,
         var botTotalCount: Long = 0,
+        var streak: Int = 0,
+        var streakLastDay: Long = 0,
+        var bioLevel: Int = -1,
+        var bioGoal: Int = -1,
     ) {
         constructor(user: BaseUserModel) : this(
             name = user.name,
@@ -42,7 +52,11 @@ data class UserApiModel(
             saved = user.saved,
             version = user.version,
             hasPrem = user.hasPrem,
-            botTotalCount = user.botTotalCount
+            botTotalCount = user.botTotalCount,
+            streak = user.streak,
+            streakLastDay = user.streakLastDay,
+            bioLevel = user.bioLevel,
+            bioGoal = user.bioGoal,
         )
 
         fun toMap(): Map<String, Any?> {
@@ -57,6 +71,10 @@ data class UserApiModel(
                 "version" to version,
                 "hasPrem" to hasPrem,
                 "botTotalCount" to botTotalCount,
+                "streak" to streak,
+                "streakLastDay" to streakLastDay,
+                "bioLevel" to bioLevel,
+                "bioGoal" to bioGoal,
             )
         }
     }
@@ -72,5 +90,9 @@ data class UserApiModel(
         version = user.version,
         hasDiscount = user.hasDiscount,
         hasPrem = user.hasPrem,
+        streak = user.streak,
+        streakLastDay = user.streakLastDay,
+        bioLevel = user.bioLevel,
+        bioGoal = user.bioGoal,
     )
 }

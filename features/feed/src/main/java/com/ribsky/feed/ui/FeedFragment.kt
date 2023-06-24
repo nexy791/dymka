@@ -12,17 +12,17 @@ import com.ribsky.common.livedata.Resource.Status
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.dialogs.factory.common.ProgressFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.limit.LimitFactory
+import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.feed.adapter.lm.FeedSpanSizeLookup
 import com.ribsky.feed.adapter.paragraph.ParagraphAdapter
 import com.ribsky.feed.adapter.prem.PremAdapter
+import com.ribsky.feed.adapter.streak.StreakAdapter
 import com.ribsky.feed.adapter.word.BestWordAdapter
 import com.ribsky.feed.databinding.FragmentFeedBinding
-import com.ribsky.navigation.features.BetaNavigation
-import com.ribsky.navigation.features.LessonsNavigation
-import com.ribsky.navigation.features.ShareWordNavigation
-import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -34,11 +34,14 @@ class FeedFragment :
     private val lessonsNavigation: LessonsNavigation by inject()
     private val betaNavigation: BetaNavigation by inject()
     private val shareNavigation: ShareWordNavigation by inject()
+    private val shareStreakNavigation: ShareStreakNavigation by inject()
 
     private var adapter: ConcatAdapter? = null
     private var adapterBestWord: BestWordAdapter? = null
     private var adapterParagraph: ParagraphAdapter? = null
     private var adapterPrem: PremAdapter? = null
+    private var adapterStreak: StreakAdapter? = null
+
     private var state: LoadingStateDelegate? = null
 
     override fun initView() {
@@ -55,18 +58,39 @@ class FeedFragment :
 
         adapterPrem = PremAdapter() {
             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MAIN)
-            shopNavigation.navigate(requireContext())
+            shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MAIN))
         }
 
         adapterParagraph = ParagraphAdapter { model ->
-            if (!model.isEmpty) {
-                lessonsNavigation.navigate(findNavController(), LessonsNavigation.Params(model.id))
-            } else {
-                showBottomSheetDialog(ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog())
-            }
+            processParagraphClick(model)
         }
 
-        this@FeedFragment.adapter = ConcatAdapter(adapterBestWord, adapterPrem, adapterParagraph)
+        adapterStreak = StreakAdapter {
+            shareStreakNavigation.navigate(requireContext(), ShareStreakNavigation.Params(
+                count = viewModel.currentStreak,
+                isDone = viewModel.isTodayStreak
+            ))
+        }
+
+        this@FeedFragment.adapter =
+            ConcatAdapter(adapterBestWord, adapterStreak, adapterPrem, adapterParagraph)
+    }
+
+    private fun processParagraphClick(model: BaseParagraphModel) {
+        if (model.isEmpty) {
+            showBottomSheetDialog(ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog())
+//        } else if (!model.isCanBeOpened && !viewModel.isSub) {
+//            showBottomSheetDialog(LimitFactory(
+//                onConfirm = { },
+//                onDismiss = {
+//                    showBottomSheetDialog(SubPromptFactory {
+//                        shopNavigation.navigate(requireContext())
+//                    }.createDialog())
+//                }
+//            ).createDialog())
+        } else {
+            lessonsNavigation.navigate(findNavController(), LessonsNavigation.Params(model.id))
+        }
     }
 
     private fun initState() = with(binding) {
@@ -84,6 +108,15 @@ class FeedFragment :
 
     override fun initObs() = with(viewModel) {
         getBestWord()
+        // TODO:
+        adapterStreak?.submitList(
+            listOf(
+                StreakAdapter.StreakModel(
+                    streak = currentStreak,
+                    isToday = isTodayStreak
+                )
+            )
+        )
         bestWordStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Status.LOADING -> showLoading()

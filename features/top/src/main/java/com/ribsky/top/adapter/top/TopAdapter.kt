@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ribsky.top.adapter.diff.DiffCallbackTop
 import com.ribsky.top.adapter.top.holder.TopLessonViewHolder
+import com.ribsky.top.adapter.top.holder.TopStreakViewHolder
 import com.ribsky.top.adapter.top.holder.TopTestViewHolder
 import com.ribsky.top.model.TopModel
 
@@ -21,6 +22,7 @@ class TopAdapter(
         when (viewType) {
             TopModel.ViewType.LESSON.type -> TopLessonViewHolder.create(parent)
             TopModel.ViewType.TEST.type -> TopTestViewHolder.create(parent)
+            TopModel.ViewType.STREAK.type -> TopStreakViewHolder.create(parent)
             else -> throw IllegalArgumentException("Unknown viewType $viewType")
         }
 
@@ -29,6 +31,7 @@ class TopAdapter(
         when (holder) {
             is TopLessonViewHolder -> holder.bind(item, onClickListener)
             is TopTestViewHolder -> holder.bind(item, onClickListener)
+            is TopStreakViewHolder -> holder.bind(item, onClickListener)
             else -> throw IllegalArgumentException("Unknown viewType $holder")
         }
     }

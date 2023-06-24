@@ -85,6 +85,7 @@
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/e_ukraine_regular"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:text="Для отримання знижки зроби репост в сторіс і не забудь відмітити @dymka.me\n\nНе забудь відкрити профіль, щоб ми могли перевірити, що ти зробив репост 📸"

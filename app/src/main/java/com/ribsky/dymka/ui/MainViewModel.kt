@@ -12,6 +12,8 @@ import com.ribsky.common.livedata.Resource
 import com.ribsky.common.livedata.ResultMapper.Companion.asResource
 import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.domain.model.user.BaseUserModel
+import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCase
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCase
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import kotlinx.coroutines.launch
@@ -21,11 +23,16 @@ class MainViewModel(
     private val subManager: SubManager,
     private val getRateDialogStatusUseCase: GetRateDialogStatusUseCase,
     private val dynamicModule: DynamicModule,
+    private val getDiscountUseCase: GetDiscountUseCase,
+    private val isNeedToFillBioUseCase: IsNeedToFillBioUseCase,
 ) : ViewModel() {
 
     private val _userStatus: MutableLiveData<Resource<BaseUserModel>> =
         MutableLiveData()
     val userStatus: LiveData<Resource<BaseUserModel>> get() = _userStatus
+
+    private val _discountStatus = MutableLiveData<Resource<String>>()
+    val discountStatus: LiveData<Resource<String>> = _discountStatus
 
     private val _dynamicModuleStatus: MutableLiveData<DynamicModule.State> =
         MutableLiveData(DynamicModule.State.NONE)
@@ -78,10 +85,20 @@ class MainViewModel(
 
     val isSub get() = subManager.isSub()
 
+    val isNeedToFillBio get() = isNeedToFillBioUseCase.invoke()
+
     fun getProfile() {
         viewModelScope.launch {
             _userStatus.value = Resource.loading()
             _userStatus.value = getUserUseCase.invoke().asResource()
+        }
+    }
+
+    fun getDiscount() {
+        viewModelScope.launch {
+            _discountStatus.value = Resource.loading()
+            val result = getDiscountUseCase.invoke().asResource()
+            _discountStatus.value = result
         }
     }
 

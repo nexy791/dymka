@@ -8,6 +8,7 @@ class TimeServiceImpl(
     private val sharedPreferences: SharedPreferences,
 ) : TimeService {
 
+    // 6 hours
     override fun isNeedUpdate(): Boolean {
         val lastTimeUpdate = getLastTimeUpdate()
         if (lastTimeUpdate <= 0L) return true

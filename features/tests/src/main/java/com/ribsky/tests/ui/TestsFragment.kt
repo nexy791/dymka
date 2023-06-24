@@ -1,5 +1,7 @@
 package com.ribsky.tests.ui
 
+import android.app.Activity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.AutoTransition
@@ -12,8 +14,10 @@ import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
 import com.ribsky.dialogs.factory.common.ProgressFactory
+import com.ribsky.dialogs.factory.common.SuccessFactoryTest
 import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.streak.StreakPassedFactory
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.navigation.features.BetaNavigation
 import com.ribsky.navigation.features.ShopNavigation
@@ -37,6 +41,20 @@ class TestsFragment :
     private var adapter: TestAdapter? = null
 
     private val internetManager: InternetManager by inject()
+
+    private val testListener =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val isTodayStreak = viewModel.isTodayStreak
+                val count = it.data?.getIntExtra(TestNavigation.KEY_TEST_RESULT, 0) ?: 0
+                if (count >= 10 && !isTodayStreak) viewModel.updateTodayStreak()
+                if (count > 0) showBottomSheetDialog(SuccessFactoryTest(count) {
+                    if (count >= 10 && !isTodayStreak) {
+                        showBottomSheetDialog(StreakPassedFactory.create())
+                    }
+                }.createDialog())
+            }
+        }
 
     override fun initView() {
         initState()
@@ -64,11 +82,15 @@ class TestsFragment :
             } else if (!test.isActive) {
                 SubPromptFactory {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_WORDS)
-                    shopNavigation.navigate(requireContext())
+                    shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_WORDS))
                 }.createDialog()
             } else {
                 TestInfoDialog.newInstance(test.id) {
-                    testNavigation.navigate(requireContext(), TestNavigation.Params(test.id))
+                    testNavigation.navigate(
+                        requireContext(),
+                        TestNavigation.Params(test.id),
+                        testListener
+                    )
                 }
             }
             showBottomSheetDialog(dialog)

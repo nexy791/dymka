@@ -11,14 +11,18 @@ data class TopApiModel(
     var name: String = "",
     var image: String = "",
     var score: Int = 0,
+    var streak: Int = 0,
     @Ignore var lessons: Map<String, String> = HashMap(),
     var lessonsCount: Int = 0,
     var hasPrem: Boolean = false,
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var type: Type? = null,
+
+    var bioLevel: Int = -1,
+    var bioGoal: Int = -1,
 ) {
 
     enum class Type {
-        TEST, LESSON
+        TEST, LESSON, STREAK
     }
 }

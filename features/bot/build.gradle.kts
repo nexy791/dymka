@@ -44,9 +44,10 @@ dependencies {
         exclude("com.google.android.material", "material")
     }
     implementation(project(":permission"))
+    implementation(project(":billing"))
+    implementation(project(":dialogs"))
+
     implementation(Deps.mlKitSmartReply)
     implementation(Deps.mlKitTranslate)
     implementation(Deps.loadingDots)
-    implementation(project(":billing"))
-    implementation(project(":dialogs"))
 }

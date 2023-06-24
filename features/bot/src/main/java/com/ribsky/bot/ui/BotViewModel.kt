@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.ribsky.analytics.Analytics
 import com.ribsky.billing.manager.SubManager
 import com.ribsky.bot.helper.bot.BotHelper
@@ -20,20 +19,20 @@ import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.domain.usecase.bot.AddBotScoreUseCase
 import com.ribsky.domain.usecase.bot.CanBotReplyUseCase
 import com.ribsky.domain.usecase.bot.GetBotScoreForTodayUseCase
+import com.ribsky.domain.usecase.config.GetBotTokenUseCase
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import com.ribsky.domain.usecase.user.SyncUserUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class BotViewModel(
     private val getUserUseCase: GetUserUseCase,
-    private val remoteConfig: FirebaseRemoteConfig,
     private val subManager: SubManager,
     private val addBotScoreUseCase: AddBotScoreUseCase,
     private val canBotReplyUseCase: CanBotReplyUseCase,
     private val getBotScoreForTodayUseCase: GetBotScoreForTodayUseCase,
     private val syncUserUseCase: SyncUserUseCase,
+    private val getBotTokenUseCase: GetBotTokenUseCase,
 ) : ViewModel() {
 
     private val _chatStatus: MutableLiveData<Resource<List<ChatModel>>> = MutableLiveData()
@@ -60,25 +59,18 @@ class BotViewModel(
 
     fun getBot() {
         viewModelScope.launch {
-            val tokenResult = runCatching {
-                remoteConfig.fetchAndActivate().await()
-            }
-            val token = runCatching { remoteConfig.getString("api_key") }
-            if (tokenResult.isSuccess && token.getOrNull().orEmpty().isNotEmpty()) {
-                botHelper.init(token.getOrThrow())
-                translatorHelper.init()
-                smartReplyHelper.init()
-                _botStatus.value = Resource.success(Unit)
-            } else {
-                runCatching {
-                    remoteConfig.reset().await()
-                    _botStatus.value =
-                        Resource.error(
-                            tokenResult.exceptionOrNull() ?: token.exceptionOrNull()
-                                ?: Throwable("Помилка отримання токену. Якщо помилка повторюється, спробуйте перевстановити застосунок")
-                        )
+            val result = getBotTokenUseCase.invoke()
+            result.fold(
+                onSuccess = {
+                    botHelper.init(it)
+                    translatorHelper.init()
+                    smartReplyHelper.init()
+                    _botStatus.value = Resource.success(Unit)
+                },
+                onFailure = {
+                    _botStatus.value = Resource.error(it)
                 }
-            }
+            )
         }
     }
 
@@ -94,7 +86,7 @@ class BotViewModel(
             _chatStatus.value = Resource.success(
                 listOf(
                     ChatModel.Bot("Привіт! \uD83D\uDC4B"),
-                    ChatModel.Bot("Мене звати Думка, тут ти можеш задати мені будь-яке питання з української мови або літератури \uD83C\uDDFA\uD83C\uDDE6"),
+                    ChatModel.Bot("Мене звати Думка, тут ти можеш поставити мені будь-яке питання з української мови або літератури \uD83C\uDDFA\uD83C\uDDE6"),
                     ChatModel.Bot("А я з радістю на нього відповім! \uD83D\uDE0A"),
                 )
             )

@@ -6,6 +6,7 @@ import com.ribsky.top.adapter.pager.BaseTopViewPagerAdapter
 import com.ribsky.top.adapter.pager.TopViewPagerAdapter
 import com.ribsky.top.databinding.FragmentTopBinding
 import com.ribsky.top.ui.lessons.TopLessonsFragment
+import com.ribsky.top.ui.streak.TopStreakFragment
 import com.ribsky.top.ui.tests.TopTestsFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,9 +22,10 @@ class TopFragment : BaseFragment<TopViewModel, FragmentTopBinding>(FragmentTopBi
 
     private fun initAdapter() {
         adapter = TopViewPagerAdapter(this).apply {
-            setTitles(listOf("Тести", "Уроки"))
+            setTitles(listOf("Дні \uD83D\uDD25", "Тести \uD83D\uDCDA", "Уроки \uD83D\uDD14"))
             setFragments(
                 listOf(
+                    TopStreakFragment.newInstance(),
                     TopTestsFragment.newInstance(),
                     TopLessonsFragment.newInstance()
                 )

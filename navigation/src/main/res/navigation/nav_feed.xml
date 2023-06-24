@@ -30,9 +30,5 @@
         android:name="com.ribsky.lessons.dialogs.success.SuccessPassedDialog" />
 
 
-    <dialog
-        android:id="@+id/messagePickActionDialog"
-        android:name="com.ribsky.lessons.dialogs.success.SuccessPassedDialog" />
-
 
 </navigation>

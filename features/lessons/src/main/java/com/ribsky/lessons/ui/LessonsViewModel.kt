@@ -12,6 +12,8 @@ import com.ribsky.domain.usecase.active.AddActiveLessonUseCase
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
 import com.ribsky.domain.usecase.lesson.LessonInteractor
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractor
+import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
+import com.ribsky.domain.usecase.streak.SetTodayStreakUseCase
 import kotlinx.coroutines.launch
 
 class LessonsViewModel(
@@ -20,6 +22,8 @@ class LessonsViewModel(
     private val subManager: SubManager,
     private val addActiveLessonUseCase: AddActiveLessonUseCase,
     private val isContentExistsUseCase: IsContentExistsUseCase,
+    private val setTodayStreakUseCase: SetTodayStreakUseCase,
+    private val isTodayStreakUseCase: IsTodayStreakUseCase
 ) : ViewModel() {
 
     private val _lessonsStatus: MutableLiveData<Resource<List<BaseLessonModel>>> =
@@ -31,6 +35,10 @@ class LessonsViewModel(
     val paragraphStatus: LiveData<Resource<BaseParagraphModel>> get() = _paragraphStatus
 
     fun isFileExists(content: String) = isContentExistsUseCase.invoke(content)
+
+    fun updateTodayStreak() {
+        setTodayStreakUseCase.invoke()
+    }
 
     fun getLessons(id: String) {
         viewModelScope.launch {
@@ -57,4 +65,6 @@ class LessonsViewModel(
     }
 
     val isSub get() = subManager.isSub()
+
+    val isTodayStreak get() = isTodayStreakUseCase.invoke()
 }

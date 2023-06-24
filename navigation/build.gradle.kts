@@ -44,4 +44,5 @@ dependencies {
     api(Deps.navigationFragmentKtx)
     api(Deps.navigationUiKtx)
     api(Deps.navigationRuntimeKtx)
+    implementation(project(mapOf("path" to ":analytics")))
 }

@@ -63,6 +63,16 @@
         <item name="android:statusBarColor">@color/blue</item>
     </style>
 
+    <style name="StoryThemeYellow" parent="Theme.Dymka">
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:statusBarColor">#EFBD46</item>
+    </style>
+
     <style name="SplashTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/cat_splash</item>
         <item name="postSplashScreenTheme">@style/Theme.Dymka</item>

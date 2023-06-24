@@ -99,7 +99,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
         btnPremium.apply {
             setOnClickListener {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MENU)
-                shopNavigation.navigate(this@BotActivity)
+                shopNavigation.navigate(this@BotActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MENU))
             }
             setPremium(viewModel.isSub)
         }
@@ -177,7 +177,8 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
                         SubPromptFactory {
                             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_BOT)
                             shopNavigation.navigate(
-                                this@BotActivity
+                                this@BotActivity,
+                                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_BOT)
                             )
                         }.createDialog()
                     )

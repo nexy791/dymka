@@ -1,6 +1,8 @@
 package com.ribsky.test.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.view.MotionEvent
 import androidx.core.text.parseAsHtml
@@ -29,6 +31,7 @@ import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.test.BaseTestModel
 import com.ribsky.domain.model.word.BaseWordModel
 import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.TestNavigation
 import com.ribsky.test.adapter.test.TestAdapter
 import com.ribsky.test.databinding.ActivityTestDetailsBinding
 import com.ribsky.test.model.WordModel
@@ -101,7 +104,7 @@ class TestDetailsActivity :
         btnPremium.apply {
             setOnClickListener {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MENU)
-                shopNavigation.navigate(this@TestDetailsActivity)
+                shopNavigation.navigate(this@TestDetailsActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MENU))
             }
             setPremium(viewModel.isSub)
         }
@@ -112,7 +115,7 @@ class TestDetailsActivity :
         if (!viewModel.isSub) {
             showBottomSheetDialog(SubPromptFactory {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LIKE)
-                shopNavigation.navigate(this@TestDetailsActivity)
+                shopNavigation.navigate(this@TestDetailsActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_LIKE))
             }.createDialog())
         } else {
             val isSaved = viewModel.toggleWord()
@@ -221,10 +224,17 @@ class TestDetailsActivity :
         showExitAlert(
             positiveAction = {
                 Analytics.logEvent(Analytics.Event.END_WORDS)
-                finish()
+                finishWithResult()
             },
             negativeAction = { }
         )
+    }
+
+    private fun finishWithResult() {
+        setResult(Activity.RESULT_OK, Intent().apply {
+            putExtra(TestNavigation.KEY_TEST_RESULT, viewModel.getScore())
+        })
+        finish()
     }
 
     override fun clear() {

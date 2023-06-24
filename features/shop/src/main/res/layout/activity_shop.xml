@@ -81,11 +81,11 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tv_desc_price2"
                             android:layout_width="0dp"
+                            app:layout_constraintEnd_toEndOf="parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="16dp"
-                            android:layout_marginStart="16sp"
                             android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Вітаємо! Ти маєш знижку на підписку"
+                            android:text="Вітаємо! Ти маєш знижку на підписку до 20 червня 2021 року! Або назавжди"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="16dp"
                             android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Відмічай нас в Інстаграмі\nта отримуй знижку на підписку"
+                            android:text="Наразі знижки немає, повертайся пізніше або поділись з друзями, щоб отримати знижку назавжди!"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
@@ -202,6 +202,30 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/image_avatar"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_marginTop="24dp"
+                            android:background="#2c3377"
+                            android:textAlignment="center"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_heart"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+                        <ImageView
+                            android:id="@+id/iv_heart"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_round_favorite_24"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_title"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="#FF5555" />
+
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/image"
                             android:layout_width="96dp"
@@ -209,8 +233,8 @@
                             android:layout_marginTop="24dp"
                             android:background="#2c3377"
                             android:textAlignment="center"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            app:layout_constraintStart_toEndOf="@+id/iv_heart"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/CircleImage" />
 
@@ -227,7 +251,7 @@
                             app:shimmer_base_color="#f0be45"
                             app:shimmer_colored="true"
                             app:shimmer_duration="2000"
-                            app:shimmer_highlight_color="#CA9414">
+                            app:shimmer_highlight_color="#996E08">
 
 
                             <ImageView
@@ -348,7 +372,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     custom:shopColor="#FF8A65"
-                    custom:shopDescription="До 25 відповідей від кота-помічника на день"
+                    custom:shopDescription="До 50 відповідей від кота-помічника на день"
                     custom:shopIcon="😺"
                     custom:shopTitle="Кіт-помічник 😺" />
 

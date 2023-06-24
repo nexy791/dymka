@@ -36,7 +36,7 @@
             app:shimmer_base_color="#f0be45"
             app:shimmer_colored="true"
             app:shimmer_duration="2000"
-            app:shimmer_highlight_color="#CA9414">
+            app:shimmer_highlight_color="#996E08">
 
             <ImageView
                 android:layout_width="21dp"

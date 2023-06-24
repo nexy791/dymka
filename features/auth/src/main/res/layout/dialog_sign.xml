@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="36dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/e_ukraine_bold"
+        android:text="Метод входу"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="#323232" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_button_google"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/e_ukraine_medium"
+        android:gravity="start|center_vertical"
+        android:insetTop="0dp"
+        android:textSize="16sp"
+        android:insetBottom="0dp"
+        android:text="  Google"
+        android:textColor="#575757"
+        app:backgroundTint="#FFFFFF"
+        app:cornerRadius="36dp"
+        app:elevation="0dp"
+        app:icon="@drawable/ic_google_logo"
+        app:iconTint="@null"
+        app:strokeColor="#575757"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_button_fb"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/e_ukraine_medium"
+        android:gravity="start|center_vertical"
+        android:insetTop="0dp"
+        android:textSize="16sp"
+        android:insetBottom="0dp"
+        android:text="  Facebook"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:backgroundTint="#1A77F1"
+        app:cornerRadius="36dp"
+        app:elevation="0dp"
+        app:icon="@drawable/ic_facebook_logo"
+        app:iconTint="@null" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -15,6 +15,10 @@ data class UserModel(
     override var hasPrem: Boolean,
     override var hasDiscount: Boolean,
     override var botTotalCount: Long,
+    override var streak: Int,
+    override var streakLastDay: Long,
+    override var bioLevel: Int,
+    override var bioGoal: Int,
 ) : BaseUserModel {
 
     constructor(user: BaseTopModel) : this(
@@ -25,5 +29,9 @@ data class UserModel(
         hasPrem = user.hasPrem,
         hasDiscount = false,
         botTotalCount = 0,
+        streak = user.streak,
+        streakLastDay = 0,
+        bioLevel = user.bioLevel,
+        bioGoal = user.bioGoal,
     )
 }

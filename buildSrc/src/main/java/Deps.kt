@@ -61,6 +61,19 @@ object Deps {
 
         const val loadingDots = "1.3.0"
 
+        const val balloon = "1.5.3"
+
+        const val faceBookAuth = "14.1.0"
+
+        const val easyflipviewpager = "2.0.1"
+
+        const val typeWriter = "v1.3"
+
+        const val delivery = "2.1.0"
+
+        const val deliveryDynamic = "16.0.0-beta2"
+
+        const val mlKit = "18.8.0"
 
     }
 
@@ -158,5 +171,17 @@ object Deps {
 
     const val loadingDots = "com.github.razaghimahdi:Android-Loading-Dots:${Versions.loadingDots}"
 
+    const val balloon = "com.github.skydoves:balloon:${Versions.balloon}"
 
+    const val faceBookAuth = "com.facebook.android:facebook-login:${Versions.faceBookAuth}"
+
+    const val easyflipviewpager = "com.wajahatkarim:easyflipviewpager:${Versions.easyflipviewpager}"
+
+    const val typeWriter = "com.github.NitishGadangi:TypeWriter-TextView:${Versions.typeWriter}"
+
+    const val delivery = "com.google.android.play:feature-delivery:${Versions.delivery}"
+
+    const val deliveryDynamic = "com.google.mlkit:playstore-dynamic-feature-support:${Versions.deliveryDynamic}"
+
+    const val mlKit = "com.google.mlkit:common:${Versions.mlKit}"
 }

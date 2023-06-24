@@ -65,12 +65,33 @@
         android:gravity="center"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="З Україною в сердці 🇺🇦❤️"
+        android:text="З Україною в серці 🇺🇦❤️"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="imageView6,materialTextView2,materialTextView4,circularProgressIndicator2,materialTextView" />
+
+
+    <com.nitish.typewriterview.TypeWriterView
+        android:id="@+id/tv_quote"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="56dp"
+        android:fontFamily="@font/e_ukraine_medium"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

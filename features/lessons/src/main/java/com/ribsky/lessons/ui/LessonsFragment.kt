@@ -19,13 +19,16 @@ import com.ribsky.dialogs.factory.common.ProgressFactory
 import com.ribsky.dialogs.factory.common.SuccessFactory
 import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.streak.StreakPassedFactory
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.lessons.adapter.lessons.header.LessonsHeaderAdapter
 import com.ribsky.lessons.adapter.lessons.item.LessonsAdapter
 import com.ribsky.lessons.databinding.FragmentLessonsBinding
 import com.ribsky.lessons.dialogs.info.LessonInfoDialog
-import com.ribsky.navigation.features.*
+import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.LessonNavigation
+import com.ribsky.navigation.features.ShopNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -52,9 +55,19 @@ class LessonsFragment :
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 val id = it.data?.getStringExtra(LessonNavigation.KEY_LESSON_RESULT)!!
+                val isTodayStreak = viewModel.isTodayStreak
                 viewModel.updateLesson(id)
                 viewModel.getLessons(paragraphId)
-                showBottomSheetDialog(SuccessFactory().createDialog())
+
+                if(!isTodayStreak) {
+                    viewModel.updateTodayStreak()
+                }
+
+                showBottomSheetDialog(SuccessFactory {
+                    if (!isTodayStreak) {
+                        showBottomSheetDialog(StreakPassedFactory.create())
+                    }
+                }.createDialog())
             }
         }
 
@@ -121,7 +134,7 @@ class LessonsFragment :
             } else if (model.hasPrem && !viewModel.isSub) {
                 SubPromptFactory {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LESSON)
-                    shopNavigation.navigate(requireContext())
+                    shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_LESSON))
                 }.createDialog()
             } else {
                 LessonInfoDialog.newInstance(model.id) {

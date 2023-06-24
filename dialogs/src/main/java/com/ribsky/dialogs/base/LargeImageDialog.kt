@@ -1,5 +1,6 @@
 package com.ribsky.dialogs.base
 
+import android.content.DialogInterface
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.ribsky.common.base.BaseSheet
@@ -68,6 +69,11 @@ class LargeImageDialog(
                 visibility = GONE
             }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        config.onDismiss?.invoke()
     }
 
     override fun initObserves() {

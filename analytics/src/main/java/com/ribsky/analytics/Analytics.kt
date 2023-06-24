@@ -1,21 +1,27 @@
 package com.ribsky.analytics
 
 import android.os.Bundle
+import android.os.Parcelable
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.parcelize.Parcelize
 
 object Analytics {
 
-    sealed class Event(val param: String) {
+    @Parcelize
+    sealed class Event(val param: String) : Parcelable {
         object SHARE_SMS : Event("share_sms")
         object SHARE_WORDS : Event("share_words")
         object SHARE_STORY : Event("share_story")
+        object SHARE_STREAK : Event("share_streak")
 
         object START_LESSON : Event("start_lesson")
         object START_GAME : Event("start_game")
         object START_WORDS : Event("start_words")
 
         object END_LESSON : Event("end_lesson")
+
+        object END_TEST : Event("end_test")
 
         object END_LESSON_UNFINISHED : Event("end_lesson_unfinished")
 
@@ -46,6 +52,21 @@ object Analytics {
         object PREMIUM_FROM_HINT : Event("premium_from_hint")
         object PREMIUM_FROM_MENU : Event("premium_from_menu")
 
+        object PREMIUM_FROM_SETTINGS : Event("premium_from_settings")
+
+        object PREMIUM_BUY_FROM_LESSON : Event("premium_buy_from_lesson")
+        object PREMIUM_BUY_FROM_WORDS : Event("premium_buy_from_words")
+        object PREMIUM_BUY_FROM_LIKE : Event("premium_buy_from_like")
+        object PREMIUM_BUY_FROM_GAME : Event("premium_buy_from_game")
+        object PREMIUM_BUY_FROM_BOT : Event("premium_buy_from_bot")
+        object PREMIUM_BUY_FROM_MAIN : Event("premium_buy_from_main")
+        object PREMIUM_BUY_FROM_USER : Event("premium_buy_from_user")
+        object PREMIUM_BUY_FROM_HINT : Event("premium_buy_from_hint")
+        object PREMIUM_BUY_FROM_MENU : Event("premium_buy_from_menu")
+
+        object PREMIUM_BUY_FROM_SETTINGS : Event("premium_buy_from_settings")
+        object PREMIUM_BUY_FROM_UNKNOWN : Event("premium_buy_from_unknown")
+
         object LESSON_ANSWER_CORRECT : Event("lesson_answer_correct")
         object LESSON_ANSWER_INCORRECT : Event("lesson_answer_incorrect")
 
@@ -54,6 +75,16 @@ object Analytics {
         object WORDS_ANSWER_CORRECT : Event("words_answer_correct")
         object WORDS_ANSWER_INCORRECT : Event("words_answer_incorrect")
 
+        object INTRO_OPEN : Event("intro_open")
+        object INTRO_DONE : Event("intro_close")
+
+        object INTRO_GOAL_PICK : Event("intro_goal_pick")
+
+        object INTRO_LEVEL_PICK : Event("intro_level_pick")
+
+        object STREAK_OPEN : Event("streak_open")
+
+        object STREAK_DONE : Event("streak_done")
 
         object ERROR : Event("error")
 

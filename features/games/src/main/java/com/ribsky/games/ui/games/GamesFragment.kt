@@ -109,7 +109,7 @@ class GamesFragment :
                 } else {
                     showBottomSheetDialog(SubPromptFactory {
                         Analytics.logEvent(Analytics.Event.PREMIUM_FROM_GAME)
-                        shopNavigation.navigate(requireContext())
+                        shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_GAME))
                     }.createDialog())
                 }
             } else {

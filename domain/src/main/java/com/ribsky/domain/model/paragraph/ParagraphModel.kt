@@ -8,4 +8,5 @@ data class ParagraphModel(
     override val name: String,
     override var percent: Float,
     override var isEmpty: Boolean,
+    override var isCanBeOpened: Boolean = false,
 ) : BaseParagraphModel

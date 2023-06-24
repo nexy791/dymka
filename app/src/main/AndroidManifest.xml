@@ -24,6 +24,12 @@
         android:usesPermissionFlags="neverForLocation"
         tools:targetApi="s" />
 
+
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
+
+
     <application
         android:name="com.ribsky.dymka.App"
         android:allowBackup="false"
@@ -35,6 +41,14 @@
         android:theme="@style/Theme.Dymka"
         tools:ignore="DataExtractionRules,LockedOrientationActivity"
         tools:replace="android:allowBackup">
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+
 
         <meta-data
             android:name="default-url"
@@ -111,6 +125,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/StoryTheme" />
         <activity
+            android:name="com.ribsky.intro.ui.IntroActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ribsky.share.ui.share.ShareStreakActivity"
+            android:theme="@style/StoryThemeYellow"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.ribsky.loader.ui.LoaderActivity"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -136,6 +158,24 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

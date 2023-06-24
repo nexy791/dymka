@@ -9,6 +9,7 @@ import com.ribsky.feed.nav.FeedNavigationImpl
 import com.ribsky.game.nav.GameNavigationImpl
 import com.ribsky.game.nav.LobbyNavigationImpl
 import com.ribsky.games.nav.GamesNavigationImpl
+import com.ribsky.intro.navigation.IntroNavigationImpl
 import com.ribsky.lesson.nav.LessonNavigationImpl
 import com.ribsky.lessons.nav.LessonsNavigationImpl
 import com.ribsky.loader.nav.LoaderNavigationImpl
@@ -17,6 +18,7 @@ import com.ribsky.settings.nav.LibraryNavigationImpl
 import com.ribsky.settings.nav.SettingsNavigationImpl
 import com.ribsky.share.ui.nav.ShareMessageNavigationImpl
 import com.ribsky.share.ui.nav.ShareStoryNavigationImpl
+import com.ribsky.share.ui.nav.ShareStreakNavigationImpl
 import com.ribsky.share.ui.nav.ShareWordNavigationImpl
 import com.ribsky.shop.nav.ShopNavigationImpl
 import com.ribsky.test.nav.TestNavigationImpl
@@ -108,5 +110,13 @@ val navDi = module {
 
     factory<LobbyNavigation> {
         LobbyNavigationImpl()
+    }
+
+    factory<IntroNavigation> {
+        IntroNavigationImpl()
+    }
+
+    factory<ShareStreakNavigation> {
+        ShareStreakNavigationImpl()
     }
 }

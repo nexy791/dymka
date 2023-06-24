@@ -69,7 +69,9 @@ dependencies {
     implementation(project(":features:auth"))
     implementation(project(":features:loader"))
     implementation(project(":features:loader"))
+    implementation(project(":features:intro"))
     implementation(project(":dialogs"))
     implementation(project(":widget"))
     implementation(project(":analytics"))
+
 }

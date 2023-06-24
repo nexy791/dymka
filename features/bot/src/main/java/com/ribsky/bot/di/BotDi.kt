@@ -10,7 +10,7 @@ val botDi = module {
     viewModel {
         BotViewModel(
             getUserUseCase = get(),
-            remoteConfig = get(),
+            getBotTokenUseCase = get(),
             subManager = get(),
             addBotScoreUseCase = get(),
             canBotReplyUseCase = get(),

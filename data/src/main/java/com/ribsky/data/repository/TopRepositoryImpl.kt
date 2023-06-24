@@ -31,6 +31,11 @@ class TopRepositoryImpl(
         return list.map { topMapper.map(it) }.sortedByDescending { it.lessonsCount }
     }
 
+    override suspend fun getUsersByStreak(): List<BaseTopModel> {
+        val list = topDao.get().filter { it.type == TopApiModel.Type.STREAK }
+        return list.map { topMapper.map(it) }.sortedByDescending { it.streak }
+    }
+
     override suspend fun getUser(id: Int): BaseTopModel = topMapper.map(topDao.get(id))
 
     override suspend fun isNotEmpty(): Boolean = topDao.getFirst() != null

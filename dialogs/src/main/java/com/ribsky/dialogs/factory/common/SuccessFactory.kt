@@ -6,7 +6,9 @@ import com.ribsky.dialogs.base.DialogFactory
 import com.ribsky.dialogs.base.LargeImageDialog
 import com.ribsky.dialogs.base.LargeImageDialog.Companion.positiveButton
 
-class SuccessFactory : DialogFactory {
+class SuccessFactory(
+    private var onDismiss: (() -> Unit),
+) : DialogFactory {
 
     override fun createDialog(): LargeImageDialog = LargeImageDialog.create {
         Analytics.logEvent(Analytics.Event.END_LESSON)
@@ -17,5 +19,6 @@ class SuccessFactory : DialogFactory {
         positiveButton {
             text = "Продовжити"
         }
+        onDismiss = this@SuccessFactory.onDismiss
     }
 }

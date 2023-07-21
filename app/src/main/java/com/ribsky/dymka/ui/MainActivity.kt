@@ -150,9 +150,6 @@ class MainActivity :
         dynamicModuleStatus.observe(this@MainActivity) { result ->
             when (result) {
                 DynamicModule.State.DOWNLOADING -> {
-                    if (!loadingDialog!!.isAdded && loadingDialog != null) {
-                        showBottomSheetDialog(loadingDialog!!)
-                    }
                     if (loadingDialog == null) {
                         loadingDialog = LoadingDialog.newInstance()
                         showBottomSheetDialog(loadingDialog!!)

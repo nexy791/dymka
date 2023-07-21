@@ -18,14 +18,16 @@ import com.google.firebase.storage.FirebaseStorage
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonDrawable
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColorState
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.ext.ViewExt.Companion.snackbar
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.test.BaseTestModel
@@ -48,8 +50,7 @@ class TestDetailsActivity :
     private val shopNavigation: ShopNavigation by inject()
 
     private var state: LoadingStateDelegate? = null
-    private val args: TestDetailsActivityArgs by navArgs()
-    private val testId by lazy { args.testId }
+    private val testId by lazy { intent.getStringExtra(TestNavigation.KEY_TEST_ID)!! }
 
     private val storage: FirebaseStorage by KoinJavaComponent.inject(FirebaseStorage::class.java)
 
@@ -76,9 +77,11 @@ class TestDetailsActivity :
         mAdapter = TestAdapter { isCorrect, position ->
             isLoading = true
             if (isCorrect) {
+                playSound(commonRaw.sound_success)
                 Analytics.logEvent(Analytics.Event.WORDS_ANSWER_CORRECT)
                 viewModel.addScore()
             } else {
+                playSound(commonRaw.sound_error)
                 Analytics.logEvent(Analytics.Event.WORDS_ANSWER_INCORRECT)
                 vibrate()
             }
@@ -104,7 +107,10 @@ class TestDetailsActivity :
         btnPremium.apply {
             setOnClickListener {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MENU)
-                shopNavigation.navigate(this@TestDetailsActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MENU))
+                shopNavigation.navigate(
+                    this@TestDetailsActivity,
+                    ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MENU)
+                )
             }
             setPremium(viewModel.isSub)
         }
@@ -115,7 +121,10 @@ class TestDetailsActivity :
         if (!viewModel.isSub) {
             showBottomSheetDialog(SubPromptFactory {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LIKE)
-                shopNavigation.navigate(this@TestDetailsActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_LIKE))
+                shopNavigation.navigate(
+                    this@TestDetailsActivity,
+                    ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_LIKE)
+                )
             }.createDialog())
         } else {
             val isSaved = viewModel.toggleWord()
@@ -141,6 +150,7 @@ class TestDetailsActivity :
                     TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                     state?.showLoading()
                 }
+
                 Resource.Status.SUCCESS -> getTestInfo(testId)
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
@@ -151,11 +161,13 @@ class TestDetailsActivity :
                     TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                     state?.showLoading()
                 }
+
                 Resource.Status.SUCCESS -> {
                     val test = result.data!!
                     getContent(test)
                     updateUi(test)
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
@@ -165,6 +177,7 @@ class TestDetailsActivity :
                     TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                     state?.showLoading()
                 }
+
                 Resource.Status.SUCCESS -> updateList(result.data!!)
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }

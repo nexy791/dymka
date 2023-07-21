@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
-import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.alias.commonFont
-import com.ribsky.common.utils.ext.ViewExt.Companion.dp
-import com.ribsky.common.utils.ext.ViewExt.Companion.px
+import com.ribsky.core.utils.SizeUtils.Companion.px
 
 class ChipBuilder {
 

@@ -1,6 +1,5 @@
 package com.ribsky.games.ui.games
 
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,12 +9,14 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
-import com.ribsky.dialogs.factory.common.ProgressFactory
+import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.dialogs.factory.progress.ProgressFactory
 import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
@@ -102,6 +103,7 @@ class GamesFragment :
     }
 
     private fun processGameClick(game: GameModel) {
+        playSound(commonRaw.sound_tap)
         if (internetManager.isOnline() || viewModel.isFileExists(game.content)) {
             if (!game.isInProgress()) {
                 if (game.isActive) {

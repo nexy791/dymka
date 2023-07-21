@@ -2,6 +2,8 @@ package com.ribsky.shop.ui
 
 import android.content.Intent
 import androidx.core.view.isGone
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import coil.load
@@ -9,16 +11,20 @@ import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.openSubscriptions
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.party.Party
+import com.ribsky.core.Resource
+import com.ribsky.dialogs.factory.cats.CatsFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.domain.model.top.BaseTopModel
 import com.ribsky.navigation.features.LoaderNavigation
 import com.ribsky.navigation.features.ShareStoryNavigation
 import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.shop.adapter.cats.CatsAdapter
+import com.ribsky.shop.adapter.more.CatsMoreAdapter
 import com.ribsky.shop.databinding.ActivityShopBinding
 import com.ribsky.shop.dialogs.sub.SubDialog
 import jp.alessandro.android.iab.Item
@@ -51,6 +57,10 @@ class ShopActivity :
     }
     private val billingClientWrapper: BillingClientWrapper by inject()
 
+    private var concatAdapter: ConcatAdapter? = null
+    private var adapterCats: CatsAdapter? = null
+    private var adapterMore: CatsMoreAdapter? = null
+
     private val callback: SubDialog.Callback = object : SubDialog.Callback {
 
         override fun onResult(product: BillingClientWrapper.Product) {
@@ -71,6 +81,22 @@ class ShopActivity :
         initRestoreBtn()
         initTexts()
         initHeartAnimation()
+        initTop()
+    }
+
+    private fun initTop() {
+        adapterCats = CatsAdapter {
+            showBottomSheetDialog(CatsFactory().createDialog())
+        }
+        adapterMore = CatsMoreAdapter {
+            showBottomSheetDialog(CatsFactory().createDialog())
+        }
+        concatAdapter = ConcatAdapter(adapterCats, adapterMore)
+        binding.rvCats.apply {
+            layoutManager =
+                LinearLayoutManager(this@ShopActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = concatAdapter
+        }
     }
 
     private fun initHeartAnimation() {
@@ -239,6 +265,7 @@ class ShopActivity :
                     initBilling()
                     initDiscount()
                 }
+
                 Resource.Status.ERROR -> {
                     initBilling()
                     initDiscount()
@@ -251,12 +278,24 @@ class ShopActivity :
                 Resource.Status.SUCCESS -> {
                     updateProfileImage(it.data?.image)
                     getIsFreeDiscountAvailable()
+                    getTop()
                 }
-                Resource.Status.ERROR -> {
-                    showErrorDialog(it.exception?.localizedMessage) { finish() }
-                }
+
+                Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { finish() }
             }
         }
+        topStatus.observe(this@ShopActivity) {
+            when (it.status) {
+                Resource.Status.LOADING -> {}
+                Resource.Status.SUCCESS -> updateTop(it.data!!)
+                Resource.Status.ERROR -> {}
+            }
+        }
+    }
+
+    private fun updateTop(data: List<BaseTopModel>) {
+        adapterCats?.submitList(data)
+        adapterMore?.submitList(listOf(Unit))
     }
 
     private fun updateProfileImage(image: String?) {

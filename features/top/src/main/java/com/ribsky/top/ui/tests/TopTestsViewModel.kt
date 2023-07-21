@@ -1,7 +1,7 @@
 package com.ribsky.top.ui.tests
 
 import androidx.lifecycle.viewModelScope
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.domain.usecase.time.GetLastTimeUseCase
 import com.ribsky.domain.usecase.top.TopInteractor
 import com.ribsky.domain.usecase.user.GetUserUseCase

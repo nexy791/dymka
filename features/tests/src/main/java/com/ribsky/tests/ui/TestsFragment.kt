@@ -1,6 +1,8 @@
 package com.ribsky.tests.ui
 
 import android.app.Activity
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,18 +10,21 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
-import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
-import com.ribsky.dialogs.factory.common.ProgressFactory
-import com.ribsky.dialogs.factory.common.SuccessFactoryTest
+import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.progress.ProgressFactory
 import com.ribsky.dialogs.factory.streak.StreakPassedFactory
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
+import com.ribsky.dialogs.factory.success.SuccessFactoryTest
 import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.PayWallNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.navigation.features.TestNavigation
 import com.ribsky.tests.adapter.test.TestAdapter
@@ -36,6 +41,7 @@ class TestsFragment :
     private val betaNavigation: BetaNavigation by inject()
     private val testNavigation: TestNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
+    private val payWallNavigation: PayWallNavigation by inject()
 
     private var state: LoadingStateDelegate? = null
     private var adapter: TestAdapter? = null
@@ -50,7 +56,11 @@ class TestsFragment :
                 if (count >= 10 && !isTodayStreak) viewModel.updateTodayStreak()
                 if (count > 0) showBottomSheetDialog(SuccessFactoryTest(count) {
                     if (count >= 10 && !isTodayStreak) {
-                        showBottomSheetDialog(StreakPassedFactory.create())
+                        showBottomSheetDialog(StreakPassedFactory.create()) {
+                            showPayWall()
+                        }
+                    } else {
+                        showPayWall()
                     }
                 }.createDialog())
             }
@@ -76,13 +86,17 @@ class TestsFragment :
     }
 
     private fun processTestClick(test: TestModel) {
+        playSound(commonRaw.sound_tap)
         if (internetManager.isOnline() || viewModel.isFileExists(test.content)) {
             val dialog = if (test.isInProgress()) {
                 ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog()
             } else if (!test.isActive) {
                 SubPromptFactory {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_WORDS)
-                    shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_WORDS))
+                    shopNavigation.navigate(
+                        requireContext(),
+                        ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_WORDS)
+                    )
                 }.createDialog()
             } else {
                 TestInfoDialog.newInstance(test.id) {
@@ -113,13 +127,35 @@ class TestsFragment :
                     TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                     state?.showLoading()
                 }
+
                 Resource.Status.SUCCESS -> {
                     adapter?.submitList(result.data) {
                         TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                         state?.showContent()
                     }
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
+            }
+        }
+    }
+
+    private fun showPayWall() {
+        viewModel.isNeedToShowPayWall {
+            if (it.isSuccess) {
+                val param = PayWallNavigation.Params(it.getOrNull()!!)
+                payWallNavigation.navigate(
+                    childFragmentManager,
+                    param,
+                    object : PayWallNavigation.Callback {
+                        override fun onDiscount() {
+                            Analytics.logEvent(Analytics.Event.PREMIUM_FROM_PAYWALL)
+                            shopNavigation.navigate(
+                                requireContext(),
+                                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_PAYWALL)
+                            )
+                        }
+                    })
             }
         }
     }

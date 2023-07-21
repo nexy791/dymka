@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ribsky.account.model.LessonInfo
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.domain.model.user.BaseUserModel
 
 abstract class BaseProfileViewModel : ViewModel() {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.ribsky.analytics.AnalyticsHelper.Companion.isDebug
 import kotlinx.parcelize.Parcelize
 
 object Analytics {
@@ -28,6 +29,8 @@ object Analytics {
         object END_GAME : Event("end_game")
         object END_WORDS : Event("end_words")
 
+        object PAYWALL_OPEN : Event("paywall_open")
+
         object BOT_OPEN : Event("bot_open")
         object BOT_LIMIT_PREM : Event("bot_limit_prem")
         object BOT_LIMIT_DEFAULT : Event("bot_limit_default")
@@ -51,8 +54,8 @@ object Analytics {
         object PREMIUM_FROM_USER : Event("premium_from_user")
         object PREMIUM_FROM_HINT : Event("premium_from_hint")
         object PREMIUM_FROM_MENU : Event("premium_from_menu")
-
         object PREMIUM_FROM_SETTINGS : Event("premium_from_settings")
+        object PREMIUM_FROM_PAYWALL : Event("premium_from_paywall")
 
         object PREMIUM_BUY_FROM_LESSON : Event("premium_buy_from_lesson")
         object PREMIUM_BUY_FROM_WORDS : Event("premium_buy_from_words")
@@ -63,8 +66,8 @@ object Analytics {
         object PREMIUM_BUY_FROM_USER : Event("premium_buy_from_user")
         object PREMIUM_BUY_FROM_HINT : Event("premium_buy_from_hint")
         object PREMIUM_BUY_FROM_MENU : Event("premium_buy_from_menu")
-
         object PREMIUM_BUY_FROM_SETTINGS : Event("premium_buy_from_settings")
+        object PREMIUM_BUY_FROM_PAYWALL : Event("premium_buy_from_paywall")
         object PREMIUM_BUY_FROM_UNKNOWN : Event("premium_buy_from_unknown")
 
         object LESSON_ANSWER_CORRECT : Event("lesson_answer_correct")
@@ -92,10 +95,18 @@ object Analytics {
     }
 
     fun logEvent(event: Event, bundle: Bundle? = null) {
-        logEventWithFirebase(event.param, bundle)
+        when (isDebug()) {
+            true -> logEventWithLogcat(event, bundle)
+            false -> logEventWithFirebase(event, bundle)
+        }
     }
 
-    private fun logEventWithFirebase(event: String, bundle: Bundle? = null) {
-        Firebase.analytics.logEvent(event, bundle)
+    private fun logEventWithFirebase(event: Event, bundle: Bundle? = null) {
+        Firebase.analytics.logEvent(event.param, bundle)
     }
+
+    private fun logEventWithLogcat(event: Event, bundle: Bundle? = null) {
+        println("Analytics: name: ${event.param}, bundle: $bundle")
+    }
+
 }

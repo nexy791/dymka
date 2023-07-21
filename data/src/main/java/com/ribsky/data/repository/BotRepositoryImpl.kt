@@ -82,11 +82,11 @@ class BotRepositoryImpl(
     }
 
     companion object {
-        private const val MAX_REGULAR_ANSWERS = 20
-        private const val MAX_PREMIUM_ANSWERS = 50
+        const val MAX_REGULAR_ANSWERS = 20
+        const val MAX_PREMIUM_ANSWERS = 50
 
-        private const val KEY_TOTAL_ANSWERS = "total_answers"
-        private const val KEY_DAILY_ANSWERS = "daily_answers"
-        private const val KEY_LAST_UPDATE_DAY = "last_update_day"
+        const val KEY_TOTAL_ANSWERS = "total_answers"
+        const val KEY_DAILY_ANSWERS = "daily_answers"
+        const val KEY_LAST_UPDATE_DAY = "last_update_day"
     }
 }

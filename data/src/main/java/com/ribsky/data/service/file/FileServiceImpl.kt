@@ -7,7 +7,7 @@ import com.ribsky.data.utils.crypto.CryptoManager
 import com.ribsky.domain.exceptions.Exceptions
 import kotlinx.coroutines.tasks.await
 import java.io.File
-import java.util.*
+import java.util.Date
 
 class FileServiceImpl(
     private val context: Context,
@@ -62,6 +62,18 @@ class FileServiceImpl(
         val currentDate = Date().time
         val lastModified = lastModified()
         val diff = (currentDate - lastModified) / (1000 * 60 * 60 * 24)
-        return diff >= 1
+        return diff >= OLD_FILE_DAYS
     }
+
+    private fun isFileOld(file: File): Boolean {
+        val currentDate = Date().time
+        val lastModified = file.lastModified()
+        val diffInDays = (currentDate - lastModified) / (1000 * 60 * 60 * 24) // days
+        return diffInDays >= OLD_FILE_DAYS
+    }
+
+    companion object {
+        const val OLD_FILE_DAYS = 1
+    }
+
 }

@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.analytics.Analytics
 import com.ribsky.billing.manager.SubManager
-import com.ribsky.common.livedata.Event
-import com.ribsky.common.livedata.Resource
-import com.ribsky.common.livedata.ResultMapper.Companion.asResource
+import com.ribsky.core.Event
+import com.ribsky.core.Resource
+import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.content.BaseContentModel
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.domain.model.user.BaseUserModel
@@ -50,6 +50,9 @@ class LessonViewModel(
 
     private val _successEvent: Event<Boolean> = Event()
     val successEvent: LiveData<Boolean> get() = _successEvent
+
+    private val _errorEvent: Event<Boolean> = Event()
+    val errorEvent: LiveData<Boolean> get() = _errorEvent
 
     private val _endEvent: Event<Boolean> = Event()
     val endEvent: LiveData<Boolean> get() = _endEvent
@@ -121,6 +124,7 @@ class LessonViewModel(
             sendCorrectAnswer()
             goNext()
         } else {
+            _errorEvent.value = true
             sendWrongAnswer()
         }
     }
@@ -194,6 +198,7 @@ class LessonViewModel(
     fun hint(): String = when (val item = content.getOrNull(currentContentIndex)) {
         is BaseContentModel.BaseContentType.TestPick -> item.text.firstOrNull()?.translatedText?.filter { it.value }
             ?.map { it.text }
+
         else -> answers
     }?.joinToString(" • ").orEmpty()
 

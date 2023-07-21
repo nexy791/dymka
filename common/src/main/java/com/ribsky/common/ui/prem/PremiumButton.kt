@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 import com.ribsky.common.R
 import com.ribsky.common.databinding.LayoutPremBtnBinding
 import com.ribsky.common.utils.ext.ResourceExt.Companion.color
-import com.ribsky.common.utils.ext.ViewExt.Companion.px
+import com.ribsky.core.utils.SizeUtils.Companion.px
 
 class PremiumButton @JvmOverloads constructor(
     context: Context,

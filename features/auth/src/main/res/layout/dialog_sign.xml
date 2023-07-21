@@ -38,25 +38,4 @@
         app:strokeColor="#575757"
         app:strokeWidth="1dp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/login_button_fb"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/e_ukraine_medium"
-        android:gravity="start|center_vertical"
-        android:insetTop="0dp"
-        android:textSize="16sp"
-        android:insetBottom="0dp"
-        android:text="  Facebook"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:backgroundTint="#1A77F1"
-        app:cornerRadius="36dp"
-        app:elevation="0dp"
-        app:icon="@drawable/ic_facebook_logo"
-        app:iconTint="@null" />
-
 </androidx.appcompat.widget.LinearLayoutCompat>

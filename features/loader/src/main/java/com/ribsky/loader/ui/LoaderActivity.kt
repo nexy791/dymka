@@ -8,7 +8,7 @@ import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialFade
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
 import com.ribsky.domain.exceptions.Exceptions
 import com.ribsky.loader.databinding.ActivityLoaderBinding

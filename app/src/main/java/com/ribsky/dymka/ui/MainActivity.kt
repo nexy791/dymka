@@ -8,12 +8,12 @@ import coil.request.CachePolicy
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.party.ProfileBalloonFactory
 import com.ribsky.common.utils.update.AppUpdate
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.dynamic.SuccessInstallFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.exceptions.Exceptions
@@ -21,7 +21,11 @@ import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.dymka.R
 import com.ribsky.dymka.databinding.ActivityMainBinding
 import com.ribsky.dymka.dialogs.LoadingDialog
-import com.ribsky.navigation.features.*
+import com.ribsky.navigation.features.AccountNavigation
+import com.ribsky.navigation.features.AuthNavigation
+import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.IntroNavigation
+import com.ribsky.navigation.features.ShopNavigation
 import com.skydoves.balloon.balloon
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -78,7 +82,6 @@ class MainActivity :
             if (it.itemId != R.id.nav_bot) {
                 navController.navigate(it.itemId)
             } else {
-                loadingDialog = LoadingDialog.newInstance()
                 viewModel.initDynamicModule(this@MainActivity)
             }
             return@setOnItemSelectedListener it.itemId != R.id.nav_bot
@@ -97,7 +100,10 @@ class MainActivity :
 
         btnPremium.setOnClickListener {
             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MENU)
-            shopNavigation.navigate(this@MainActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_FROM_MENU))
+            shopNavigation.navigate(
+                this@MainActivity,
+                ShopNavigation.Params(Analytics.Event.PREMIUM_FROM_MENU)
+            )
         }
     }
 
@@ -126,31 +132,38 @@ class MainActivity :
                         else -> showErrorDialog(result.exception?.localizedMessage) { finish() }
                     }
                 }
+
                 Resource.Status.LOADING -> {}
             }
         }
         discountStatus.observe(this@MainActivity) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> result.data?.let {
-                    if(!viewModel.isSub) {
+                    if (!viewModel.isSub) {
                         balloon.showAlignBottom(binding.btnPremium, yOff = 8)
                     }
                 }
+
                 else -> {}
             }
         }
         dynamicModuleStatus.observe(this@MainActivity) { result ->
             when (result) {
                 DynamicModule.State.DOWNLOADING -> {
-                    if (loadingDialog == null) loadingDialog = LoadingDialog.newInstance()
-                    if (!loadingDialog!!.isAdded) {
+                    if (!loadingDialog!!.isAdded && loadingDialog != null) {
+                        showBottomSheetDialog(loadingDialog!!)
+                    }
+                    if (loadingDialog == null) {
+                        loadingDialog = LoadingDialog.newInstance()
                         showBottomSheetDialog(loadingDialog!!)
                     }
                 }
+
                 DynamicModule.State.INSTALLED -> {
                     if (loadingDialog?.isAdded == true) loadingDialog?.dismiss()
                     navigateToBot()
                 }
+
                 DynamicModule.State.INSTALL_FINISHED -> {
                     Analytics.logEvent(Analytics.Event.BOT_DOWNLOAD_SUCCESS)
                     if (loadingDialog?.isAdded == true) loadingDialog?.dismiss()
@@ -160,11 +173,13 @@ class MainActivity :
                         }.createDialog()
                     )
                 }
+
                 DynamicModule.State.NONE -> if (loadingDialog?.isAdded == true) loadingDialog?.dismiss()
                 is DynamicModule.State.REQUIRES_USER_CONFIRMATION -> mDynamicModule.requestUserConfirmation(
                     result.state,
                     activityResultRegistry
                 )
+
                 is DynamicModule.State.FAILED -> {
                     Analytics.logEvent(Analytics.Event.BOT_DOWNLOAD_ERROR)
                     if (loadingDialog?.isAdded == true) loadingDialog?.dismiss()

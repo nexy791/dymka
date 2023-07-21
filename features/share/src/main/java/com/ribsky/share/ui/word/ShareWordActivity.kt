@@ -3,7 +3,7 @@ package com.ribsky.share.ui.word
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
 import com.ribsky.analytics.Analytics
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.navigation.features.ShareWordNavigation.Companion.KEY_SHARE_WORD

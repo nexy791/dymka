@@ -63,8 +63,6 @@ object Deps {
 
         const val balloon = "1.5.3"
 
-        const val faceBookAuth = "14.1.0"
-
         const val easyflipviewpager = "2.0.1"
 
         const val typeWriter = "v1.3"
@@ -172,8 +170,6 @@ object Deps {
     const val loadingDots = "com.github.razaghimahdi:Android-Loading-Dots:${Versions.loadingDots}"
 
     const val balloon = "com.github.skydoves:balloon:${Versions.balloon}"
-
-    const val faceBookAuth = "com.facebook.android:facebook-login:${Versions.faceBookAuth}"
 
     const val easyflipviewpager = "com.wajahatkarim:easyflipviewpager:${Versions.easyflipviewpager}"
 

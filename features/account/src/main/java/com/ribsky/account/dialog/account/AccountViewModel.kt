@@ -3,8 +3,8 @@ package com.ribsky.account.dialog.account
 import androidx.lifecycle.viewModelScope
 import com.ribsky.account.dialog.base.BaseProfileViewModel
 import com.ribsky.account.model.LessonInfo
-import com.ribsky.common.livedata.Resource
-import com.ribsky.common.livedata.ResultMapper.Companion.asResource
+import com.ribsky.core.Resource
+import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.usecase.active.GetActiveLessonsUseCase
 import com.ribsky.domain.usecase.bio.GetCurrentGoalBioUseCase
 import com.ribsky.domain.usecase.bio.GetCurrentLevelBioUseCase

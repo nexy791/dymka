@@ -13,9 +13,10 @@ class BotLimitFactory(
 
     override fun createDialog(): SimpleDialog = SimpleDialog.create {
         title = "Ліміти \uD83D\uDC08"
-        description = "Преміум-користувачі мають до 50 відповідей на день, а звичайні - 20 одноразово"
+        description =
+            "Преміум-користувачі мають до 50 відповідей на день, а звичайні - 20 одноразово"
         icon {
-            icon = commonDrawable.ic_round_pets_24
+            icon = commonDrawable.ic_outline_offline_bolt_24
         }
         positiveButton {
             text = "Більше"

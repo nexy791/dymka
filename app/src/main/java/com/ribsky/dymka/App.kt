@@ -10,7 +10,17 @@ import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderF
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import com.ribsky.common.utils.coil.CustomImageLoader
-import com.ribsky.dymka.di.*
+import com.ribsky.common.utils.sound.SoundHelper
+import com.ribsky.dymka.di.billingDi
+import com.ribsky.dymka.di.commonDi
+import com.ribsky.dymka.di.dataDi
+import com.ribsky.dymka.di.dbDi
+import com.ribsky.dymka.di.domainUi
+import com.ribsky.dymka.di.fireDi
+import com.ribsky.dymka.di.mapperDi
+import com.ribsky.dymka.di.navDi
+import com.ribsky.dymka.di.prefsDi
+import com.ribsky.dymka.di.uiDi
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
@@ -24,6 +34,7 @@ class App : SplitCompatApplication(), ImageLoaderFactory {
     private fun initComponents() {
         initFirebase()
         initKoin()
+        initMediaPlayers()
     }
 
     private fun initFirebase() {
@@ -53,10 +64,18 @@ class App : SplitCompatApplication(), ImageLoaderFactory {
         }
     }
 
+    private fun initMediaPlayers() {
+        SoundHelper.setContext(this)
+    }
+
     override fun newImageLoader(): ImageLoader = CustomImageLoader.build(this)
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         SplitCompat.install(this)
     }
+
+
+
+
 }

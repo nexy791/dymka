@@ -8,7 +8,9 @@ import androidx.core.view.children
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.ribsky.common.utils.ext.ViewExt.Companion.px
+import com.ribsky.common.alias.commonRaw
+import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.core.utils.SizeUtils.Companion.px
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.adapter.chat.holder.base.BaseViewHolder
 import com.ribsky.lesson.databinding.ItemChatChipsBinding
@@ -25,7 +27,11 @@ class ChatChipsViewHolder(private val binding: ItemChatChipsBinding) :
 
         chipGroup.removeAllViews()
         item.chips.forEach {
-            chipGroup.addView(generateChip(root.context, it))
+            chipGroup.addView(generateChip(root.context, it).apply {
+                setOnClickListener { _ ->
+                    playSound(commonRaw.sound_pick)
+                }
+            })
         }
         chipGroup.setChildrenEnabled(item.isActive)
 

@@ -6,13 +6,12 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.google.android.material.chip.Chip
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.account.databinding.DialogProfileBinding
 import com.ribsky.account.model.LessonInfo
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseSheet
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.common.utils.chip.ChipBuilder.Companion.createChip
 import com.ribsky.common.utils.ext.ViewExt.Companion.formatUserName
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog

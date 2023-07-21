@@ -13,14 +13,10 @@ class DialogSign(
 
     enum class Type {
         GOOGLE,
-        FACEBOOK,
     }
 
 
     override fun initViews() = with(binding) {
-        loginButtonFb.setOnClickListener {
-            dismissWithResult(Type.FACEBOOK)
-        }
         loginButtonGoogle.setOnClickListener {
             dismissWithResult(Type.GOOGLE)
         }

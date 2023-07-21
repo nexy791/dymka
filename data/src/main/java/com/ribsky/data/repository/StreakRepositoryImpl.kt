@@ -2,20 +2,20 @@ package com.ribsky.data.repository
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.ribsky.core.utils.DateUtils.Companion.getCurrentDayInMillis
 import com.ribsky.domain.repository.StreakRepository
-import java.util.*
 
 class StreakRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
 ) : StreakRepository {
 
     override fun isTodayStreak(): Boolean =
-        sharedPreferences.getLong(PREF_STREAK_TODAY, 0) == currentDay
+        sharedPreferences.getLong(PREF_STREAK_TODAY, 0) == getCurrentDayInMillis()
 
 
     override fun getCurrentStreak(): Int {
-        if (currentDay - sharedPreferences.getLong(PREF_STREAK_TODAY, 0) > 86400000 ||
-            currentDay - sharedPreferences.getLong(PREF_STREAK_TODAY, 0) < 0
+        if (getCurrentDayInMillis() - sharedPreferences.getLong(PREF_STREAK_TODAY, 0) > 86400000 ||
+            getCurrentDayInMillis() - sharedPreferences.getLong(PREF_STREAK_TODAY, 0) < 0
         ) {
             sharedPreferences.edit { putInt(PREF_STREAK, 0) }
         }
@@ -25,7 +25,7 @@ class StreakRepositoryImpl(
     override fun setTodayStreak() {
         if (!isTodayStreak()) {
             sharedPreferences.edit {
-                putLong(PREF_STREAK_TODAY, currentDay)
+                putLong(PREF_STREAK_TODAY, getCurrentDayInMillis())
                 putInt(PREF_STREAK, getCurrentStreak() + 1)
             }
         }
@@ -40,14 +40,6 @@ class StreakRepositoryImpl(
     override fun setStreakLastDay(streakLastDay: Long) {
         sharedPreferences.edit { putLong(PREF_STREAK_TODAY, streakLastDay) }
     }
-
-    private val currentDay
-        get() = Calendar.getInstance().apply {
-            set(Calendar.MILLISECOND, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.HOUR_OF_DAY, 0)
-        }.timeInMillis
 
 
     companion object {

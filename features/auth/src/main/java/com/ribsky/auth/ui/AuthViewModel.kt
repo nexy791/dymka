@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ribsky.common.livedata.Resource
-import com.ribsky.common.livedata.ResultMapper.Companion.asResource
+import com.ribsky.core.Resource
+import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.usecase.auth.AuthUseCase
 import com.ribsky.domain.usecase.clear.ClearDataUseCase
 import kotlinx.coroutines.launch

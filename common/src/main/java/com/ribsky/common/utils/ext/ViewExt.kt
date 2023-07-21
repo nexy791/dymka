@@ -1,7 +1,6 @@
 package com.ribsky.common.utils.ext
 
 import android.content.*
-import android.content.res.Resources
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -20,11 +19,6 @@ import com.ribsky.common.ui.snackbar.CustomSnackbar
 class ViewExt {
 
     companion object {
-
-        val Int.dp: Int
-            get() = (this / Resources.getSystem().displayMetrics.density).toInt()
-        val Int.px: Int
-            get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
         fun Context.toast(message: String) {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -105,12 +99,30 @@ class ViewExt {
         fun Int.formatDays(): String =
             if (this == 1) "$this день" else "$this днів"
 
-        fun Fragment.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
-            dialog.show(childFragmentManager, dialog.tag)
+        fun Fragment.showBottomSheetDialog(
+            dialog: BottomSheetDialogFragment,
+            callback: () -> Unit = {},
+        ) {
+            activity?.let { a ->
+                (a as? AppCompatActivity?)?.showBottomSheetDialog(
+                    dialog,
+                    callback
+                )
+            }
         }
 
-        fun AppCompatActivity.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
+        fun AppCompatActivity.showBottomSheetDialog(
+            dialog: BottomSheetDialogFragment,
+            callback: () -> Unit = {},
+        ) {
+            if (supportFragmentManager.isDestroyed) return
+            if (supportFragmentManager.findFragmentByTag(dialog.tag) != null) return
+            if (dialog.isAdded) return
             dialog.show(supportFragmentManager, dialog.tag)
+            dialog.dialog?.setOnDismissListener {
+                dialog.dialog?.setOnDismissListener(null)
+                callback()
+            }
         }
     }
 }

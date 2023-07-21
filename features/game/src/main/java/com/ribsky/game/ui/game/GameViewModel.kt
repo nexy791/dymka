@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ribsky.common.livedata.Event
-import com.ribsky.common.livedata.Resource
-import com.ribsky.common.livedata.ResultMapper.Companion.asResource
+import com.ribsky.core.Event
+import com.ribsky.core.Resource
+import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.exceptions.Exceptions
 import com.ribsky.domain.model.test.BaseTestModel
 import com.ribsky.domain.model.word.BaseWordModel

@@ -13,7 +13,31 @@ import com.ribsky.intro.navigation.IntroNavigationImpl
 import com.ribsky.lesson.nav.LessonNavigationImpl
 import com.ribsky.lessons.nav.LessonsNavigationImpl
 import com.ribsky.loader.nav.LoaderNavigationImpl
-import com.ribsky.navigation.features.*
+import com.ribsky.navigation.features.AccountNavigation
+import com.ribsky.navigation.features.AuthNavigation
+import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.FeedNavigation
+import com.ribsky.navigation.features.GameNavigation
+import com.ribsky.navigation.features.GamesNavigation
+import com.ribsky.navigation.features.IntroNavigation
+import com.ribsky.navigation.features.LessonNavigation
+import com.ribsky.navigation.features.LessonsNavigation
+import com.ribsky.navigation.features.LibraryNavigation
+import com.ribsky.navigation.features.LoaderNavigation
+import com.ribsky.navigation.features.LobbyNavigation
+import com.ribsky.navigation.features.MainNavigation
+import com.ribsky.navigation.features.PayWallNavigation
+import com.ribsky.navigation.features.ProfileNavigation
+import com.ribsky.navigation.features.SettingsNavigation
+import com.ribsky.navigation.features.ShareMessageNavigation
+import com.ribsky.navigation.features.ShareStoryNavigation
+import com.ribsky.navigation.features.ShareStreakNavigation
+import com.ribsky.navigation.features.ShareWordNavigation
+import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.TestNavigation
+import com.ribsky.navigation.features.TestsNavigation
+import com.ribsky.navigation.features.TopNavigation
+import com.ribsky.paywall.nav.PayWallNavigationImpl
 import com.ribsky.settings.nav.LibraryNavigationImpl
 import com.ribsky.settings.nav.SettingsNavigationImpl
 import com.ribsky.share.ui.nav.ShareMessageNavigationImpl
@@ -118,5 +142,9 @@ val navDi = module {
 
     factory<ShareStreakNavigation> {
         ShareStreakNavigationImpl()
+    }
+
+    factory<PayWallNavigation> {
+        PayWallNavigationImpl()
     }
 }

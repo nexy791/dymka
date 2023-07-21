@@ -8,7 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import com.ribsky.analytics.Analytics
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseSheet
+import com.ribsky.common.utils.sound.SoundHelper.playSound
 import com.ribsky.dialogs.databinding.DialogStreakPassedBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,6 +20,7 @@ class StreakPassedFactory :
 
     override fun initViews(): Unit = with(binding) {
         Analytics.logEvent(Analytics.Event.STREAK_DONE)
+        playSound(commonRaw.sound_streak)
         (imageView.drawable as AnimatedVectorDrawable).apply {
             start()
         }

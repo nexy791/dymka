@@ -5,10 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.domain.usecase.active.AddActiveLessonUseCase
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
 import com.ribsky.domain.usecase.lesson.LessonInteractor
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractor
@@ -23,7 +24,8 @@ class LessonsViewModel(
     private val addActiveLessonUseCase: AddActiveLessonUseCase,
     private val isContentExistsUseCase: IsContentExistsUseCase,
     private val setTodayStreakUseCase: SetTodayStreakUseCase,
-    private val isTodayStreakUseCase: IsTodayStreakUseCase
+    private val isTodayStreakUseCase: IsTodayStreakUseCase,
+    private val getDiscountUseCase: GetDiscountUseCase,
 ) : ViewModel() {
 
     private val _lessonsStatus: MutableLiveData<Resource<List<BaseLessonModel>>> =
@@ -63,6 +65,37 @@ class LessonsViewModel(
             addActiveLessonUseCase.invoke(id)
         }
     }
+
+    // TODO: refactor this
+    fun isNeedToShowPayWall(callback: (Result<String>) -> Unit) {
+        viewModelScope.launch {
+            val random = (0..2).random()
+            if (random != 0 && random != 1) {
+                callback.invoke(Result.failure(Throwable("Bad random")))
+                return@launch
+            }
+            if (subManager.isSub()) {
+                callback.invoke(Result.failure(Throwable("Bad Sub")))
+                return@launch
+            }
+
+            val isLifeTimeDiscount = subManager.isDiscount()
+            val isDiscountAvailable = getDiscountUseCase.invoke()
+
+            if (isLifeTimeDiscount) {
+                callback.invoke(Result.success("Назавжди ∞"))
+                return@launch
+            } else if (isDiscountAvailable.isSuccess) {
+                callback.invoke(Result.success("до ${isDiscountAvailable.getOrNull()}"))
+                return@launch
+            } else {
+                callback.invoke(Result.failure(Throwable(isDiscountAvailable.exceptionOrNull()?.message)))
+                return@launch
+            }
+
+        }
+    }
+
 
     val isSub get() = subManager.isSub()
 

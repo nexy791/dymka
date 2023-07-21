@@ -100,7 +100,8 @@ val uiDi = module {
             lessonInteractor = get(),
             paragraphInteractor = get(),
             setTodayStreakUseCase = get(),
-            isTodayStreakUseCase = get()
+            isTodayStreakUseCase = get(),
+            getDiscountUseCase = get()
         )
     }
 
@@ -124,7 +125,8 @@ val uiDi = module {
         ShopViewModel(
             subManager = get(),
             getDiscountUseCase = get(),
-            getUserUseCase = get()
+            getUserUseCase = get(),
+            topInteractor = get()
         )
     }
 
@@ -186,7 +188,8 @@ val uiDi = module {
             isContentExistsUseCase = get(),
             testInteractor = get(),
             setTodayStreakUseCase = get(),
-            isTodayStreakUseCase = get()
+            isTodayStreakUseCase = get(),
+            getDiscountUseCase = get()
         )
     }
 

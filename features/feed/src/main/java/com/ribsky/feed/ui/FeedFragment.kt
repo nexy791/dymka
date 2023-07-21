@@ -7,13 +7,13 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
-import com.ribsky.common.livedata.Resource.Status
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
-import com.ribsky.dialogs.factory.common.ProgressFactory
+import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.core.Resource.Status
+import com.ribsky.dialogs.factory.progress.ProgressFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
-import com.ribsky.dialogs.factory.limit.LimitFactory
-import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.feed.adapter.lm.FeedSpanSizeLookup
@@ -22,7 +22,11 @@ import com.ribsky.feed.adapter.prem.PremAdapter
 import com.ribsky.feed.adapter.streak.StreakAdapter
 import com.ribsky.feed.adapter.word.BestWordAdapter
 import com.ribsky.feed.databinding.FragmentFeedBinding
-import com.ribsky.navigation.features.*
+import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.LessonsNavigation
+import com.ribsky.navigation.features.ShareStreakNavigation
+import com.ribsky.navigation.features.ShareWordNavigation
+import com.ribsky.navigation.features.ShopNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -58,7 +62,10 @@ class FeedFragment :
 
         adapterPrem = PremAdapter() {
             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MAIN)
-            shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MAIN))
+            shopNavigation.navigate(
+                requireContext(),
+                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MAIN)
+            )
         }
 
         adapterParagraph = ParagraphAdapter { model ->
@@ -66,10 +73,12 @@ class FeedFragment :
         }
 
         adapterStreak = StreakAdapter {
-            shareStreakNavigation.navigate(requireContext(), ShareStreakNavigation.Params(
-                count = viewModel.currentStreak,
-                isDone = viewModel.isTodayStreak
-            ))
+            shareStreakNavigation.navigate(
+                requireContext(), ShareStreakNavigation.Params(
+                    count = viewModel.currentStreak,
+                    isDone = viewModel.isTodayStreak
+                )
+            )
         }
 
         this@FeedFragment.adapter =
@@ -77,6 +86,7 @@ class FeedFragment :
     }
 
     private fun processParagraphClick(model: BaseParagraphModel) {
+        playSound(commonRaw.sound_tap)
         if (model.isEmpty) {
             showBottomSheetDialog(ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog())
 //        } else if (!model.isCanBeOpened && !viewModel.isSub) {
@@ -124,6 +134,7 @@ class FeedFragment :
                     updateBestWordContent(listOf(result.data!!))
                     getParagraphs()
                 }
+
                 Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
@@ -133,6 +144,7 @@ class FeedFragment :
                     adapterPrem?.submitList(listOf(viewModel.isSub))
                     updateLessonsContent(result.data!!)
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }

@@ -2,7 +2,14 @@ package com.ribsky.billing.client
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import jp.alessandro.android.iab.*
+import jp.alessandro.android.iab.BillingApi
+import jp.alessandro.android.iab.BillingContext
+import jp.alessandro.android.iab.BillingException
+import jp.alessandro.android.iab.BillingProcessor
+import jp.alessandro.android.iab.Item
+import jp.alessandro.android.iab.ItemDetails
+import jp.alessandro.android.iab.PurchaseType
+import jp.alessandro.android.iab.Purchases
 import jp.alessandro.android.iab.handler.ItemDetailsHandler
 import jp.alessandro.android.iab.handler.PurchaseHandler
 import jp.alessandro.android.iab.handler.PurchasesHandler
@@ -20,6 +27,7 @@ class BillingClientImpl(
 
     override var billingProcessor: BillingProcessor? = null
     private var activity: AppCompatActivity? = null
+    private var handler: PurchaseHandler? = null
 
     override fun setup(activity: AppCompatActivity, handler: PurchaseHandler) {
         val builder = BillingContext.Builder()
@@ -29,6 +37,7 @@ class BillingClientImpl(
             .setLogger(SystemLogger())
         billingProcessor = BillingProcessor(builder.build(), handler)
         this.activity = activity
+        this.handler = handler
     }
 
     override fun purchase(sku: String, type: PurchaseType, callback: (Result<Unit>) -> Unit) {
@@ -87,5 +96,6 @@ class BillingClientImpl(
 
     override fun destroy() {
         billingProcessor?.release()
+        billingProcessor = null
     }
 }

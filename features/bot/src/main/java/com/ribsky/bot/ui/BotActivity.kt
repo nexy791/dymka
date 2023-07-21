@@ -28,13 +28,16 @@ import com.ribsky.bot.databinding.ActivityBotBinding
 import com.ribsky.bot.di.botDi
 import com.ribsky.bot.model.ChatModel
 import com.ribsky.common.alias.commonDrawable
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.ResourceExt.Companion.drawable
 import com.ribsky.common.utils.ext.ViewExt.Companion.copy
 import com.ribsky.common.utils.ext.ViewExt.Companion.hideKeyboard
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
+import com.ribsky.common.utils.sound.SoundHelper
+import com.ribsky.common.utils.sound.SoundHelper.playSound
 import com.ribsky.dialogs.base.ListDialog
 import com.ribsky.dialogs.factory.bot.BotInfoFactory
 import com.ribsky.dialogs.factory.bot.BotLimitFactory
@@ -266,6 +269,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
 
     private fun updateChat(item: List<ChatModel>) {
         adapter?.submitList(item) {
+            playSound(commonRaw.sound_message)
             binding.recyclerView.smoothScrollToPosition(item.size - 1)
         }
     }

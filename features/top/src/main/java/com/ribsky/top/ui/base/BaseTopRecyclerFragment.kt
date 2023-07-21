@@ -7,8 +7,8 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.common.base.BaseFragment
-import com.ribsky.common.livedata.Resource
-import com.ribsky.common.utils.ext.TimerExt.Companion.formatTimeDDMMMMHHMM
+import com.ribsky.core.Resource
+import com.ribsky.core.utils.DateUtils.Companion.formatDateDDMMMMHHMM
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.AccountNavigation
 import com.ribsky.navigation.features.ProfileNavigation
@@ -51,7 +51,7 @@ abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
         adapterTop = TopAdapter() { id ->
             profileNavigation.navigate(findNavController(), ProfileNavigation.Params(id))
         }
-        adapterHeader = TopHeaderAdapter(viewType, formatTimeDDMMMMHHMM(viewModel.time)) {
+        adapterHeader = TopHeaderAdapter(viewType, formatDateDDMMMMHHMM(viewModel.time)) {
             accountNavigation.navigate(findNavController())
         }
         adapterTopBottom = TopBottomAdapter()

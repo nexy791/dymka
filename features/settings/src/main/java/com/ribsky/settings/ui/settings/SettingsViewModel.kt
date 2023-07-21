@@ -3,7 +3,7 @@ package com.ribsky.settings.ui.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ribsky.common.livedata.Event
+import com.ribsky.core.Event
 import com.ribsky.domain.usecase.auth.SignOutUseCase
 import kotlinx.coroutines.launch
 

@@ -1,9 +1,11 @@
 package com.ribsky.lessons.dialogs.info
 
 import androidx.core.os.bundleOf
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseSheet
-import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ViewExt.Companion.getInitials
+import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.lessons.databinding.DialogLessonInfoBinding
@@ -25,6 +27,7 @@ class LessonInfoDialog(
             dismiss()
         }
         btnNext.setOnClickListener {
+            playSound(commonRaw.sound_celebration)
             callback(lessonId)
             dismiss()
         }

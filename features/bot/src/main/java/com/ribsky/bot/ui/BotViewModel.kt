@@ -13,8 +13,8 @@ import com.ribsky.bot.helper.reply.SmartReplyHelperImpl
 import com.ribsky.bot.helper.translator.TranslatorHelper
 import com.ribsky.bot.helper.translator.TranslatorHelperImpl
 import com.ribsky.bot.model.ChatModel
-import com.ribsky.common.livedata.Resource
-import com.ribsky.common.livedata.ResultMapper.Companion.asResource
+import com.ribsky.core.Resource
+import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.domain.usecase.bot.AddBotScoreUseCase
 import com.ribsky.domain.usecase.bot.CanBotReplyUseCase

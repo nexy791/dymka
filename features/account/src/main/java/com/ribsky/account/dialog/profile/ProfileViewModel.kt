@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.ribsky.account.dialog.base.BaseProfileViewModel
 import com.ribsky.account.model.LessonInfo
 import com.ribsky.account.model.UserModel
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.domain.usecase.bio.GetGoalByIdUseCase
 import com.ribsky.domain.usecase.bio.GetLevelByIdUseCase
 import com.ribsky.domain.usecase.lesson.LessonInteractor

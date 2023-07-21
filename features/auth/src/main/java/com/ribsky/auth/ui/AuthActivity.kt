@@ -8,12 +8,11 @@ import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.auth.databinding.ActivityAuthBinding
 import com.ribsky.auth.dialogs.DialogSign
-import com.ribsky.auth.utils.auth.helpers.AuthHelperFaceBookImpl
 import com.ribsky.auth.utils.auth.helpers.AuthHelperOneTapImpl
 import com.ribsky.auth.utils.auth.helpers.AuthHelperSignInImpl
 import com.ribsky.auth.utils.auth.helpers.base.AuthHelper
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.LoaderNavigation
@@ -29,7 +28,6 @@ class AuthActivity :
 
     private var authHelperOneTap: AuthHelper? = null
     private var authHelperSignIn: AuthHelper? = null
-    private var authHelperFacebook: AuthHelper? = null
 
     private var state: LoadingStateDelegate? = null
 
@@ -60,7 +58,6 @@ class AuthActivity :
             showBottomSheetDialog(DialogSign.newInstance {
                 when (it) {
                     DialogSign.Type.GOOGLE -> authHelperOneTap!!.auth()
-                    DialogSign.Type.FACEBOOK -> authHelperFacebook!!.auth()
                 }
             })
         }
@@ -76,13 +73,6 @@ class AuthActivity :
 
         authHelperSignIn = AuthHelperSignInImpl(
             registry = activityResultRegistry,
-            activity = this,
-            callback = this,
-        ).apply {
-            lifecycle.addObserver(this)
-        }
-
-        authHelperFacebook = AuthHelperFaceBookImpl(
             activity = this,
             callback = this,
         ).apply {
@@ -119,7 +109,6 @@ class AuthActivity :
         when (type) {
             AuthHelper.AuthType.ONE_TAP -> authHelperSignIn!!.auth()
             AuthHelper.AuthType.SIGN_IN -> showErrorDialog(error.localizedMessage)
-            AuthHelper.AuthType.FACEBOOK -> showErrorDialog(error.localizedMessage)
         }
     }
 
@@ -127,20 +116,7 @@ class AuthActivity :
         viewModel.clear()
         authHelperSignIn = null
         authHelperOneTap = null
-        authHelperFacebook = null
         state = null
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if ((authHelperFacebook as AuthHelperFaceBookImpl).callbackManager.onActivityResult(
-                requestCode,
-                resultCode,
-                data
-            )
-        ) {
-            return;
-        }
-    }
 }

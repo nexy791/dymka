@@ -3,7 +3,7 @@ package com.ribsky.share.ui.word
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.usecase.best.GetBestWordUseCase
 import kotlinx.coroutines.launch

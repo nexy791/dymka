@@ -23,6 +23,6 @@ data class TopApiModel(
 ) {
 
     enum class Type {
-        TEST, LESSON, STREAK
+        TEST, LESSON, STREAK, PREMIUM
     }
 }

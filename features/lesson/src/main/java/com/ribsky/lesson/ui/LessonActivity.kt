@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonDrawable
+import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.drawable
@@ -19,6 +19,9 @@ import com.ribsky.common.utils.ext.ViewExt.Companion.hideKeyboard
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.ext.ViewExt.Companion.showKeyboard
 import com.ribsky.common.utils.ext.ViewExt.Companion.snackbar
+import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.base.ListDialog
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.message.MessageActionFactory
@@ -164,6 +167,7 @@ class LessonActivity :
                     initAdapterAndRecycler(result.data!!.image)
                     getLesson(lessonId)
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage.orEmpty()) { finish() }
             }
         }
@@ -180,6 +184,7 @@ class LessonActivity :
                     disableButton()
                     state?.showLoading()
                 }
+
                 Resource.Status.SUCCESS -> state?.showContent()
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage.orEmpty()) { finish() }
             }
@@ -193,7 +198,17 @@ class LessonActivity :
         }
 
         successEvent.observe(this@LessonActivity) {
-            if (it) adapter?.disableActiveLastElement()
+            if (it) {
+                playSound(commonRaw.sound_success)
+                adapter?.disableActiveLastElement()
+            }
+        }
+
+        errorEvent.observe(this@LessonActivity) {
+            if (it) {
+                playSound(commonRaw.sound_error)
+                vibrate()
+            }
         }
 
         actionStatus.observe(this@LessonActivity) { result ->
@@ -205,6 +220,7 @@ class LessonActivity :
         val element = item.lastOrNull()
         if (element != null) {
             adapter?.submitList(item) {
+                playSound(commonRaw.sound_message)
                 updateKeyBoardAndBtnVisibility(element)
                 scroll(item.size - 1)
             }
@@ -223,22 +239,27 @@ class LessonActivity :
                 showKeyBoard()
                 disableButton()
             }
+
             is ChatModel.Text, is ChatModel.Image -> {
                 showButton()
                 enableButton()
             }
+
             is ChatModel.Chips -> {
                 showButton()
                 disableButton()
             }
+
             is ChatModel.Mistake -> {
                 showButton()
                 disableButton()
             }
+
             is ChatModel.Test -> {
                 showButton()
                 disableButton()
             }
+
             is ChatModel.Answer -> {}
             is ChatModel.TextFromUser -> {}
         }
@@ -270,7 +291,10 @@ class LessonActivity :
             showBottomSheetDialog(
                 SubPromptFactory {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_HINT)
-                    shopNavigation.navigate(this@LessonActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_HINT))
+                    shopNavigation.navigate(
+                        this@LessonActivity,
+                        ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_HINT)
+                    )
                 }.createDialog()
             )
         }
@@ -301,10 +325,12 @@ class LessonActivity :
     override fun onBackPressed() {
         showExitAlert(
             positiveAction = {
-                Analytics.logEvent(Analytics.Event.END_LESSON_UNFINISHED, bundle = bundleOf(
-                    "lesson_id" to lessonId,
-                    "errors" to viewModel.errorCount
-                ))
+                Analytics.logEvent(
+                    Analytics.Event.END_LESSON_UNFINISHED, bundle = bundleOf(
+                        "lesson_id" to lessonId,
+                        "errors" to viewModel.errorCount
+                    )
+                )
                 finish()
             },
             negativeAction = { }

@@ -17,11 +17,11 @@ import com.google.android.gms.nearby.connection.PayloadTransferUpdate
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.common.livedata.Resource
+import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
-import com.ribsky.common.utils.ext.TimerExt.Companion.formatTimeUntilFinished
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.core.utils.DateUtils.Companion.formatDateMMSS
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.test.BaseTestModel
 import com.ribsky.domain.model.word.BaseWordModel
@@ -224,7 +224,7 @@ class GameActivity :
         }
         timer = object : CountDownTimer(60 * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                binding.tvTimer.text = formatTimeUntilFinished(millisUntilFinished)
+                binding.tvTimer.text = formatDateMMSS(millisUntilFinished)
             }
 
             override fun onFinish() {

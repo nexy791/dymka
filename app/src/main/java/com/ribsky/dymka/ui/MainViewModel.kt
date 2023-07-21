@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.ribsky.billing.manager.SubManager
-import com.ribsky.common.livedata.Resource
-import com.ribsky.common.livedata.ResultMapper.Companion.asResource
+import com.ribsky.core.Resource
+import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCase

@@ -1,6 +1,8 @@
 package com.ribsky.dialogs.factory.limit
 
 import com.ribsky.common.alias.commonDrawable
+import com.ribsky.common.utils.ext.ViewExt.Companion.formatStars
+import com.ribsky.common.utils.ext.ViewExt.Companion.formatStarsV2
 import com.ribsky.dialogs.base.DialogFactory
 import com.ribsky.dialogs.base.SimpleDialog
 import com.ribsky.dialogs.base.SimpleDialog.Companion.icon
@@ -8,17 +10,20 @@ import com.ribsky.dialogs.base.SimpleDialog.Companion.negativeButton
 import com.ribsky.dialogs.base.SimpleDialog.Companion.positiveButton
 
 class LimitFactory(
+    private var stars: Int = 0,
+    private var needStars: Int = 0,
     private var onConfirm: () -> Unit = {},
     private var onDismiss: () -> Unit = {},
 ) : DialogFactory {
 
 
     override fun createDialog(): SimpleDialog = SimpleDialog.create {
-        title = "Не так швидко! \uD83E\uDD47"
+        val starsCount = needStars - stars
+        title = "$stars/$needStars зірок ⭐"
         description =
-            "Пройди спочатку безкоштовні уроки в попередній темі, або розблокуй з підпискою"
+            "Набери ще ${starsCount.formatStarsV2()} в минулій темі, щоб отримати доступ до нової теми. Або розблокуй усі теми з Преміум"
         icon {
-            icon = commonDrawable.ic_round_speed_24
+            icon = commonDrawable.ic_round_star_24
         }
         positiveButton {
             text = "Добре"

@@ -16,7 +16,18 @@ import com.ribsky.data.mapper.top.TopMapper
 import com.ribsky.data.mapper.top.TopMapperImpl
 import com.ribsky.lesson.mapper.factory.ChatMapperFactory
 import com.ribsky.lesson.mapper.factory.ChatMapperFactoryImpl
-import com.ribsky.lesson.mapper.mappers.*
+import com.ribsky.lesson.mapper.mappers.FindMistakesMapper
+import com.ribsky.lesson.mapper.mappers.FindMistakesMapperImpl
+import com.ribsky.lesson.mapper.mappers.ImageMapper
+import com.ribsky.lesson.mapper.mappers.ImageMapperImpl
+import com.ribsky.lesson.mapper.mappers.TestPickMapper
+import com.ribsky.lesson.mapper.mappers.TestPickMapperImpl
+import com.ribsky.lesson.mapper.mappers.TextMapper
+import com.ribsky.lesson.mapper.mappers.TextMapperImpl
+import com.ribsky.lesson.mapper.mappers.TranslateChipsMapper
+import com.ribsky.lesson.mapper.mappers.TranslateChipsMapperImpl
+import com.ribsky.lesson.mapper.mappers.TranslateTextMapper
+import com.ribsky.lesson.mapper.mappers.TranslateTextMapperImpl
 import org.koin.dsl.module
 
 val mapperDi = module {

@@ -23,6 +23,9 @@ data class UserApiModel(
     override var bioLevel: Int = -1,
     override var bioGoal: Int = -1,
 
+    override var starsCount: Int = 0,
+    override var stars: Map<String, Int> = HashMap(),
+
     ) : BaseUserModel {
 
     @JsonClass(generateAdapter = true)
@@ -41,6 +44,8 @@ data class UserApiModel(
         var streakLastDay: Long = 0,
         var bioLevel: Int = -1,
         var bioGoal: Int = -1,
+        var starsCount: Int = 0,
+        var stars: Map<String, Int> = HashMap(),
     ) {
         constructor(user: BaseUserModel) : this(
             name = user.name,
@@ -57,6 +62,8 @@ data class UserApiModel(
             streakLastDay = user.streakLastDay,
             bioLevel = user.bioLevel,
             bioGoal = user.bioGoal,
+            starsCount = user.starsCount,
+            stars = user.stars,
         )
 
         fun toMap(): Map<String, Any?> {
@@ -75,6 +82,8 @@ data class UserApiModel(
                 "streakLastDay" to streakLastDay,
                 "bioLevel" to bioLevel,
                 "bioGoal" to bioGoal,
+                "starsCount" to starsCount,
+                "stars" to stars,
             )
         }
     }
@@ -94,5 +103,7 @@ data class UserApiModel(
         streakLastDay = user.streakLastDay,
         bioLevel = user.bioLevel,
         bioGoal = user.bioGoal,
+        starsCount = user.starsCount,
+        stars = user.stars,
     )
 }

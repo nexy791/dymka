@@ -41,7 +41,8 @@ class ShopActivity :
     private val loaderNavigation: LoaderNavigation by inject()
 
     private val analyticEventFrom: Analytics.Event by lazy {
-        intent.getParcelableExtra(ShopNavigation.PARAM) ?: Analytics.Event.PREMIUM_BUY_FROM_UNKNOWN
+        intent.getParcelableExtra<ShopNavigation.Params>(ShopNavigation.PARAM)?.param
+            ?: Analytics.Event.PREMIUM_BUY_FROM_UNKNOWN
     }
 
     private val itemList = mutableListOf<Item>()

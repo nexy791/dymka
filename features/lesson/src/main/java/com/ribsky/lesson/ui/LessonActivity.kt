@@ -25,6 +25,7 @@ import com.ribsky.core.Resource
 import com.ribsky.dialogs.base.ListDialog
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.message.MessageActionFactory
+import com.ribsky.dialogs.factory.stars.StarsFactory
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.databinding.ActivityLessonBinding
@@ -48,9 +49,7 @@ class LessonActivity :
 
     private val args by lazy { intent.extras!! }
 
-    private val lessonId by lazy {
-        args.getString(LessonNavigation.KEY_LESSON_ID)!!
-    }
+    private val lessonId by lazy { args.getString(LessonNavigation.KEY_LESSON_ID)!! }
 
     override fun initView() {
         Analytics.logEvent(Analytics.Event.START_LESSON)
@@ -75,6 +74,14 @@ class LessonActivity :
         btnNext.setOnClickListener {
             disableButton()
             viewModel.skipText()
+        }
+        ratingBar.setOnClickListener {
+            showBottomSheetDialog(
+                StarsFactory(
+                    viewModel.starsStatus.value?.toInt() ?: 0,
+                    3
+                ).createDialog()
+            )
         }
         ivBack.setOnClickListener { onBackPressed() }
     }
@@ -211,8 +218,18 @@ class LessonActivity :
             }
         }
 
+        starsStatus.observe(this@LessonActivity) {
+            if (binding.ratingBar.getRating() != it) {
+                binding.ratingBar.setRating(it)
+            }
+        }
+
         actionStatus.observe(this@LessonActivity) { result ->
             binding.btnNext.text = result
+        }
+
+        progressStatus.observe(this@LessonActivity) { result ->
+            binding.progressBar.setProgressCompat(result, true)
         }
     }
 
@@ -313,6 +330,7 @@ class LessonActivity :
             RESULT_OK,
             Intent().apply {
                 putExtra(LessonNavigation.KEY_LESSON_RESULT, lessonId)
+                putExtra(LessonNavigation.KEY_STARS_RESULT, viewModel.starsStatus.value ?: 0f)
             }
         )
         finish()

@@ -19,6 +19,7 @@ data class CatModel(
             streak = topModel.streak,
             bioLevel = topModel.bioLevel,
             bioGoal = topModel.bioGoal,
+            starsCount = topModel.starsCount,
         )
     )
 

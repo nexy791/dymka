@@ -21,7 +21,8 @@ class ReplyAdapter(
     }
 
     fun setScore(it: Int) {
-        val default = listOf("\uD83D\uDE3A $it відповідей")
+        val score = if (it < 0) 0 else it
+        val default = listOf("\uD83D\uDE3A $score відповідей")
         val list = currentList.toMutableList()
         submitList(
             default + list.apply {

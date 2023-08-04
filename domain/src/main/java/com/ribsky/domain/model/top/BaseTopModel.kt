@@ -10,4 +10,6 @@ interface BaseTopModel {
     var id: Int
     var bioLevel: Int
     var bioGoal: Int
+
+    var starsCount: Int
 }

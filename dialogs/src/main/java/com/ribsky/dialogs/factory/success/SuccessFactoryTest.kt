@@ -3,7 +3,6 @@ package com.ribsky.dialogs.factory.success
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.alias.commonRaw
-import com.ribsky.common.utils.sound.SoundHelper
 import com.ribsky.common.utils.sound.SoundHelper.playSound
 import com.ribsky.dialogs.base.DialogFactory
 import com.ribsky.dialogs.base.LargeImageDialog

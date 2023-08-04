@@ -12,6 +12,7 @@ import com.ribsky.domain.repository.*
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
+// todo refactor
 class UserServiceImpl(
     private val database: FirebaseDatabase,
     private val sharedPreferences: SharedPreferences,
@@ -48,6 +49,8 @@ class UserServiceImpl(
             streakLastDay = streakRepository.getStreakLastDay()
             bioLevel = bioRepository.getLevel() ?: -1
             bioGoal = bioRepository.getGoal() ?: -1
+            starsCount = activeRepository.getStars().values.sum()
+            stars = activeRepository.getStars()
         }
     }.getOrNull()
 
@@ -64,6 +67,8 @@ class UserServiceImpl(
                             streakLastDay = streakRepository.getStreakLastDay()
                             bioLevel = bioRepository.getLevel() ?: -1
                             bioGoal = bioRepository.getGoal() ?: -1
+                            starsCount = activeRepository.getStars().values.sum()
+                            stars = activeRepository.getStars()
                         }.toMap()
                     ).await()
                 setUserToCache(user.apply { version += 1 })
@@ -92,6 +97,8 @@ class UserServiceImpl(
 
         activeRepository.setTestScore(user.score)
         activeRepository.setActiveLessons(user.lessons.transformToListString())
+        activeRepository.setStars(user.stars)
+
         saveRepository.setWordsList(user.saved.transformToListString())
     }
 

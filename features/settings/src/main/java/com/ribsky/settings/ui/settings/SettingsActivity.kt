@@ -58,8 +58,12 @@ class SettingsActivity :
             Settings.Type.SHARE -> shareApp()
             Settings.Type.SUPPORT -> {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_SETTINGS)
-                shopNavigation.navigate(this@SettingsActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_SETTINGS))
+                shopNavigation.navigate(
+                    this@SettingsActivity,
+                    ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_SETTINGS)
+                )
             }
+
             Settings.Type.CONTACT -> contact()
             Settings.Type.RATE -> openAppPage()
             Settings.Type.UPDATE -> openAppPage()

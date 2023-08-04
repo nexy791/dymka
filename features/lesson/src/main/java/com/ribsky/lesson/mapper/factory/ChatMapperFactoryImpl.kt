@@ -1,7 +1,12 @@
 package com.ribsky.lesson.mapper.factory
 
 import com.ribsky.domain.model.content.BaseContentModel.BaseContentType
-import com.ribsky.lesson.mapper.mappers.*
+import com.ribsky.lesson.mapper.mappers.FindMistakesMapper
+import com.ribsky.lesson.mapper.mappers.ImageMapper
+import com.ribsky.lesson.mapper.mappers.TestPickMapper
+import com.ribsky.lesson.mapper.mappers.TextMapper
+import com.ribsky.lesson.mapper.mappers.TranslateChipsMapper
+import com.ribsky.lesson.mapper.mappers.TranslateTextMapper
 import com.ribsky.lesson.model.ChatModel
 
 class ChatMapperFactoryImpl(

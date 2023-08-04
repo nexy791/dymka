@@ -52,7 +52,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/e_ukraine_regular"
         android:gravity="center"
-        android:text="Щоб продовжити, необхідно\nмати преміум-акаунт"
+        android:text="Щоб продовжити, необхідно\nмати Преміум-акаунт"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="#000"

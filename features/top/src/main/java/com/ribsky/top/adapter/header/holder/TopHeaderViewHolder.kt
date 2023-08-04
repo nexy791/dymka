@@ -39,21 +39,24 @@ class TopHeaderViewHolder(private val binding: ItemProfileBinding) :
             memoryCachePolicy(CachePolicy.ENABLED)
         }
         when (type) {
-            ViewType.LESSONS -> {
-                btnPlace.apply {
-                    text = item.lessonsCount.toString()
-                    setIconResource(commonDrawable.ic_outline_history_edu_24)
-                }
+            ViewType.LESSONS -> btnPlace.apply {
+                text = item.lessonsCount.toString()
+                setIconResource(commonDrawable.ic_outline_history_edu_24)
             }
-            ViewType.SCORES -> {
-                btnPlace.apply {
-                    text = item.score.toString()
-                    setIconResource(commonDrawable.ic_outline_collections_bookmark_24)
-                }
+
+            ViewType.SCORES -> btnPlace.apply {
+                text = item.score.toString()
+                setIconResource(commonDrawable.ic_outline_collections_bookmark_24)
             }
-            ViewType.STREAK ->btnPlace.apply {
+
+            ViewType.STREAK -> btnPlace.apply {
                 text = item.streak.toString()
                 setIconResource(commonDrawable.ic_round_local_fire_department_24)
+            }
+
+            ViewType.STARS -> btnPlace.apply {
+                text = item.starsCount.toString()
+                setIconResource(commonDrawable.ic_round_star_border_24)
             }
         }
     }

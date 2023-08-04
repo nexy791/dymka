@@ -2,7 +2,7 @@ package com.ribsky.data.service.offline.time
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import java.util.*
+import java.util.Date
 
 class TimeServiceImpl(
     private val sharedPreferences: SharedPreferences,
@@ -25,6 +25,7 @@ class TimeServiceImpl(
     override fun getLastTimeUpdate(): Long = sharedPreferences.getLong(KEY_LAST_UPDATE, 0)
 
     private companion object {
-        private const val KEY_LAST_UPDATE = "last_update"
+        private const val KEY_VERSION = "1.0.0"
+        private const val KEY_LAST_UPDATE = "last_update_$KEY_VERSION"
     }
 }

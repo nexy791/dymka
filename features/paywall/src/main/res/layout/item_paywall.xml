@@ -4,10 +4,10 @@
     style="@style/Widget.Material3.CardView.Outlined"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:strokeColor="#4DFFFFFF"
-    app:strokeWidth="1dp"
     app:cardBackgroundColor="#2c3377"
-    app:cardCornerRadius="16dp">
+    app:cardCornerRadius="16dp"
+    app:strokeColor="#4DFFFFFF"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -47,8 +47,8 @@
             android:layout_marginStart="16sp"
             android:fontFamily="@font/e_ukraine_medium"
             android:text="Тести 📚"
-            android:textColor="@color/white"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/tv_desc"
             app:layout_constraintStart_toEndOf="@+id/imageViewBg"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,11 +59,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16sp"
-            android:textColor="#CBFFFFFF"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/e_ukraine_medium"
             android:text="Доступ до всіх тестів"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="#CBFFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewBg"

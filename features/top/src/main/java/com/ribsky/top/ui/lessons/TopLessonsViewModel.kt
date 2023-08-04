@@ -7,6 +7,7 @@ import com.ribsky.domain.usecase.top.TopInteractor
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import com.ribsky.top.model.TopModel
 import com.ribsky.top.ui.base.BaseTopViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TopLessonsViewModel(
@@ -15,7 +16,8 @@ class TopLessonsViewModel(
     private val topInteractor: TopInteractor,
 ) : BaseTopViewModel(getUserUseCase, getLastTimeUseCase) {
 
-    override val type: TopModel.ViewType = TopModel.ViewType.LESSON
+    override val type: TopModel.ViewType = //TopModel.ViewType.LESSON
+        TopModel.ViewType.STARS
 
     override fun loadUsers() {
         viewModelScope.launch {
@@ -28,6 +30,7 @@ class TopLessonsViewModel(
                         type
                     )
                 }
+            delay(500)
             _usersStatus.value = Resource.success(users)
         }
     }

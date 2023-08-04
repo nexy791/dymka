@@ -151,22 +151,21 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:strokeWidth="0dp"
         android:layout_margin="16dp"
         android:backgroundTint="#8DC9F9"
         android:fontFamily="@font/e_ukraine_medium"
         android:text="Поділитись"
-        android:textSize="14sp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:textColor="#ffffff"
+        android:textSize="14sp"
         app:icon="@drawable/ic_outline_share_24"
         app:iconGravity="textEnd"
         app:iconSize="18sp"
         app:iconTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeWidth="0dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,9 +2,7 @@ package com.ribsky.feed.adapter.streak
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.ribsky.feed.adapter.diff.DiffCallbackPrem
 import com.ribsky.feed.adapter.diff.DiffCallbackStreak
-import com.ribsky.feed.adapter.prem.holder.PremViewHolder
 import com.ribsky.feed.adapter.streak.holder.StreakViewHolder
 
 class StreakAdapter(private val onClickListener: OnClickListener) :

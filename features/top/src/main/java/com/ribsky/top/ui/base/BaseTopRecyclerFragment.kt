@@ -3,10 +3,9 @@ package com.ribsky.top.ui.base
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
-import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.common.base.BaseFragment
+import com.ribsky.common.utils.ext.ViewExt.Companion.hide
+import com.ribsky.common.utils.ext.ViewExt.Companion.show
 import com.ribsky.core.Resource
 import com.ribsky.core.utils.DateUtils.Companion.formatDateDDMMMMHHMM
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
@@ -26,7 +25,6 @@ abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
     private val accountNavigation: AccountNavigation by inject()
     private val profileNavigation: ProfileNavigation by inject()
 
-    private var state: LoadingStateDelegate? = null
     private var adapterHeader: TopHeaderAdapter? = null
     private var adapterTop: TopAdapter? = null
     private var adapterTopBottom: TopBottomAdapter? = null
@@ -35,16 +33,8 @@ abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
     abstract val viewType: ViewType
 
     override fun initView(): Unit = with(binding) {
-        initState()
         initAdapter()
         initRecycler()
-    }
-
-    private fun initState() = with(binding) {
-        state = LoadingStateDelegate(recyclerView, progressBar).apply {
-            TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-            showLoading()
-        }
     }
 
     private fun initAdapter() {
@@ -67,39 +57,52 @@ abstract class BaseTopRecyclerFragment<T : BaseTopViewModel>() :
 
     override fun initObs() = with(viewModel) {
         loadUsers()
-        userStatus.observe(viewLifecycleOwner) {
+        usersStatus.observe(viewLifecycleOwner) {
             when (it.status) {
-                Resource.Status.LOADING -> {
-                    TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-                    state?.showLoading()
-                }
+                Resource.Status.LOADING -> loadContent()
                 Resource.Status.SUCCESS -> {
-                    TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-                    adapterHeader?.submitList(listOf(it.data!!))
-                    state?.showContent()
+                    adapterTopBottom?.submitList(listOf(Unit))
+                    adapterTop?.submitList(it.data) {
+                        getUser()
+                    }
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
-
-        usersStatus.observe(viewLifecycleOwner) {
+        userStatus.observe(viewLifecycleOwner) {
             when (it.status) {
-                Resource.Status.LOADING -> {
-                    TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-                    state?.showLoading()
-                }
+                Resource.Status.LOADING -> {}
                 Resource.Status.SUCCESS -> {
-                    adapterTop?.submitList(it.data)
-                    adapterTopBottom?.submitList(listOf(Unit))
-                    getUser()
+                    adapterHeader?.submitList(listOf(it.data!!)) {
+                        showContent()
+                    }
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
     }
 
+
+    private fun loadContent() {
+        binding.recyclerView.hide()
+        binding.placeholder.root.apply {
+            startShimmer()
+            show()
+        }
+    }
+
+    private fun showContent() {
+        binding.placeholder.root.apply {
+            stopShimmer()
+            hide()
+        }
+        binding.recyclerView.show()
+    }
+
+
     override fun clear() {
-        state = null
         adapterHeader = null
         adapterTop = null
         adapterTopBottom = null

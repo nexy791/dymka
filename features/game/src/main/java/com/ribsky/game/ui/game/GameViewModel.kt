@@ -173,14 +173,17 @@ class GameViewModel(
             GameStatus.FINISHED -> {
                 _gameStatus.value = GameStatus.OPPONENT_READY
             }
+
             GameStatus.NONE -> {
                 _gameStatus.value = GameStatus.OPPONENT_READY
                 _payloadStatus.value = PayLoadModel.Type(PayLoadModel.Type.SubType.READY)
             }
+
             GameStatus.YOU_READY -> {
                 _gameStatus.value = GameStatus.IN_GAME
                 _payloadStatus.value = PayLoadModel.Type(PayLoadModel.Type.SubType.START)
             }
+
             else -> {}
         }
     }
@@ -208,14 +211,17 @@ class GameViewModel(
                 _gameStatus.value = GameStatus.YOU_READY
                 _payloadStatus.value = PayLoadModel.Type(PayLoadModel.Type.SubType.READY)
             }
+
             GameStatus.NONE -> {
                 _gameStatus.value = GameStatus.YOU_READY
                 _payloadStatus.value = PayLoadModel.Type(PayLoadModel.Type.SubType.READY)
             }
+
             GameStatus.OPPONENT_READY -> {
                 _gameStatus.value = GameStatus.IN_GAME
                 _payloadStatus.value = PayLoadModel.Type(PayLoadModel.Type.SubType.START)
             }
+
             GameStatus.YOU_READY -> {}
             GameStatus.IN_GAME -> {}
         }

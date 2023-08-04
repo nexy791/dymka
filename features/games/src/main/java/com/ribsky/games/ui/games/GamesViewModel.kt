@@ -12,6 +12,7 @@ import com.ribsky.domain.usecase.file.IsContentExistsUseCase
 import com.ribsky.domain.usecase.test.TestInteractor
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import com.ribsky.games.model.GameModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class GamesViewModel(
@@ -45,6 +46,7 @@ class GamesViewModel(
             val list = testInteractor.getTests().map { game ->
                 GameModel(game, isTestActive(game.hasPrem))
             }.filter { it.id != "fav" }
+            delay(500)
             _testStatus.value =
                 Resource.success(list.sortedBy { it.sort })
         }

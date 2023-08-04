@@ -21,7 +21,7 @@ class LargeImageDialog(
         var isCancelable: Boolean = true,
         var onDismiss: (() -> Unit)? = null,
 
-    )
+        )
 
     data class ButtonConfig(
         var text: String = "",

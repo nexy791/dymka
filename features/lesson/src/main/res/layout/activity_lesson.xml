@@ -60,12 +60,28 @@
                     android:text="Урок"
                     android:textAppearance="@style/ActionTitle" />
 
+                <studio.zewei.willy.animationratingbar.AnimationRatingBar
+                    android:id="@+id/rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    app:emptyIcon="@drawable/ic_round_rating_star_border_24"
+                    app:filledIcon="@drawable/ic_round_rating_star_24"
+                    app:iconAnimationMode="turnRound"
+                    app:iconSize="24dp"
+                    app:iconSpacingBottom="0dp"
+                    app:iconSpacingEnd="0dp"
+                    app:iconSpacingStart="0sp"
+                    app:iconSpacingTop="0dp"
+                    app:isIndicatorBar="true"
+                    app:numStars="3"
+                    app:rating="0" />
 
                 <ImageView
-                    android:layout_gravity="center_vertical"
                     android:id="@+id/ic_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_round_help_outline_24"
                     app:tint="@color/md_theme_light_primary" />
 
@@ -74,7 +90,6 @@
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -86,6 +101,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:progress="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:trackCornerRadius="16dp" />
+
 
     <FrameLayout
         android:id="@+id/frame"

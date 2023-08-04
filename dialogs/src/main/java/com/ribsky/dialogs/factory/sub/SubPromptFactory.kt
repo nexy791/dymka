@@ -13,7 +13,7 @@ class SubPromptFactory(
 
     override fun createDialog(): SimpleDialog = SimpleDialog.create {
         title = "Преміум контент \uD83C\uDF1F"
-        description = "Щоб продовжити, необхідно\nмати преміум-акаунт"
+        description = "Щоб продовжити, необхідно\nмати Преміум-акаунт"
         imageColor = Color.parseColor("#2c3377")
         icon {
             icon = commonDrawable.ic_round_hotel_class_24

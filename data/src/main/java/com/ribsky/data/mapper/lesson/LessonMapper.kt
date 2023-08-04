@@ -17,6 +17,7 @@ class LessonMapperImpl : LessonMapper {
             content = input.content,
             hasPrem = input.hasPrem,
             isDone = false,
+            stars = 0,
         )
     }
 }

@@ -16,6 +16,9 @@ class ParagraphMapperImpl : ParagraphMapper {
             name = input.name,
             percent = 0f,
             isEmpty = false,
+            stars = input.stars,
+            isEnoughStars = false,
+            starsHave = 0
         )
     }
 }

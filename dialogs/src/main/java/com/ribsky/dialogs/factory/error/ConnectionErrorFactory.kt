@@ -14,7 +14,7 @@ class ConnectionErrorFactory(
 
     override fun createDialog(): SimpleDialog = SimpleDialog.create {
         title = "Немає інтернету \uD83D\uDCF6"
-        description = "Перевірте підключення до інтернету та спробуйте ще раз"
+        description = "Перевірте підключення до інтернету та спробуй ще раз"
         icon {
             icon = commonDrawable.ic_round_wifi_off_24
         }

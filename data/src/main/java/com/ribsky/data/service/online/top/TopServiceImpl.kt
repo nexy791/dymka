@@ -17,11 +17,11 @@ class TopServiceImpl(
                 db.reference.root.child("users").orderByChild("score").limitToLast(50).get().await()
                     .getValue(type)!!.values.map { it.copy(type = TopApiModel.Type.TEST) }
             )
-            users.addAll(
-                db.reference.root.child("users").orderByChild("lessonsCount").limitToLast(50).get()
-                    .await()
-                    .getValue(type)!!.values.map { it.copy(type = TopApiModel.Type.LESSON) }
-            )
+//            users.addAll(
+//                db.reference.root.child("users").orderByChild("lessonsCount").limitToLast(50).get()
+//                    .await()
+//                    .getValue(type)!!.values.map { it.copy(type = TopApiModel.Type.LESSON) }
+//            )
             users.addAll(
                 db.reference.root.child("users").orderByChild("streak").limitToLast(50).get()
                     .await()
@@ -31,6 +31,11 @@ class TopServiceImpl(
                 db.reference.root.child("users").orderByChild("hasPrem").limitToLast(50).get()
                     .await()
                     .getValue(type)!!.values.map { it.copy(type = TopApiModel.Type.PREMIUM) }
+            )
+            users.addAll(
+                db.reference.root.child("users").orderByChild("starsCount").limitToLast(50).get()
+                    .await()
+                    .getValue(type)!!.values.map { it.copy(type = TopApiModel.Type.STAR) }
             )
             users
         }

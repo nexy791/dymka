@@ -20,9 +20,11 @@ data class TopApiModel(
 
     var bioLevel: Int = -1,
     var bioGoal: Int = -1,
+
+    var starsCount: Int = 0,
 ) {
 
     enum class Type {
-        TEST, LESSON, STREAK, PREMIUM
+        TEST, LESSON, STREAK, PREMIUM, STAR
     }
 }

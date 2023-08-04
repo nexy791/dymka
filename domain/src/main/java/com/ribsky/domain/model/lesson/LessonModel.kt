@@ -9,4 +9,5 @@ class LessonModel(
     override val content: String,
     override val hasPrem: Boolean,
     override var isDone: Boolean,
+    override var stars: Int,
 ) : BaseLessonModel

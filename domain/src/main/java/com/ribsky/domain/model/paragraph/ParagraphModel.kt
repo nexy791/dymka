@@ -8,5 +8,7 @@ data class ParagraphModel(
     override val name: String,
     override var percent: Float,
     override var isEmpty: Boolean,
-    override var isCanBeOpened: Boolean = false,
+    override var stars: Int = 0,
+    override var starsHave: Int = 0,
+    override var isEnoughStars: Boolean = false,
 ) : BaseParagraphModel

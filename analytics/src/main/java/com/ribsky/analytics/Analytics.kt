@@ -57,6 +57,8 @@ object Analytics {
         object PREMIUM_FROM_SETTINGS : Event("premium_from_settings")
         object PREMIUM_FROM_PAYWALL : Event("premium_from_paywall")
 
+        object PREMIUM_FROM_STARS : Event("premium_from_stars")
+
         object PREMIUM_BUY_FROM_LESSON : Event("premium_buy_from_lesson")
         object PREMIUM_BUY_FROM_WORDS : Event("premium_buy_from_words")
         object PREMIUM_BUY_FROM_LIKE : Event("premium_buy_from_like")
@@ -68,6 +70,9 @@ object Analytics {
         object PREMIUM_BUY_FROM_MENU : Event("premium_buy_from_menu")
         object PREMIUM_BUY_FROM_SETTINGS : Event("premium_buy_from_settings")
         object PREMIUM_BUY_FROM_PAYWALL : Event("premium_buy_from_paywall")
+
+        object PREMIUM_BUY_FROM_STARS : Event("premium_buy_from_stars")
+
         object PREMIUM_BUY_FROM_UNKNOWN : Event("premium_buy_from_unknown")
 
         object LESSON_ANSWER_CORRECT : Event("lesson_answer_correct")
@@ -88,6 +93,8 @@ object Analytics {
         object STREAK_OPEN : Event("streak_open")
 
         object STREAK_DONE : Event("streak_done")
+
+        class STARS_COLLECTED(val stars: Int) : Event("stars_collected_$stars")
 
         object ERROR : Event("error")
 

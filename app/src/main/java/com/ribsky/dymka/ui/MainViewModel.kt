@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
-import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCase
 import com.ribsky.domain.usecase.config.GetDiscountUseCase
@@ -44,38 +44,44 @@ class MainViewModel(
         SplitInstallStateUpdatedListener { state ->
             if (state.sessionId() == dynamicModule.sessionId) {
                 when (state.status()) {
-                    SplitInstallSessionStatus.DOWNLOADING -> {
+                    SplitInstallSessionStatus.DOWNLOADING ->
                         _dynamicModuleStatus.value = DynamicModule.State.DOWNLOADING
-                    }
+
                     SplitInstallSessionStatus.INSTALLED -> {
                         dynamicModule.unregisterListener(listener)
                         _dynamicModuleStatus.value = DynamicModule.State.INSTALL_FINISHED
                     }
-                    SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
-                        _dynamicModuleStatus.value =
-                            DynamicModule.State.REQUIRES_USER_CONFIRMATION(state)
-                    }
+
+                    SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> _dynamicModuleStatus.value =
+                        DynamicModule.State.REQUIRES_USER_CONFIRMATION(state)
+
+
                     SplitInstallSessionStatus.FAILED -> {
                         dynamicModule.unregisterListener(listener)
                         _dynamicModuleStatus.value = DynamicModule.State.FAILED(Exception())
                     }
+
                     SplitInstallSessionStatus.CANCELED -> {
                         dynamicModule.unregisterListener(listener)
                         _dynamicModuleStatus.value = DynamicModule.State.NONE
                     }
-                    SplitInstallSessionStatus.CANCELING -> {
-                        _dynamicModuleStatus.value = DynamicModule.State.NONE
-                    }
+
+                    SplitInstallSessionStatus.CANCELING -> _dynamicModuleStatus.value =
+                        DynamicModule.State.NONE
+
+
                     SplitInstallSessionStatus.DOWNLOADED -> {
                     }
-                    SplitInstallSessionStatus.INSTALLING -> {
-                        _dynamicModuleStatus.value = DynamicModule.State.DOWNLOADING
-                    }
+
+                    SplitInstallSessionStatus.INSTALLING -> _dynamicModuleStatus.value =
+                        DynamicModule.State.DOWNLOADING
+
                     SplitInstallSessionStatus.PENDING -> {
                     }
-                    SplitInstallSessionStatus.UNKNOWN -> {
-                        _dynamicModuleStatus.value = DynamicModule.State.NONE
-                    }
+
+                    SplitInstallSessionStatus.UNKNOWN -> _dynamicModuleStatus.value =
+                        DynamicModule.State.NONE
+
                 }
             }
         }

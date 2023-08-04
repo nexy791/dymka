@@ -10,4 +10,5 @@ data class TopModel(
     override val streak: Int,
     override var bioLevel: Int,
     override var bioGoal: Int,
+    override var starsCount: Int,
 ) : BaseTopModel

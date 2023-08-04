@@ -29,6 +29,7 @@ import com.ribsky.test.ui.TestDetailsViewModel
 import com.ribsky.tests.dialogs.info.TestInfoViewModel
 import com.ribsky.tests.ui.TestsViewModel
 import com.ribsky.top.ui.lessons.TopLessonsViewModel
+import com.ribsky.top.ui.stars.TopStarsViewModel
 import com.ribsky.top.ui.streak.TopStreakViewModel
 import com.ribsky.top.ui.tests.TopTestsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -57,13 +58,11 @@ val uiDi = module {
     viewModel {
         AccountViewModel(
             getUserUseCase = get(),
-            getTestScoreUseCase = get(),
-            getActiveLessonsUseCase = get(),
             lessonInteractor = get(),
             getStreakUseCase = get(),
-            isTodayStreakUseCase = get(),
-            getGoalBioUseCase = get(),
-            getLevelBioUseCase = get()
+            getLevelByIdUseCase = get(),
+            getGoalByIdUseCase = get(),
+            isTodayStreakUseCase = get()
         )
     }
 
@@ -101,7 +100,8 @@ val uiDi = module {
             paragraphInteractor = get(),
             setTodayStreakUseCase = get(),
             isTodayStreakUseCase = get(),
-            getDiscountUseCase = get()
+            getDiscountUseCase = get(),
+            addStarsToLessonUseCase = get()
         )
     }
 
@@ -115,6 +115,14 @@ val uiDi = module {
 
     viewModel {
         TopLessonsViewModel(
+            getUserUseCase = get(),
+            getLastTimeUseCase = get(),
+            topInteractor = get()
+        )
+    }
+
+    viewModel {
+        TopStarsViewModel(
             getUserUseCase = get(),
             getLastTimeUseCase = get(),
             topInteractor = get()

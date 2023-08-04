@@ -17,5 +17,6 @@ interface LessonNavigation :
     companion object {
         const val KEY_LESSON_ID = "lessonId"
         const val KEY_LESSON_RESULT = "lessonResult"
+        const val KEY_STARS_RESULT = "starsResult"
     }
 }

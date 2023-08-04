@@ -38,6 +38,7 @@ android {
 dependencies {
 
     api(project(":core"))
+    api(project(":libs:AnimationRatingBar"))
 
     api(Deps.androidxCore)
     api(Deps.androidxAppCompat)
@@ -116,6 +117,7 @@ dependencies {
     api(Deps.deliveryDynamic) {
         exclude(group = "com.google.android.play", module = "core")
     }
+
 
     api(Deps.balloon)
 }

@@ -4,10 +4,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ribsky.domain.model.top.BaseTopModel
 import com.ribsky.shop.adapter.cats.diff.CatsDiffCallback
-import com.ribsky.shop.adapter.cats.CatsViewHolder
 
 class CatsAdapter(
-    private val onCatClick: (BaseTopModel) -> Unit
+    private val onCatClick: (BaseTopModel) -> Unit,
 ) : ListAdapter<BaseTopModel, CatsViewHolder>(CatsDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatsViewHolder =

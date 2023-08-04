@@ -15,4 +15,6 @@ interface TopRepository {
     suspend fun isNotEmpty(): Boolean
     suspend fun getUsersByStreak(): List<BaseTopModel>
     suspend fun getUsersByPremium(): List<BaseTopModel>
+
+    suspend fun getUsersByStars(): List<BaseTopModel>
 }

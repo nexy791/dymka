@@ -17,10 +17,10 @@ import com.google.android.gms.nearby.connection.PayloadTransferUpdate
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.core.Resource
 import com.ribsky.core.utils.DateUtils.Companion.formatDateMMSS
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.domain.model.test.BaseTestModel
@@ -124,10 +124,12 @@ class GameActivity :
                 initTimer()
                 showContent()
             }
+
             GameStatus.FINISHED -> {
                 timer?.cancel()
                 getWinner()
             }
+
             else -> {}
         }
     }

@@ -72,10 +72,10 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"
-        android:paddingTop="8dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_dialog"
         android:orientation="vertical"
+        android:paddingTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -83,11 +83,11 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/materialTextView"
             android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/e_ukraine_regular"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/e_ukraine_regular"
             android:text="Для отримання знижки зроби репост в сторіс і не забудь відмітити @dymka.me\n\nНе забудь відкрити профіль, щоб ми могли перевірити, що ти зробив репост 📸"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintBottom_toTopOf="@+id/btn_next"
@@ -98,10 +98,9 @@
             android:id="@+id/btn_more"
             style="@style/Widget.Material3.Button.TextButton.Icon"
             android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            app:strokeWidth="1dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/e_ukraine_regular"
             android:text="Інші способи"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
@@ -112,7 +111,8 @@
             app:iconTint="#202020"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_description"
+            app:strokeWidth="1dp" />
 
 
         <com.google.android.material.button.MaterialButton

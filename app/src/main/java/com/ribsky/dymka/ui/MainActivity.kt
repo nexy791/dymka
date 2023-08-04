@@ -143,7 +143,6 @@ class MainActivity :
                         balloon.showAlignBottom(binding.btnPremium, yOff = 8)
                     }
                 }
-
                 else -> {}
             }
         }
@@ -187,12 +186,16 @@ class MainActivity :
     }
 
     private fun navigateToBot() {
-        startActivity(
-            Intent(
-                this@MainActivity,
-                Class.forName("com.ribsky.bot.ui.BotActivity")
+        try {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    Class.forName("com.ribsky.bot.ui.BotActivity")
+                )
             )
-        )
+        } catch (e: Exception) {
+            showErrorDialog("${e.localizedMessage.orEmpty()}\nЯкщо помилка повторюється, спробуй перевстановити застосунок")
+        }
     }
 
     private fun updateUi(user: BaseUserModel) = with(binding) {

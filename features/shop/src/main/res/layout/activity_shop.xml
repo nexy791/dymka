@@ -419,6 +419,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    custom:shopColor="#80CBC4"
+                    custom:shopDescription="Проходь уроки в будь-якому порядку"
+                    custom:shopIcon="⭐"
+                    custom:shopTitle="Зірочки ⭐" />
+
+                <com.ribsky.shop.view.ItemShopView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     custom:shopColor="#FFECB3"
                     custom:shopDescription="Менша ніж один урок у репетитора"
                     custom:shopIcon="🎁"

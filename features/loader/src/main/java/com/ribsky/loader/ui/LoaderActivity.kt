@@ -8,8 +8,8 @@ import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialFade
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
+import com.ribsky.core.Resource
 import com.ribsky.domain.exceptions.Exceptions
 import com.ribsky.loader.databinding.ActivityLoaderBinding
 import com.ribsky.navigation.features.AuthNavigation
@@ -52,7 +52,7 @@ class LoaderActivity :
         "Коли забудеш рідну мову, забудеш душу ти свою\n\n- Володимир Сосюра",
         "А мова – це душа народу, народ без мови – не народ\n\n- Володимир Сосюра",
         "Слова – це кольорові камінці. Мало їх назбирати – треба ще з них навчитися узори викладати\n\n- Iрина Вiльде"
-        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()

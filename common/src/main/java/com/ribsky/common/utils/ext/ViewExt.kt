@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
@@ -99,30 +101,40 @@ class ViewExt {
         fun Int.formatDays(): String =
             if (this == 1) "$this день" else "$this днів"
 
-        fun Fragment.showBottomSheetDialog(
-            dialog: BottomSheetDialogFragment,
-            callback: () -> Unit = {},
-        ) {
+        fun Int.formatStars(): String = when (this) {
+            1 -> "$this зірка"
+            2, 3, 4 -> "$this зірки"
+            else -> "$this зірок"
+        }
+
+        fun Int.formatStarsV2(): String = when (this) {
+            1 -> "$this зірочку"
+            2, 3, 4 -> "$this зірочки"
+            else -> "$this зірок"
+        }
+
+        fun Fragment.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
             activity?.let { a ->
-                (a as? AppCompatActivity?)?.showBottomSheetDialog(
-                    dialog,
-                    callback
-                )
+                (a as? AppCompatActivity?)?.showBottomSheetDialog(dialog)
             }
         }
 
-        fun AppCompatActivity.showBottomSheetDialog(
-            dialog: BottomSheetDialogFragment,
-            callback: () -> Unit = {},
-        ) {
+        fun AppCompatActivity.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
             if (supportFragmentManager.isDestroyed) return
             if (supportFragmentManager.findFragmentByTag(dialog.tag) != null) return
             if (dialog.isAdded) return
             dialog.show(supportFragmentManager, dialog.tag)
-            dialog.dialog?.setOnDismissListener {
-                dialog.dialog?.setOnDismissListener(null)
-                callback()
-            }
         }
+
+        fun ViewGroup.show() {
+            TransitionManager.beginDelayedTransition(this, AutoTransition())
+            visibility = View.VISIBLE
+        }
+
+        fun ViewGroup.hide() {
+            TransitionManager.beginDelayedTransition(this, AutoTransition())
+            visibility = View.GONE
+        }
+
     }
 }

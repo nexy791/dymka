@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
     android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     android:orientation="vertical">
 
@@ -12,8 +12,8 @@
         android:id="@+id/materialCardView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:cardBackgroundColor="#0f1547"
         app:cardCornerRadius="16sp"
         app:cardElevation="0dp"

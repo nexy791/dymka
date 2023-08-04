@@ -21,4 +21,7 @@ interface BaseUserModel {
 
     var bioLevel: Int
     var bioGoal: Int
+
+    var stars: Map<String, Int>
+    var starsCount: Int
 }

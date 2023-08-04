@@ -9,6 +9,7 @@ interface BaseLessonModel {
     val content: String
     val hasPrem: Boolean
     var isDone: Boolean
+    var stars: Int
 
     fun isInProgress(): Boolean = content.isEmpty()
 }

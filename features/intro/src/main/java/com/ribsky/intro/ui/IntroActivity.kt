@@ -5,9 +5,9 @@ import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.intro.adapter.ViewPagerAdapter
 import com.ribsky.intro.databinding.ActivityIntroBinding
-import com.ribsky.intro.ui.fragments.success.IntroSuccessFragment
 import com.ribsky.intro.ui.fragments.goal.IntroGoalFragment
 import com.ribsky.intro.ui.fragments.level.IntroLevelFragment
+import com.ribsky.intro.ui.fragments.success.IntroSuccessFragment
 import com.ribsky.intro.utils.IntroCallback
 import com.wajahatkarim3.easyflipviewpager.BookFlipPageTransformer2
 import org.koin.androidx.viewmodel.ext.android.viewModel

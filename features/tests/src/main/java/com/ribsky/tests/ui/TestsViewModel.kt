@@ -12,6 +12,7 @@ import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
 import com.ribsky.domain.usecase.streak.SetTodayStreakUseCase
 import com.ribsky.domain.usecase.test.TestInteractor
 import com.ribsky.tests.model.TestModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TestsViewModel(
@@ -50,6 +51,7 @@ class TestsViewModel(
             val generatedList = list.map { test ->
                 TestModel(test, isTestActive(test.hasPrem))
             }
+            delay(500)
             _testStatus.value = Resource.success(generatedList.sortedBy { it.sort })
         }
     }

@@ -64,6 +64,26 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Урок 1\n33" />
 
+        <studio.zewei.willy.animationratingbar.AnimationRatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            app:emptyIcon="@drawable/ic_round_rating_star_border_24"
+            app:filledIcon="@drawable/ic_round_rating_star_24"
+            app:iconAnimationMode="turnRoundZoom"
+            app:iconSize="24dp"
+            app:iconSpacingBottom="0dp"
+            app:iconSpacingEnd="0dp"
+            app:iconSpacingStart="0sp"
+            app:iconSpacingTop="0dp"
+            app:isIndicatorBar="true"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_checked"
+            app:layout_constraintEnd_toStartOf="@+id/btn_dev"
+            app:layout_constraintTop_toTopOf="@+id/btn_checked"
+            app:numStars="3"
+            app:rating="0" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dev"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"

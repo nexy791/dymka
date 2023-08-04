@@ -28,6 +28,11 @@ class LessonViewHolder(private val binding: ItemLessonBinding) :
 
             btnPrem.isGone = !item.hasPrem
             btnDev.isGone = !item.isInProgress()
+
+            ratingBar.apply {
+                setRating(item.stars.toFloat())
+                isGone = item.isInProgress()
+            }
         }
 
     private fun MaterialButton.updateState(isDone: Boolean) {

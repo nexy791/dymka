@@ -3,7 +3,6 @@ package com.ribsky.account.dialog.account
 import androidx.core.view.isGone
 import com.ribsky.account.dialog.base.BaseProfileDialog
 import com.ribsky.common.alias.commonDrawable
-import com.ribsky.common.utils.chip.ChipBuilder.Companion.createChip
 import com.ribsky.common.utils.ext.ViewExt.Companion.formatDays
 import com.ribsky.navigation.features.ShareStreakNavigation
 import org.koin.android.ext.android.inject
@@ -18,6 +17,11 @@ class AccountDialog : BaseProfileDialog() {
     override fun initObserves() = with(viewModel) {
         super.initObserves()
         getProfile()
+    }
+
+    override fun initViews() = with(binding) {
+        super.initViews()
+        fabFlag.isGone = true
     }
 
     override fun updateDaysInfo(days: Int, isChecked: Boolean) = with(binding.container) {
@@ -36,22 +40,9 @@ class AccountDialog : BaseProfileDialog() {
         }
     }
 
-    override fun initViews() = with(binding) {
-        super.initViews()
-        initFab()
-    }
-
-
-    private fun initFab() = with(binding) {
-        fabFlag.isGone = true
-    }
-
     override fun updatePremInfo(isPrem: Boolean) = with(binding.container) {
-        if (isPrem) {
-            tvDescriptionPreminum.text = "Дякуємо за підтримку!"
-        } else {
-            tvDescriptionPreminum.text = "Отримай доступ до\nвсіх курсів та тестів"
-        }
+        tvDescriptionPreminum.text =
+            if (isPrem) "Дякуємо за підтримку!" else "Отримай доступ до\nвсіх курсів та тестів"
         btnShop.text = "Керувати"
     }
 }

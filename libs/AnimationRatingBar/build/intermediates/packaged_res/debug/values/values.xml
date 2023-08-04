@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue">#64B5F6</color>
+    <color name="white">#FFFFFF</color>
+    <declare-styleable name="AnimationRatingBar">
+        <attr format="integer" name="numStars"/>
+        <attr format="float" name="rating"/>
+        <attr format="boolean" name="isIndicatorBar"/>
+        <attr format="reference" name="emptyIcon"/>
+        <attr format="reference" name="filledIcon"/>
+        <attr format="reference" name="halfIcon"/>
+        <attr format="dimension" name="iconSize"/>
+        <attr format="dimension" name="iconSpacingEnd"/>
+        <attr format="dimension" name="iconSpacingStart"/>
+        <attr format="dimension" name="iconSpacingTop"/>
+        <attr format="dimension" name="iconSpacingBottom"/>
+        <attr format="float" name="iconAnimationSpeed"/>
+        <attr format="color" name="starsTint"/>
+        <attr format="enum" name="iconAnimationMode">
+            <enum name="none" value="0"/>
+            <enum name="rotation" value="1"/>
+            <enum name="rotationJumpUp" value="2"/>
+            <enum name="rotationDownUp" value="3"/>
+            <enum name="zoom" value="4"/>
+            <enum name="zoomJumpUp" value="5"/>
+            <enum name="zoomDownUp" value="6"/>
+            <enum name="shake" value="7"/>
+            <enum name="shakeJumpUp" value="8"/>
+            <enum name="shakeDownUp" value="9"/>
+            <enum name="shakeZoom" value="10"/>
+            <enum name="shakeZoomJumpUp" value="11"/>
+            <enum name="shakeZoomDownUp" value="12"/>
+            <enum name="turnRound" value="13"/>
+            <enum name="turnRoundJumpUp" value="14"/>
+            <enum name="turnRoundZoom" value="15"/>
+            <enum name="turnRoundZoomJumpUp" value="16"/>
+        </attr>
+    </declare-styleable>
+</resources>

@@ -10,8 +10,30 @@ import com.ribsky.domain.usecase.auth.SignOutUseCase
 import com.ribsky.domain.usecase.auth.SignOutUseCaseImpl
 import com.ribsky.domain.usecase.best.GetBestWordUseCase
 import com.ribsky.domain.usecase.best.GetBestWordUseCaseImpl
-import com.ribsky.domain.usecase.bio.*
-import com.ribsky.domain.usecase.bot.*
+import com.ribsky.domain.usecase.bio.GetCurrentGoalBioUseCase
+import com.ribsky.domain.usecase.bio.GetCurrentGoalBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.GetCurrentLevelBioUseCase
+import com.ribsky.domain.usecase.bio.GetCurrentLevelBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.GetGoalByIdUseCase
+import com.ribsky.domain.usecase.bio.GetGoalByIdUseCaseImpl
+import com.ribsky.domain.usecase.bio.GetGoalsBioUseCase
+import com.ribsky.domain.usecase.bio.GetGoalsBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.GetLevelByIdUseCase
+import com.ribsky.domain.usecase.bio.GetLevelByIdUseCaseImpl
+import com.ribsky.domain.usecase.bio.GetLevelsBioUseCase
+import com.ribsky.domain.usecase.bio.GetLevelsBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCase
+import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.SetGoalBioUseCase
+import com.ribsky.domain.usecase.bio.SetGoalBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.SetLevelBioUseCase
+import com.ribsky.domain.usecase.bio.SetLevelBioUseCaseImpl
+import com.ribsky.domain.usecase.bot.AddBotScoreUseCase
+import com.ribsky.domain.usecase.bot.AddBotScoreUseCaseImpl
+import com.ribsky.domain.usecase.bot.CanBotReplyUseCase
+import com.ribsky.domain.usecase.bot.CanBotReplyUseCaseImpl
+import com.ribsky.domain.usecase.bot.GetBotScoreForTodayUseCase
+import com.ribsky.domain.usecase.bot.GetBotScoreForTodayUseCaseImpl
 import com.ribsky.domain.usecase.clear.ClearDataUseCase
 import com.ribsky.domain.usecase.clear.ClearDataUseCaseImpl
 import com.ribsky.domain.usecase.config.GetBotTokenUseCase
@@ -36,7 +58,16 @@ import com.ribsky.domain.usecase.score.GetTestScoreUseCase
 import com.ribsky.domain.usecase.score.GetTestScoreUseCaseImpl
 import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCase
 import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCaseImpl
-import com.ribsky.domain.usecase.streak.*
+import com.ribsky.domain.usecase.stars.AddStarsToLessonUseCase
+import com.ribsky.domain.usecase.stars.AddStarsToLessonUseCaseImpl
+import com.ribsky.domain.usecase.stars.GetStarsUseCase
+import com.ribsky.domain.usecase.stars.GetStarsUseCaseImpl
+import com.ribsky.domain.usecase.streak.GetCurrentStreakUseCase
+import com.ribsky.domain.usecase.streak.GetCurrentStreakUseCaseImpl
+import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
+import com.ribsky.domain.usecase.streak.IsTodayStreakUseCaseImpl
+import com.ribsky.domain.usecase.streak.SetTodayStreakUseCase
+import com.ribsky.domain.usecase.streak.SetTodayStreakUseCaseImpl
 import com.ribsky.domain.usecase.test.GetTestContentUseCase
 import com.ribsky.domain.usecase.test.GetTestContentUseCaseImpl
 import com.ribsky.domain.usecase.test.TestInteractor
@@ -279,6 +310,18 @@ val domainUi = module {
     factory<GetLevelByIdUseCase> {
         GetLevelByIdUseCaseImpl(
             bioRepository = get()
+        )
+    }
+
+    factory<AddStarsToLessonUseCase> {
+        AddStarsToLessonUseCaseImpl(
+            activeRepository = get()
+        )
+    }
+
+    factory<GetStarsUseCase> {
+        GetStarsUseCaseImpl(
+            activeRepository = get()
         )
     }
 

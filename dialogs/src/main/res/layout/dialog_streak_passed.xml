@@ -19,12 +19,12 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image2"
-        android:visibility="gone"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginTop="8dp"
         android:background="#FE7043"
         android:textAlignment="center"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -71,8 +71,8 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:layout_width="wrap_content"
         android:id="@+id/progressIndicator"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:progress="0"
         app:indicatorColor="#FE7043"

@@ -10,4 +10,5 @@ class ParagraphApiModel(
     val description: String = "",
     val image: String = "",
     val name: String = "",
+    val stars: Int = 0,
 )

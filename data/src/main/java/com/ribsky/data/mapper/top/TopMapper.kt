@@ -18,6 +18,7 @@ class TopMapperImpl : TopMapper {
             streak = input.streak,
             bioLevel = input.bioLevel,
             bioGoal = input.bioGoal,
+            starsCount = input.starsCount,
         )
     }
 }

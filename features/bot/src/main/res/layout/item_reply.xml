@@ -9,8 +9,8 @@
     app:cardElevation="0dp">
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
         android:id="@+id/tv_reply"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/e_ukraine_regular"
         android:padding="8dp"

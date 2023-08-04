@@ -76,7 +76,7 @@
         <activity
             android:name="com.ribsky.lesson.ui.LessonActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.ribsky.shop.ui.ShopActivity"
             android:screenOrientation="portrait" />
@@ -120,8 +120,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.ribsky.share.ui.share.ShareStreakActivity"
-            android:theme="@style/StoryThemeYellow"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/StoryThemeYellow" />
 
         <activity
             android:name="com.ribsky.loader.ui.LoaderActivity"

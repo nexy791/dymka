@@ -1,6 +1,5 @@
 package com.ribsky.auth.ui
 
-import android.content.Intent
 import android.text.method.LinkMovementMethod
 import androidx.core.text.parseAsHtml
 import androidx.transition.AutoTransition
@@ -12,8 +11,8 @@ import com.ribsky.auth.utils.auth.helpers.AuthHelperOneTapImpl
 import com.ribsky.auth.utils.auth.helpers.AuthHelperSignInImpl
 import com.ribsky.auth.utils.auth.helpers.base.AuthHelper
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.LoaderNavigation
 import org.koin.android.ext.android.inject
@@ -87,6 +86,7 @@ class AuthActivity :
                     TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
                     state!!.showLoading()
                 }
+
                 Resource.Status.SUCCESS -> loaderNavigation.navigate(this@AuthActivity)
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage)
             }

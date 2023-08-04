@@ -1,28 +1,27 @@
 package com.ribsky.account.dialog.base
 
 import android.graphics.drawable.AnimatedVectorDrawable
-import androidx.navigation.fragment.findNavController
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.account.databinding.DialogProfileBinding
-import com.ribsky.account.model.LessonInfo
+import com.ribsky.account.model.UserModel
 import com.ribsky.analytics.Analytics
-import com.ribsky.common.base.BaseSheet
-import com.ribsky.core.Resource
+import com.ribsky.common.base.BaseSheetFullScreen
 import com.ribsky.common.utils.chip.ChipBuilder.Companion.createChip
 import com.ribsky.common.utils.ext.ViewExt.Companion.formatUserName
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
-import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.navigation.features.BetaNavigation
 import com.ribsky.navigation.features.SettingsNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import org.koin.android.ext.android.inject
 
 
-abstract class BaseProfileDialog : BaseSheet<DialogProfileBinding>(DialogProfileBinding::inflate) {
+abstract class BaseProfileDialog :
+    BaseSheetFullScreen<DialogProfileBinding>(DialogProfileBinding::inflate) {
 
     abstract val viewModel: BaseProfileViewModel
 
@@ -41,45 +40,8 @@ abstract class BaseProfileDialog : BaseSheet<DialogProfileBinding>(DialogProfile
         userStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Resource.Status.LOADING -> {}
-                Resource.Status.SUCCESS -> {
-                    updateUi(result.data!!)
-                    showContent()
-                }
+                Resource.Status.SUCCESS -> updateUi(result.data!!)
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { dismiss() }
-            }
-        }
-        bookStatus.observe(viewLifecycleOwner) { result ->
-            when (result.status) {
-                Resource.Status.SUCCESS -> updateTestInfo(result.data!!)
-                Resource.Status.LOADING -> {}
-                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { dismiss() }
-            }
-        }
-        lessonsStatus.observe(viewLifecycleOwner) { result ->
-            when (result.status) {
-                Resource.Status.SUCCESS -> updateLessonsInfo(result.data!!)
-                Resource.Status.LOADING -> {}
-                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
-            }
-        }
-        streakStatus.observe(viewLifecycleOwner) { result ->
-            when (result.status) {
-                Resource.Status.SUCCESS -> {
-                    val streak = result.data!!
-                    updateDaysInfo(streak.day, streak.isStreak)
-                }
-                Resource.Status.LOADING -> {}
-                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
-            }
-        }
-        chipsStatus.observe(viewLifecycleOwner) { result ->
-            when (result.status) {
-                Resource.Status.SUCCESS -> {
-                    val chips = result.data!!
-                    updateChips(chips)
-                }
-                Resource.Status.LOADING -> {}
-                Resource.Status.ERROR -> {}
             }
         }
     }
@@ -95,11 +57,17 @@ abstract class BaseProfileDialog : BaseSheet<DialogProfileBinding>(DialogProfile
 
         cardShop.setOnClickListener {
             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_USER)
-            shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_USER))
+            shopNavigation.navigate(
+                requireContext(),
+                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_USER)
+            )
         }
         btnShop.setOnClickListener {
             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_USER)
-            shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_USER))
+            shopNavigation.navigate(
+                requireContext(),
+                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_USER)
+            )
         }
         btnSettings.setOnClickListener { settingsNavigation.navigate(requireContext()) }
         cardRate.setOnClickListener { betaNavigation.navigate(requireContext()) }
@@ -114,20 +82,29 @@ abstract class BaseProfileDialog : BaseSheet<DialogProfileBinding>(DialogProfile
         state?.showContent()
     }
 
-    private fun updateUi(data: BaseUserModel) = with(binding.container) {
+    private fun updateUi(data: UserModel) = with(binding.container) {
+        updateInfo(data)
+        updatePremInfo(data.isPrem)
+        updateChips(data.bio)
+        updateTestInfo(data.books)
+        updateLessonsInfo(data.lessons)
+        updateStars(data.stars)
+        updateDaysInfo(data.streak.day, data.streak.isStreak)
+        showContent()
+    }
+
+    private fun updateInfo(data: UserModel) = with(binding.container) {
         ivAccount.load(data.image) {
             transformations(CircleCropTransformation())
         }
-        tvName.text = data.name.formatUserName(data.hasPrem)
+        tvName.text = data.name.formatUserName(data.isPrem)
         tvEmail.text = data.email
-
-        updatePremInfo(data.hasPrem)
     }
 
-    fun updateChips(list: List<String>) {
+    private fun updateChips(list: List<String>) {
         binding.container.chipGroup.removeAllViews()
         list.forEach {
-           val chip = createChip(
+            val chip = createChip(
                 text = it,
                 id = it.hashCode(),
                 size = 14f,
@@ -144,17 +121,20 @@ abstract class BaseProfileDialog : BaseSheet<DialogProfileBinding>(DialogProfile
     abstract fun updatePremInfo(isPrem: Boolean)
 
     private fun updateTestInfo(books: Int) = with(binding.container) {
-        TransitionManager.beginDelayedTransition(root, AutoTransition())
         tvBooks.text = books.toString()
         tvTestCard.text = "$books/∞"
     }
 
-    private fun updateLessonsInfo(lessonInfo: LessonInfo) = with(binding.container) {
-        TransitionManager.beginDelayedTransition(root, AutoTransition())
+    private fun updateLessonsInfo(lessonInfo: UserModel.LessonModel) = with(binding.container) {
         cpbLessons.setProgressWithAnimation(lessonInfo.calculatePercent().toFloat())
         tvLessons.text = "${lessonInfo.calculatePercent()}%"
         tvLessonCard.text = "${lessonInfo.count}/${lessonInfo.lessons}"
     }
+
+    private fun updateStars(stars: UserModel.StarsModel) = with(binding.container) {
+        tvStars.text = "${stars.count}/${stars.stars}"
+    }
+
 
     override fun clear() {
         state = null

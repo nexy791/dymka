@@ -60,6 +60,12 @@ class LessonViewModel(
     private val _actionStatus: MutableLiveData<String> = MutableLiveData()
     val actionStatus: LiveData<String> get() = _actionStatus
 
+    private val _starsStatus: MutableLiveData<Float> = MutableLiveData(3f)
+    val starsStatus: LiveData<Float> get() = _starsStatus
+
+    private val _progressStatus: MutableLiveData<Int> = MutableLiveData(0)
+    val progressStatus: LiveData<Int> get() = _progressStatus
+
     private val content get() = _contentStatus.value?.data!!.content
     private val answers get() = content.getOrNull(currentContentIndex)?.answers
 
@@ -134,6 +140,7 @@ class LessonViewModel(
         sendNextContent()
         currentContentIndex++
         showNextAction()
+        updateProgress()
     }
 
     private fun showNextAction() {
@@ -164,6 +171,11 @@ class LessonViewModel(
         }
     }
 
+    private fun updateProgress() {
+        val progress = currentContentIndex * 100 / content.size
+        _progressStatus.value = progress
+    }
+
     private fun finishLesson() {
         _endEvent.value = true
     }
@@ -183,6 +195,7 @@ class LessonViewModel(
             bundle = bundleOf("lesson_id" to lessonId)
         )
         errorCount++
+        _starsStatus.value = if (_starsStatus.value!! > 0) _starsStatus.value!! - 1 else 0f
         val message =
             chatMapperFactory.createAnswer(
                 "\uD83D\uDE35\u200D\uD83D\uDCAB Спробуй інший варіант",

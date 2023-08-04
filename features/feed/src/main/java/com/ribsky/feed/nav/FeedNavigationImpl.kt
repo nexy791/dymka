@@ -2,7 +2,7 @@ package com.ribsky.feed.nav
 
 import androidx.navigation.NavController
 import com.ribsky.navigation.alias.navId
-import com.ribsky.navigation.features.*
+import com.ribsky.navigation.features.FeedNavigation
 
 class FeedNavigationImpl : FeedNavigation {
 

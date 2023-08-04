@@ -4,7 +4,7 @@ import com.ribsky.auth.databinding.DialogSignBinding
 import com.ribsky.common.base.BaseSheet
 
 class DialogSign(
-    private val callback: Callback
+    private val callback: Callback,
 ) : BaseSheet<DialogSignBinding>(DialogSignBinding::inflate) {
 
     fun interface Callback {

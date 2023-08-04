@@ -1,18 +1,15 @@
 package com.ribsky.tests.ui
 
 import android.app.Activity
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
-import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
+import com.ribsky.common.utils.ext.ViewExt.Companion.hide
+import com.ribsky.common.utils.ext.ViewExt.Companion.show
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
 import com.ribsky.common.utils.sound.SoundHelper.playSound
@@ -43,7 +40,6 @@ class TestsFragment :
     private val shopNavigation: ShopNavigation by inject()
     private val payWallNavigation: PayWallNavigation by inject()
 
-    private var state: LoadingStateDelegate? = null
     private var adapter: TestAdapter? = null
 
     private val internetManager: InternetManager by inject()
@@ -56,9 +52,9 @@ class TestsFragment :
                 if (count >= 10 && !isTodayStreak) viewModel.updateTodayStreak()
                 if (count > 0) showBottomSheetDialog(SuccessFactoryTest(count) {
                     if (count >= 10 && !isTodayStreak) {
-                        showBottomSheetDialog(StreakPassedFactory.create()) {
+                        showBottomSheetDialog(StreakPassedFactory.create() {
                             showPayWall()
-                        }
+                        })
                     } else {
                         showPayWall()
                     }
@@ -67,17 +63,10 @@ class TestsFragment :
         }
 
     override fun initView() {
-        initState()
         initAdapter()
         initRecycler()
     }
 
-    private fun initState() = with(binding) {
-        state = LoadingStateDelegate(recyclerView, circularProgressIndicator).apply {
-            TransitionManager.beginDelayedTransition(root, AutoTransition())
-            showLoading()
-        }
-    }
 
     private fun initAdapter() {
         adapter = TestAdapter { test ->
@@ -123,15 +112,10 @@ class TestsFragment :
     override fun initObs() = with(viewModel) {
         testStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
-                Resource.Status.LOADING -> {
-                    TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-                    state?.showLoading()
-                }
-
+                Resource.Status.LOADING -> loadContent()
                 Resource.Status.SUCCESS -> {
                     adapter?.submitList(result.data) {
-                        TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-                        state?.showContent()
+                        showContent()
                     }
                 }
 
@@ -160,8 +144,23 @@ class TestsFragment :
         }
     }
 
+    private fun loadContent() {
+        binding.recyclerView.hide()
+        binding.placeholder.root.apply {
+            startShimmer()
+            show()
+        }
+    }
+
+    private fun showContent() {
+        binding.placeholder.root.apply {
+            stopShimmer()
+            hide()
+        }
+        binding.recyclerView.show()
+    }
+
     override fun clear() {
-        state = null
         adapter = null
     }
 }

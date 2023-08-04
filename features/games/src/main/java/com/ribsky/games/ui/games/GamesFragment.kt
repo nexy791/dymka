@@ -3,22 +3,21 @@ package com.ribsky.games.ui.games
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
-import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
+import com.ribsky.common.utils.ext.ViewExt.Companion.hide
+import com.ribsky.common.utils.ext.ViewExt.Companion.show
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.internet.InternetManager
 import com.ribsky.common.utils.sound.SoundHelper.playSound
-import com.ribsky.dialogs.factory.progress.ProgressFactory
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.progress.ProgressFactory
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.games.adapter.games.GamesAdapter
@@ -44,7 +43,6 @@ class GamesFragment :
     private val betaNavigation: BetaNavigation by inject()
     private val lobbyNavigation: LobbyNavigation by inject()
 
-    private var state: LoadingStateDelegate? = null
     private var adapter: GamesAdapter? = null
 
     private var _permissionManager: PermissionManager? = null
@@ -64,7 +62,6 @@ class GamesFragment :
 
     override fun initView() {
         initPermissionManager()
-        initState()
         initAdapter()
         initRecyclerView()
         initBtns()
@@ -77,12 +74,6 @@ class GamesFragment :
         )
     }
 
-    private fun initState() = with(binding) {
-        state =
-            LoadingStateDelegate(container, circularProgressIndicator, containerPermission).apply {
-                showLoading()
-            }
-    }
 
     private fun initBtns() = with(binding) {
         btnWaiting.setOnClickListener {
@@ -111,7 +102,10 @@ class GamesFragment :
                 } else {
                     showBottomSheetDialog(SubPromptFactory {
                         Analytics.logEvent(Analytics.Event.PREMIUM_FROM_GAME)
-                        shopNavigation.navigate(requireContext(), ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_GAME))
+                        shopNavigation.navigate(
+                            requireContext(),
+                            ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_GAME)
+                        )
                     }.createDialog())
                 }
             } else {
@@ -142,30 +136,28 @@ class GamesFragment :
         getProfile()
         userStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
-                Resource.Status.LOADING -> showLoading()
+                Resource.Status.LOADING -> loadContent()
                 Resource.Status.SUCCESS -> {
                     updateProfile(result.data!!)
                     getTests()
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
         testStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
-                Resource.Status.LOADING -> showLoading()
+                Resource.Status.LOADING -> {}
                 Resource.Status.SUCCESS -> adapter?.submitList(result.data) {
                     updateUi()
                     adapter?.setPicked(result.data?.first()!!)
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
     }
 
-    private fun showLoading() {
-        TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-        state?.showLoading()
-    }
 
     private fun processRequestPermission() {
         if (!permissionManager.hasPermissions()) {
@@ -182,12 +174,42 @@ class GamesFragment :
     }
 
     private fun updateUi() {
-        TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
         if (permissionManager.hasPermissions() && isGeolocationEnabled()) {
-            state?.showContent()
+            showContent()
         } else {
-            state?.showStub()
+            showStub()
         }
+    }
+
+    private fun loadContent() = with(binding) {
+        placeholder.root.show()
+        placeholder.shimmerViewContainer.apply {
+            startShimmer()
+            show()
+        }
+        containerPermission.hide()
+        container.hide()
+    }
+
+    private fun showContent() = with(binding) {
+        placeholder.root.hide()
+        placeholder.shimmerViewContainer.apply {
+            stopShimmer()
+            hide()
+        }
+        containerPermission.hide()
+        container.show()
+    }
+
+    private fun showStub() = with(binding) {
+        placeholder.root.hide()
+        placeholder.shimmerViewContainer.apply {
+            stopShimmer()
+            hide()
+        }
+        containerPermission.show()
+        container.hide()
+
     }
 
     private fun updateProfile(data: BaseUserModel) = with(binding) {
@@ -198,7 +220,6 @@ class GamesFragment :
     }
 
     override fun clear() {
-        state = null
         adapter = null
         _permissionManager = null
     }

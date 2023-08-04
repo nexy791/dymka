@@ -13,8 +13,10 @@ import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
 import com.ribsky.domain.usecase.lesson.LessonInteractor
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractor
+import com.ribsky.domain.usecase.stars.AddStarsToLessonUseCase
 import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
 import com.ribsky.domain.usecase.streak.SetTodayStreakUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LessonsViewModel(
@@ -26,6 +28,7 @@ class LessonsViewModel(
     private val setTodayStreakUseCase: SetTodayStreakUseCase,
     private val isTodayStreakUseCase: IsTodayStreakUseCase,
     private val getDiscountUseCase: GetDiscountUseCase,
+    private val addStarsToLessonUseCase: AddStarsToLessonUseCase,
 ) : ViewModel() {
 
     private val _lessonsStatus: MutableLiveData<Resource<List<BaseLessonModel>>> =
@@ -35,6 +38,8 @@ class LessonsViewModel(
     private val _paragraphStatus: MutableLiveData<Resource<BaseParagraphModel>> =
         MutableLiveData()
     val paragraphStatus: LiveData<Resource<BaseParagraphModel>> get() = _paragraphStatus
+
+    val lessons get() = _lessonsStatus.value?.data
 
     fun isFileExists(content: String) = isContentExistsUseCase.invoke(content)
 
@@ -46,6 +51,7 @@ class LessonsViewModel(
         viewModelScope.launch {
             _lessonsStatus.value = Resource.loading()
             val lessons = lessonInteractor.getLessons(id)
+            delay(500)
             _lessonsStatus.value = Resource.success(lessons.sortedBy { it.sort })
             getParagraph(id)
         }
@@ -59,12 +65,16 @@ class LessonsViewModel(
         }
     }
 
-    fun updateLesson(id: String) {
+
+    fun updateLesson(paragraphId: String, id: String, stars: Float) {
         viewModelScope.launch {
             _lessonsStatus.value = Resource.loading()
             addActiveLessonUseCase.invoke(id)
+            addStarsToLessonUseCase.invoke(id, stars.toInt())
+            getLessons(paragraphId)
         }
     }
+
 
     // TODO: refactor this
     fun isNeedToShowPayWall(callback: (Result<String>) -> Unit) {

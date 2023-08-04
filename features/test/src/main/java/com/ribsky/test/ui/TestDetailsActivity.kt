@@ -7,7 +7,6 @@ import android.graphics.PorterDuff
 import android.view.MotionEvent
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
-import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SimpleOnItemTouchListener

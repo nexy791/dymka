@@ -2,7 +2,6 @@ package com.ribsky.shop.adapter.cats.diff
 
 import androidx.recyclerview.widget.DiffUtil
 import com.ribsky.domain.model.top.BaseTopModel
-import com.ribsky.shop.model.CatModel
 
 object CatsDiffCallback : DiffUtil.ItemCallback<BaseTopModel>() {
     override fun areItemsTheSame(

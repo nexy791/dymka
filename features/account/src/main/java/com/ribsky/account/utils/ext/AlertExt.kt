@@ -1,6 +1,5 @@
 package com.ribsky.account.utils.ext
 
-import android.app.Activity
 import androidx.fragment.app.Fragment
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert

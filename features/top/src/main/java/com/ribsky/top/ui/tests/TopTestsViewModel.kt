@@ -7,6 +7,7 @@ import com.ribsky.domain.usecase.top.TopInteractor
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import com.ribsky.top.model.TopModel
 import com.ribsky.top.ui.base.BaseTopViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TopTestsViewModel(
@@ -27,6 +28,7 @@ class TopTestsViewModel(
                         type
                     )
                 }
+            delay(500)
             _usersStatus.value = Resource.success(users)
         }
     }

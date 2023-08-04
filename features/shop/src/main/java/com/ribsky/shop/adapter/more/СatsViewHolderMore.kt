@@ -10,7 +10,7 @@ class СatsViewHolderMore(private val binding: ItemCatsMoreBinding) :
 
     fun bind(
         item: Unit,
-        onMoreClick: () -> Unit
+        onMoreClick: () -> Unit,
     ): Unit = with(binding) {
         root.setOnClickListener {
             onMoreClick()

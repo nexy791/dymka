@@ -20,15 +20,18 @@ class CheckerFactoryImpl : CheckerFactory {
                 userAnswer as String,
                 answer as List<String>
             )
+
             is BaseContentModel.BaseContentType.TestPick -> TestChecker(userAnswer as ChatModel.Test.TestModel)
             is BaseContentModel.BaseContentType.TranslateChips -> ChipChecker(
                 userAnswer as List<String>,
                 answer as List<String>
             )
+
             is BaseContentModel.BaseContentType.TranslateText -> TranslateChecker(
                 userAnswer as String,
                 answer as List<String>
             )
+
             else -> throw IllegalArgumentException("Unknown type $type")
         }
     }

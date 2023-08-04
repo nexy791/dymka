@@ -13,6 +13,8 @@ interface TopInteractor {
 
     suspend fun loadUsersByPremium(): List<BaseTopModel>
 
+    suspend fun loadUsersByStars(): List<BaseTopModel>
+
     suspend fun getPlayer(id: Int): BaseTopModel
 }
 
@@ -22,6 +24,7 @@ class TopInteractorImpl(private val repository: TopRepository) : TopInteractor {
     override suspend fun loadUsersByLessons(): List<BaseTopModel> = repository.getUsersByLessons()
     override suspend fun loadUsersByStreak(): List<BaseTopModel> = repository.getUsersByStreak()
     override suspend fun loadUsersByPremium(): List<BaseTopModel> = repository.getUsersByPremium()
+    override suspend fun loadUsersByStars(): List<BaseTopModel> = repository.getUsersByStars()
 
     override suspend fun getPlayer(id: Int): BaseTopModel = repository.getUser(id)
 }

@@ -61,7 +61,11 @@ sealed class ChatModel : BaseItem {
         override fun type(typeFactory: TypeFactory): Int = typeFactory.type(this)
     }
 
-    class Answer(val text: String, override val id: Int = Random.nextInt(), val isCorrect: Boolean) : ChatModel() {
+    class Answer(
+        val text: String,
+        override val id: Int = Random.nextInt(),
+        val isCorrect: Boolean,
+    ) : ChatModel() {
         override fun type(typeFactory: TypeFactory): Int = typeFactory.type(this)
     }
 }

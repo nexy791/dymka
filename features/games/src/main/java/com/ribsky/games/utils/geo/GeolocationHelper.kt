@@ -14,7 +14,7 @@ class GeolocationHelper {
         fun Context.isGeolocationEnabled(): Boolean {
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         }
 
         fun Context.turnOnGeolocation() {

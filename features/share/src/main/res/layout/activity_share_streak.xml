@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -73,9 +72,9 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_title"
                 android:layout_width="0dp"
-                android:layout_marginEnd="16dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/e_ukraine_regular"
                 android:text="Моя серія днів"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
@@ -105,23 +104,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:layout_constraintStart_toStartOf="parent"
                 android:fontFamily="@font/e_ukraine_regular"
                 android:text="Завантажуй dymka та спробуй обігнати мою серію днів!"
                 android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/e_ukraine_regular"
                 android:text="dymka.me 🇺🇦"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"

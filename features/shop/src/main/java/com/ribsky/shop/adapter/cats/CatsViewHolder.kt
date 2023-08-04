@@ -12,7 +12,7 @@ class CatsViewHolder(private val binding: ItemCatsBinding) :
 
     fun bind(
         item: BaseTopModel,
-        onCatClick: (BaseTopModel) -> Unit
+        onCatClick: (BaseTopModel) -> Unit,
     ): Unit = with(binding) {
         root.setOnClickListener {
             onCatClick(item)

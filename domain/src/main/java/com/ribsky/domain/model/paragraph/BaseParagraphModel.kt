@@ -9,5 +9,7 @@ interface BaseParagraphModel {
     val name: String
     var percent: Float
     var isEmpty: Boolean
-    var isCanBeOpened: Boolean
+    var stars: Int
+    var starsHave: Int
+    var isEnoughStars: Boolean
 }

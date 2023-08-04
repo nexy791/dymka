@@ -12,6 +12,7 @@ import com.ribsky.domain.usecase.best.GetBestWordUseCase
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractor
 import com.ribsky.domain.usecase.streak.GetCurrentStreakUseCase
 import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FeedViewModel(
@@ -22,9 +23,11 @@ class FeedViewModel(
     private val getCurrentStreakUseCase: GetCurrentStreakUseCase,
 ) : ViewModel() {
 
-    private val _lessonsStatus: MutableLiveData<Resource<List<BaseParagraphModel>>> =
+    private val _paragraphsStatus: MutableLiveData<Resource<List<BaseParagraphModel>>> =
         MutableLiveData()
-    val lessonsStatus: LiveData<Resource<List<BaseParagraphModel>>> get() = _lessonsStatus
+    val paragraphsStatus: LiveData<Resource<List<BaseParagraphModel>>> get() = _paragraphsStatus
+
+    val paragraphs get() = _paragraphsStatus.value?.data
 
     private val _bestWordStatus: MutableLiveData<Resource<BaseBestWordModel>> =
         MutableLiveData()
@@ -34,16 +37,17 @@ class FeedViewModel(
         viewModelScope.launch {
             _bestWordStatus.value = Resource.loading()
             val word = getBestWordUseCase.getCurrentWord()
+            delay(500)
             _bestWordStatus.value = Resource.success(word)
         }
     }
 
     fun getParagraphs() {
         viewModelScope.launch {
-            _lessonsStatus.value = Resource.loading()
+            _paragraphsStatus.value = Resource.loading()
             val paragraphs = paragraphInteractor.getParagraphs()
             val list = paragraphs.sortedBy { it.sort }
-            _lessonsStatus.value = Resource.success(list)
+            _paragraphsStatus.value = Resource.success(list)
         }
     }
 

@@ -112,6 +112,7 @@ object Deps {
 
     const val koin = "io.insert-koin:koin-android:${Versions.koin}"
 
+    // todo update to 1.1.0-alpha06
     const val crypto = "androidx.security:security-crypto:${Versions.crypto}"
 
     const val stateDelegator = "com.redmadrobot:state-delegator:${Versions.stateDelegator}"

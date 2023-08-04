@@ -24,11 +24,12 @@ class SimpleDialog(
         var isCancelable: Boolean = true,
         var onDismiss: (() -> Unit)? = null,
 
-    )
+        )
 
     data class Icon(
         var icon: Int? = null,
         var color: Int = Color.parseColor("#ffffff"),
+        var isAnimated: Boolean = true,
     )
 
     data class ButtonConfig(
@@ -45,6 +46,26 @@ class SimpleDialog(
         imageView.apply {
             config.icon?.icon?.let { setImageResource(it) }
             config.icon?.color?.let { setColorFilter(it, PorterDuff.Mode.SRC_IN) }
+            config.icon?.isAnimated?.let {
+                if (it) {
+                    alpha = 0f
+                    animate()
+                        .scaleX(1.15f)
+                        .scaleY(1.15f)
+                        .alpha(1f)
+                        .translationY(-10f)
+                        .setStartDelay(300)
+                        .setDuration(300)
+                        .withEndAction {
+                            animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .translationY(0f)
+                                .setDuration(300)
+                                .start()
+                        }.start()
+                }
+            }
         }
         image.setBackgroundColor(config.imageColor ?: Color.parseColor("#90CAF9"))
 
@@ -59,7 +80,9 @@ class SimpleDialog(
                 text = it.text
                 it.textColor?.let { color -> setTextColor(color) }
                 it.backgroundColor?.let { color -> setBackgroundColor(color) }
-                it.icon?.let { icon -> setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0) }
+                it.icon?.let { icon ->
+                    setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
+                }
                 setOnClickListener { _ ->
                     it.callback?.invoke()
                     if (it.isDismiss) dismiss()

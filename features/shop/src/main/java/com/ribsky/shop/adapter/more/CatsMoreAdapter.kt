@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.ribsky.shop.adapter.more.diff.MoreCallback
 
 class CatsMoreAdapter(
-    private val onMoreClick: () -> Unit
+    private val onMoreClick: () -> Unit,
 ) : ListAdapter<Unit, СatsViewHolderMore>(MoreCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): СatsViewHolderMore =

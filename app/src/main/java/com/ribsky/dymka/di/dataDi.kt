@@ -1,6 +1,21 @@
 package com.ribsky.dymka.di
 
-import com.ribsky.data.repository.*
+import com.ribsky.data.repository.ActiveRepositoryImpl
+import com.ribsky.data.repository.AuthRepositoryImpl
+import com.ribsky.data.repository.BestWordRepositoryImpl
+import com.ribsky.data.repository.BioRepositoryImpl
+import com.ribsky.data.repository.BotRepositoryImpl
+import com.ribsky.data.repository.ClearRepositoryImpl
+import com.ribsky.data.repository.ConfigRepositoryImpl
+import com.ribsky.data.repository.DataRepositoryImpl
+import com.ribsky.data.repository.FileRepositoryImpl
+import com.ribsky.data.repository.LessonRepositoryImpl
+import com.ribsky.data.repository.ParagraphRepositoryImpl
+import com.ribsky.data.repository.SaveRepositoryImpl
+import com.ribsky.data.repository.SettingsRepositoryImpl
+import com.ribsky.data.repository.StreakRepositoryImpl
+import com.ribsky.data.repository.TopRepositoryImpl
+import com.ribsky.data.repository.UserRepositoryImpl
 import com.ribsky.data.repository.test.TestRepositoryImpl
 import com.ribsky.data.service.config.ConfigService
 import com.ribsky.data.service.config.ConfigServiceImpl
@@ -22,7 +37,23 @@ import com.ribsky.data.service.user.UserService
 import com.ribsky.data.service.user.UserServiceImpl
 import com.ribsky.data.utils.crypto.CryptoManager
 import com.ribsky.data.utils.crypto.CryptoManagerImpl
-import com.ribsky.domain.repository.*
+import com.ribsky.domain.repository.ActiveRepository
+import com.ribsky.domain.repository.AuthRepository
+import com.ribsky.domain.repository.BestWordRepository
+import com.ribsky.domain.repository.BioRepository
+import com.ribsky.domain.repository.BotRepository
+import com.ribsky.domain.repository.ClearRepository
+import com.ribsky.domain.repository.ConfigRepository
+import com.ribsky.domain.repository.DataRepository
+import com.ribsky.domain.repository.FileRepository
+import com.ribsky.domain.repository.LessonRepository
+import com.ribsky.domain.repository.ParagraphRepository
+import com.ribsky.domain.repository.SaveRepository
+import com.ribsky.domain.repository.SettingsRepository
+import com.ribsky.domain.repository.StreakRepository
+import com.ribsky.domain.repository.TestRepository
+import com.ribsky.domain.repository.TopRepository
+import com.ribsky.domain.repository.UserRepository
 import org.koin.dsl.module
 
 val dataDi = module {
@@ -186,7 +217,8 @@ val dataDi = module {
     single<ActiveRepository> {
         ActiveRepositoryImpl(
             sharedPreferences = get(),
-            activeLessonDao = get()
+            activeLessonDao = get(),
+            starsLessonDao = get()
         )
     }
 

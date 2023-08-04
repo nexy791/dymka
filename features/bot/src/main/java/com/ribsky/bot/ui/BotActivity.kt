@@ -30,14 +30,13 @@ import com.ribsky.bot.model.ChatModel
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseActivity
-import com.ribsky.core.Resource
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.ResourceExt.Companion.drawable
 import com.ribsky.common.utils.ext.ViewExt.Companion.copy
 import com.ribsky.common.utils.ext.ViewExt.Companion.hideKeyboard
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
-import com.ribsky.common.utils.sound.SoundHelper
 import com.ribsky.common.utils.sound.SoundHelper.playSound
+import com.ribsky.core.Resource
 import com.ribsky.dialogs.base.ListDialog
 import com.ribsky.dialogs.factory.bot.BotInfoFactory
 import com.ribsky.dialogs.factory.bot.BotLimitFactory
@@ -102,7 +101,10 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
         btnPremium.apply {
             setOnClickListener {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MENU)
-                shopNavigation.navigate(this@BotActivity, ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MENU))
+                shopNavigation.navigate(
+                    this@BotActivity,
+                    ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MENU)
+                )
             }
             setPremium(viewModel.isSub)
         }
@@ -204,6 +206,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
                     initAdapterAndRecycler(result.data!!.image)
                     getBot()
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { finish() }
             }
         }
@@ -215,6 +218,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
                     getScore()
                     binding.emptyView.isGone = true
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { finish() }
             }
         }
@@ -228,6 +232,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
                     state?.showLoading()
                     adapter?.showLoading()
                 }
+
                 Resource.Status.SUCCESS -> {
                     TransitionManager.beginDelayedTransition(
                         binding.root,
@@ -237,6 +242,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
                     adapter?.hideLoading()
                     updateChat(it.data!!)
                 }
+
                 Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { finish() }
             }
         }

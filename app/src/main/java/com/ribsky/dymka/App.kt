@@ -76,6 +76,4 @@ class App : SplitCompatApplication(), ImageLoaderFactory {
     }
 
 
-
-
 }

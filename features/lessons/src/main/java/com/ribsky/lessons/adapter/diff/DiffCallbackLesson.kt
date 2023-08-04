@@ -8,5 +8,5 @@ object DiffCallbackLesson : DiffUtil.ItemCallback<BaseLessonModel>() {
         oldItem == newItem
 
     override fun areContentsTheSame(oldItem: BaseLessonModel, newItem: BaseLessonModel): Boolean =
-        oldItem.isDone == newItem.isDone
+        oldItem.isDone == newItem.isDone && oldItem.stars == newItem.stars
 }

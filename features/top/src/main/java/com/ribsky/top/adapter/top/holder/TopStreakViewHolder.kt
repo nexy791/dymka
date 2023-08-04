@@ -8,7 +8,6 @@ import coil.request.CachePolicy
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.utils.ext.ViewExt.Companion.formatUserName
 import com.ribsky.top.adapter.top.TopAdapter
-import com.ribsky.top.databinding.ItemTopLessonBinding
 import com.ribsky.top.databinding.ItemTopStreakBinding
 import com.ribsky.top.model.TopModel
 

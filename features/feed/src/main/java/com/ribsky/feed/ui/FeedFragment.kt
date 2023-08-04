@@ -3,17 +3,18 @@ package com.ribsky.feed.ui
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
-import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
+import com.ribsky.common.utils.ext.ViewExt.Companion.hide
+import com.ribsky.common.utils.ext.ViewExt.Companion.show
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.sound.SoundHelper.playSound
 import com.ribsky.core.Resource.Status
-import com.ribsky.dialogs.factory.progress.ProgressFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.limit.LimitFactory
+import com.ribsky.dialogs.factory.progress.ProgressFactory
+import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.feed.adapter.lm.FeedSpanSizeLookup
@@ -46,10 +47,8 @@ class FeedFragment :
     private var adapterPrem: PremAdapter? = null
     private var adapterStreak: StreakAdapter? = null
 
-    private var state: LoadingStateDelegate? = null
 
     override fun initView() {
-        initState()
         initAdapter()
         initRecycler()
         updatePremContent(listOf(viewModel.isSub))
@@ -89,23 +88,25 @@ class FeedFragment :
         playSound(commonRaw.sound_tap)
         if (model.isEmpty) {
             showBottomSheetDialog(ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog())
-//        } else if (!model.isCanBeOpened && !viewModel.isSub) {
-//            showBottomSheetDialog(LimitFactory(
-//                onConfirm = { },
-//                onDismiss = {
-//                    showBottomSheetDialog(SubPromptFactory {
-//                        shopNavigation.navigate(requireContext())
-//                    }.createDialog())
-//                }
-//            ).createDialog())
-        } else {
+        } else if (model.isEnoughStars || viewModel.isSub) {
             lessonsNavigation.navigate(findNavController(), LessonsNavigation.Params(model.id))
-        }
-    }
-
-    private fun initState() = with(binding) {
-        state = LoadingStateDelegate(recyclerView, circularProgressIndicator).apply {
-            showLoading()
+        } else {
+            showBottomSheetDialog(
+                LimitFactory(
+                    onConfirm = {},
+                    onDismiss = {
+                        showBottomSheetDialog(SubPromptFactory {
+                            Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
+                            shopNavigation.navigate(
+                                requireActivity(),
+                                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_STARS)
+                            )
+                        }.createDialog())
+                    },
+                    stars = model.starsHave,
+                    needStars = model.stars
+                ).createDialog()
+            )
         }
     }
 
@@ -129,7 +130,7 @@ class FeedFragment :
         )
         bestWordStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
-                Status.LOADING -> showLoading()
+                Status.LOADING -> loadContent()
                 Status.SUCCESS -> {
                     updateBestWordContent(listOf(result.data!!))
                     getParagraphs()
@@ -138,7 +139,7 @@ class FeedFragment :
                 Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
             }
         }
-        lessonsStatus.observe(viewLifecycleOwner) { result ->
+        paragraphsStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Status.SUCCESS -> {
                     adapterPrem?.submitList(listOf(viewModel.isSub))
@@ -151,40 +152,47 @@ class FeedFragment :
         }
     }
 
-    private fun showLoading() {
-        TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-        state?.showLoading()
-    }
 
     private fun updateBestWordContent(list: List<BaseBestWordModel>) {
-        TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
         adapterBestWord?.submitList(list) {}
     }
 
     private fun updateLessonsContent(list: List<BaseParagraphModel>) {
-        TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
         adapterParagraph?.submitList(list) {
-            state?.showContent()
+            showContent()
         }
     }
 
     private fun updatePremContent(list: List<Boolean>) {
-        TransitionManager.beginDelayedTransition(binding.root, AutoTransition())
-        adapterPrem?.submitList(list) {
-            state?.showContent()
-        }
+        adapterPrem?.submitList(list)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getParagraphs()
+        viewModel.getBestWord()
     }
+
+    private fun loadContent() = with(binding) {
+        recyclerView.hide()
+        placeholder.root.apply {
+            startShimmer()
+            show()
+        }
+    }
+
+    private fun showContent() = with(binding) {
+        placeholder.root.apply {
+            stopShimmer()
+            hide()
+        }
+        recyclerView.show()
+    }
+
 
     override fun clear() {
         adapter = null
         adapterBestWord = null
         adapterParagraph = null
         adapterPrem = null
-        state = null
     }
 }

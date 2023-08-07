@@ -14,7 +14,7 @@ import com.ribsky.paywall.databinding.DialogPaywallBinding
 
 class PayWallDialog(
     private val date: String = "",
-    private val callback: PayWallNavigation.Callback,
+    private val callback: PayWallNavigation.Callback? = null,
 ) : BaseSheetFullScreen<DialogPaywallBinding>(DialogPaywallBinding::inflate) {
 
     override fun getTheme(): Int = R.style.AppPayWallBottomSheetDialogTheme
@@ -22,12 +22,13 @@ class PayWallDialog(
 
     @SuppressLint("SetTextI18n")
     override fun initViews() = with(binding) {
+        if (callback == null) dismiss()
         Analytics.logEvent(Analytics.Event.PAYWALL_OPEN)
         playSound(commonRaw.sound_ambient)
         konfettiView.start(Party.rain)
         chip2.text = date
         btnGetDiscount.setOnClickListener {
-            callback.onDiscount()
+            callback?.onDiscount()
             dismiss()
         }
         tvLater.setOnClickListener {

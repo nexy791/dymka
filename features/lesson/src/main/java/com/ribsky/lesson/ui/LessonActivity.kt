@@ -30,6 +30,7 @@ import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.databinding.ActivityLessonBinding
 import com.ribsky.lesson.model.ChatModel
+import com.ribsky.navigation.features.BotNavigation
 import com.ribsky.navigation.features.LessonNavigation
 import com.ribsky.navigation.features.ShareMessageNavigation
 import com.ribsky.navigation.features.ShopNavigation
@@ -42,6 +43,7 @@ class LessonActivity :
     override val viewModel: LessonViewModel by viewModel()
     private val shareMessageNavigation: ShareMessageNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
+    private val botNavigation: BotNavigation by inject()
 
     private var state: LoadingStateDelegate? = null
 
@@ -79,7 +81,21 @@ class LessonActivity :
             showBottomSheetDialog(
                 StarsFactory(
                     viewModel.starsStatus.value?.toInt() ?: 0,
-                    3
+                    3,
+                    positiveButtonCallback = {},
+                    negativeButtonCallback = {
+                        if (!viewModel.isSub) {
+                            showBottomSheetDialog(
+                                SubPromptFactory {
+                                    Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
+                                    shopNavigation.navigate(
+                                        this@LessonActivity,
+                                        ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_STARS)
+                                    )
+                                }.createDialog()
+                            )
+                        }
+                    },
                 ).createDialog()
             )
         }
@@ -127,6 +143,16 @@ class LessonActivity :
                 override fun onHintClick() {
                     Analytics.logEvent(Analytics.Event.LESSON_HINT_CLICK)
                     showHint()
+                }
+
+                override fun onGetCatHelpClick(text: String) {
+                    botNavigation.navigate(this@LessonActivity, BotNavigation.Params(text)) {
+                        if (it) {
+                            Analytics.logEvent(Analytics.Event.BOT_OPEN_FROM_LESSON)
+                        } else {
+                            showErrorDialog("Спочатку потрібно завантажити котика! Зайди в розділ «Кіт» на головному екрані")
+                        }
+                    }
                 }
             }
         )

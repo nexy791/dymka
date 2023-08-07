@@ -1,5 +1,6 @@
 package com.ribsky.dialogs.base
 
+import android.content.DialogInterface
 import android.os.Parcelable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ribsky.common.base.BaseSheet
@@ -25,11 +26,14 @@ class ListDialog(
     ) : Parcelable
 
     override fun initViews(): Unit = with(binding) {
-        if(config == null) dismiss()
+        if (config == null) {
+            dismiss()
+            return
+        }
         recycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = ListActionsAdapter().apply {
-                submitList(config?.items)
+                submitList(config.items)
             }
         }
     }
@@ -38,6 +42,11 @@ class ListDialog(
     }
 
     override fun clear() {
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        config?.onDismiss?.invoke()
     }
 
     companion object {

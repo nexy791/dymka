@@ -29,6 +29,17 @@ class ChatTestHolderView(private val binding: ItemChatTestBinding) :
                 submitList(item.testModel)
             }
         }
+
+        btnGetHelp.setOnClickListener {
+            val answers = item.testModel.joinToString("<br>") { "- ${it.text}" }
+            callback.onGetCatHelpClick(
+                """
+                Знайди правильну відповідь або правильні відповіді та поясни, чому саме так:<br><br>
+                Запитання:<br>${item.text.parseAsHtml()}<br><br>
+                Варіанти відповідей:<br>$answers
+            """.trimIndent()
+            )
+        }
     }
 
     companion object {

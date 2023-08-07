@@ -32,6 +32,7 @@ object Analytics {
         object PAYWALL_OPEN : Event("paywall_open")
 
         object BOT_OPEN : Event("bot_open")
+        object BOT_OPEN_FROM_LESSON : Event("bot_open_from_lesson")
         object BOT_LIMIT_PREM : Event("bot_limit_prem")
         object BOT_LIMIT_DEFAULT : Event("bot_limit_default")
         object BOT_HINT_CLICK : Event("bot_hint_click")

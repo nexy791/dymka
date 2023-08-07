@@ -64,4 +64,28 @@
     </com.google.android.material.card.MaterialCardView>
 
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_get_help"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/e_ukraine_regular"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="30dp"
+        android:minHeight="30dp"
+        android:text="🐱️️️ Пояснення від кота"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="@color/md_theme_light_primary"
+        android:textSize="11sp"
+        app:backgroundTint="#ffffff"
+        app:layout_constraintStart_toStartOf="@+id/materialCardView4"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
+        app:strokeColor="@color/md_theme_light_primary"
+        app:strokeWidth="1dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,8 @@ import com.ribsky.loader.nav.LoaderNavigationImpl
 import com.ribsky.navigation.features.AccountNavigation
 import com.ribsky.navigation.features.AuthNavigation
 import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.BotNavigation
+import com.ribsky.navigation.features.BotNavigationImpl
 import com.ribsky.navigation.features.FeedNavigation
 import com.ribsky.navigation.features.GameNavigation
 import com.ribsky.navigation.features.GamesNavigation
@@ -147,4 +149,9 @@ val navDi = module {
     factory<PayWallNavigation> {
         PayWallNavigationImpl()
     }
+
+    factory<BotNavigation> {
+        BotNavigationImpl()
+    }
+
 }

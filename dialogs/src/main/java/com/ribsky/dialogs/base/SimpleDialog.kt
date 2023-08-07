@@ -1,5 +1,6 @@
 package com.ribsky.dialogs.base
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.View.GONE
@@ -8,7 +9,7 @@ import com.ribsky.common.base.BaseSheet
 import com.ribsky.dialogs.databinding.DialogSimpleBinding
 
 class SimpleDialog(
-    private val config: Config,
+    private val config: Config? = null,
 ) : BaseSheet<DialogSimpleBinding>(DialogSimpleBinding::inflate) {
 
     data class Config(
@@ -43,6 +44,10 @@ class SimpleDialog(
     )
 
     override fun initViews(): Unit = with(binding) {
+        if (config == null) {
+            dismiss()
+            return
+        }
         imageView.apply {
             config.icon?.icon?.let { setImageResource(it) }
             config.icon?.color?.let { setColorFilter(it, PorterDuff.Mode.SRC_IN) }
@@ -114,6 +119,11 @@ class SimpleDialog(
     }
 
     override fun clear() {
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        config?.onDismiss?.invoke()
     }
 
     companion object {

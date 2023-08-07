@@ -107,13 +107,15 @@ class LessonsFragment :
 
     private fun processStarClick(star: StarModel) {
         showBottomSheetDialog(StarsFactory(star.stars, star.allStars, negativeButtonCallback = {
-            showBottomSheetDialog(SubPromptFactory {
-                Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
-                shopNavigation.navigate(
-                    requireActivity(),
-                    ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_STARS)
-                )
-            }.createDialog())
+            if (!viewModel.isSub) {
+                showBottomSheetDialog(SubPromptFactory {
+                    Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
+                    shopNavigation.navigate(
+                        requireActivity(),
+                        ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_STARS)
+                    )
+                }.createDialog())
+            }
         }
         ).createDialog())
     }

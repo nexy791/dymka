@@ -41,6 +41,16 @@ class ChatChipsViewHolder(private val binding: ItemChatChipsBinding) :
                 chipGroup.setChildrenChecked(false)
             }
         }
+        btnGetHelp.setOnClickListener {
+            val answers = item.chips.joinToString("<br>") { "- $it" }
+            callback.onGetCatHelpClick(
+                """
+                Знайди правильну відповідь або правильні відповіді та поясни, чому саме так:<br><br>
+                Запитання:<br>${item.text.parseAsHtml()}<br><br>      
+                Варіанти відповідей:<br>$answers
+            """.trimIndent()
+            )
+        }
     }
 
     private fun ChipGroup.getCheckedChips(): List<String> =

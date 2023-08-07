@@ -43,6 +43,7 @@ import com.ribsky.dialogs.factory.bot.BotLimitFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.message.MessageActionFactory
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
+import com.ribsky.navigation.features.BotNavigation
 import com.ribsky.navigation.features.ShareMessageNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import org.koin.android.ext.android.inject
@@ -61,6 +62,8 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
     private var replyAdapter: ReplyAdapter? = null
 
     private var state: LoadingStateDelegate? = null
+
+    private var messageQuestion: String? = null
 
     private val activityResultRegistry = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -95,6 +98,8 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
     }
 
     override fun initView(): Unit = with(binding) {
+        messageQuestion =
+            intent?.getParcelableExtra<BotNavigation.Params>(BotNavigation.PARAM)?.text
         Analytics.logEvent(Analytics.Event.BOT_OPEN)
         state = LoadingStateDelegate(frame, btnMainLoading)
         initEditText()
@@ -151,6 +156,22 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
             val text = binding.etName.text.toString()
             viewModel.sendQuestion(text)
             clearEditText()
+        } else {
+            if (viewModel.isSub) {
+                Analytics.logEvent(Analytics.Event.BOT_LIMIT_PREM)
+            } else {
+                Analytics.logEvent(Analytics.Event.BOT_LIMIT_DEFAULT)
+            }
+            showLimitDialog()
+        }
+    }
+
+    private fun tryToSendQuestionEarly() {
+        if (viewModel.isBotCanReply) {
+            messageQuestion?.let {
+                viewModel.sendQuestion(it)
+                messageQuestion = null
+            }
         } else {
             if (viewModel.isSub) {
                 Analytics.logEvent(Analytics.Event.BOT_LIMIT_PREM)
@@ -241,6 +262,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
                     state?.showContent()
                     adapter?.hideLoading()
                     updateChat(it.data!!)
+                    tryToSendQuestionEarly()
                 }
 
                 Resource.Status.ERROR -> showErrorDialog(it.exception?.localizedMessage) { finish() }
@@ -260,6 +282,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
             finish()
         }
     }
+
 
     private fun updateReplies(list: List<String>) {
         TransitionManager.beginDelayedTransition(

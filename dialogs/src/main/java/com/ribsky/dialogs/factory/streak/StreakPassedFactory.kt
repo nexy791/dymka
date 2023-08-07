@@ -18,7 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class StreakPassedFactory(
-    private var onDismiss: (() -> Unit),
+    private var onDismiss: (() -> Unit) = {},
 ) :
     BaseSheet<DialogStreakPassedBinding>(DialogStreakPassedBinding::inflate) {
 

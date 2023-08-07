@@ -6,7 +6,7 @@ import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.dialogs.databinding.DialogFullScreenBinding
 
 class FullScreenDialog(
-    private val config: Config,
+    private val config: Config? = null,
 ) : BaseSheetFullScreen<DialogFullScreenBinding>(DialogFullScreenBinding::inflate) {
 
     data class Config(
@@ -16,6 +16,10 @@ class FullScreenDialog(
     )
 
     override fun initViews() = with(binding) {
+        if (config == null) {
+            dismiss()
+            return@with
+        }
         tvTitle.text = config.title
         tvDescription.text = config.description
 
@@ -38,7 +42,7 @@ class FullScreenDialog(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        config.onDismiss()
+        config?.onDismiss?.invoke()
     }
 
     companion object {

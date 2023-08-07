@@ -7,7 +7,7 @@ import com.ribsky.common.base.BaseSheet
 import com.ribsky.dialogs.databinding.DialogLargeBinding
 
 class LargeImageDialog(
-    private val config: Config,
+    private val config: Config? = null,
 ) : BaseSheet<DialogLargeBinding>(DialogLargeBinding::inflate) {
 
     data class Config(
@@ -34,6 +34,10 @@ class LargeImageDialog(
     )
 
     override fun initViews(): Unit = with(binding) {
+        if (config == null) {
+            dismiss()
+            return
+        }
         imageView.setImageResource(config.image ?: 0)
         tvTitle.text = config.title
         tvDescription.text = config.description
@@ -73,7 +77,7 @@ class LargeImageDialog(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        config.onDismiss?.invoke()
+        config?.onDismiss?.invoke()
     }
 
     override fun initObserves() {

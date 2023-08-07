@@ -61,7 +61,8 @@
         app:layout_constraintStart_toStartOf="@+id/container"
         app:layout_constraintTop_toBottomOf="@+id/container"
         app:strokeColor="@color/md_theme_light_primary"
-        app:strokeWidth="1dp" />
+        app:strokeWidth="1dp"
+        tools:visibility="visible" />
 
 
     <com.google.android.material.imageview.ShapeableImageView

@@ -1,6 +1,5 @@
 package com.ribsky.dymka.ui
 
-import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.NavHostFragment
 import coil.load
@@ -24,6 +23,7 @@ import com.ribsky.dymka.dialogs.LoadingDialog
 import com.ribsky.navigation.features.AccountNavigation
 import com.ribsky.navigation.features.AuthNavigation
 import com.ribsky.navigation.features.BetaNavigation
+import com.ribsky.navigation.features.BotNavigation
 import com.ribsky.navigation.features.IntroNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import com.skydoves.balloon.balloon
@@ -39,6 +39,7 @@ class MainActivity :
     private val authNavigation: AuthNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
     private val introNavigation: IntroNavigation by inject()
+    private val botNavigation: BotNavigation by inject()
 
     private val accountNavigation: AccountNavigation by inject()
 
@@ -143,6 +144,7 @@ class MainActivity :
                         balloon.showAlignBottom(binding.btnPremium, yOff = 8)
                     }
                 }
+
                 else -> {}
             }
         }
@@ -186,15 +188,10 @@ class MainActivity :
     }
 
     private fun navigateToBot() {
-        try {
-            startActivity(
-                Intent(
-                    this@MainActivity,
-                    Class.forName("com.ribsky.bot.ui.BotActivity")
-                )
-            )
-        } catch (e: Exception) {
-            showErrorDialog("${e.localizedMessage.orEmpty()}\nЯкщо помилка повторюється, спробуй перевстановити застосунок")
+        botNavigation.navigate(this, BotNavigation.Params()) {
+            if (!it) {
+                showErrorDialog("Якщо помилка повторюється, спробуй перевстановити застосунок")
+            }
         }
     }
 

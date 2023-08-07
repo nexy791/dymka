@@ -12,13 +12,14 @@ import com.ribsky.lessons.databinding.DialogLessonInfoBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LessonInfoDialog(
-    private val callback: (String) -> Unit,
+    private val callback: ((String) -> Unit)? = null,
 ) : BaseSheet<DialogLessonInfoBinding>(DialogLessonInfoBinding::inflate) {
 
-    private val lessonId by lazy { requireArguments().getString(KEY_LESSON_ID)!! }
+    private val lessonId by lazy { requireArguments().getString(KEY_LESSON_ID) }
     private val viewModel: LessonInfoViewModel by viewModel()
 
     override fun initViews() {
+        if (callback == null || lessonId == null) dismiss()
         initBtns()
     }
 
@@ -28,7 +29,7 @@ class LessonInfoDialog(
         }
         btnNext.setOnClickListener {
             playSound(commonRaw.sound_celebration)
-            callback(lessonId)
+            callback?.invoke(lessonId!!)
             dismiss()
         }
     }
@@ -41,7 +42,7 @@ class LessonInfoDialog(
     }
 
     override fun initObserves() = with(viewModel) {
-        getLesson(lessonId)
+        lessonId?.let { getLesson(it) }
         lessonStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateUi(result.data!!)

@@ -56,6 +56,7 @@ import com.ribsky.domain.repository.TopRepository
 import com.ribsky.domain.repository.UserRepository
 import org.koin.dsl.module
 
+// TODO: data layer need to be refactored
 val dataDi = module {
 
     single<UserRepository> {
@@ -157,13 +158,15 @@ val dataDi = module {
         TopRepositoryImpl(
             topDao = get(),
             topService = get(),
-            topMapper = get()
+            topMapper = get(),
+            userService = get()
         )
     }
 
     factory<TopService> {
         TopServiceImpl(
-            db = get()
+            db = get(),
+            userService = get()
         )
     }
 

@@ -47,7 +47,6 @@ class FeedFragment :
     private var adapterPrem: PremAdapter? = null
     private var adapterStreak: StreakAdapter? = null
 
-
     override fun initView() {
         initAdapter()
         initRecycler()

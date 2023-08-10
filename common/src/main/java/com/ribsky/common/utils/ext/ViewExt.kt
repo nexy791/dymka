@@ -73,6 +73,8 @@ class ViewExt {
             }
         }
 
+        fun Fragment.vibrate(time: Long = 150) = context?.vibrate(time)
+
         fun Context.copy(string: String) {
             try {
                 val clipboardManager =
@@ -120,10 +122,12 @@ class ViewExt {
         }
 
         fun AppCompatActivity.showBottomSheetDialog(dialog: BottomSheetDialogFragment) {
-            if (supportFragmentManager.isDestroyed) return
-            if (supportFragmentManager.findFragmentByTag(dialog.tag) != null) return
-            if (dialog.isAdded) return
-            dialog.show(supportFragmentManager, dialog.tag)
+            runCatching {
+                if (supportFragmentManager.isDestroyed) return
+                if (supportFragmentManager.findFragmentByTag(dialog.tag) != null) return
+                if (dialog.isAdded) return
+                dialog.show(supportFragmentManager, dialog.tag)
+            }
         }
 
         fun ViewGroup.show() {

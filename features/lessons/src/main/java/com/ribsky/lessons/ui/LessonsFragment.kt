@@ -35,6 +35,7 @@ import com.ribsky.navigation.features.LessonNavigation
 import com.ribsky.navigation.features.LessonsNavigation
 import com.ribsky.navigation.features.PayWallNavigation
 import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.TopDialogsNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -48,6 +49,7 @@ class LessonsFragment :
     private val lessonNavigation: LessonNavigation by inject()
     private val betaNavigation: BetaNavigation by inject()
     private val payWallNavigation: PayWallNavigation by inject()
+    private val topDialogsNavigation: TopDialogsNavigation by inject()
 
     private var adapter: ConcatAdapter? = null
     private var adapterHeader: LessonsHeaderAdapter? = null
@@ -73,12 +75,16 @@ class LessonsFragment :
                     if (!isTodayStreak) {
                         showStarsDialog(stars, (lesson?.stars ?: 0f).toFloat()) {
                             showBottomSheetDialog(StreakPassedFactory.create {
-                                showPayWall()
+                                showWillUp {
+                                    showPayWall {}
+                                }
                             })
                         }
                     } else {
                         showStarsDialog(stars, (lesson?.stars ?: 0f).toFloat()) {
-                            showPayWall()
+                            showWillUp {
+                                showPayWall {}
+                            }
                         }
                     }
                 }.createDialog())
@@ -192,7 +198,7 @@ class LessonsFragment :
         }
     }
 
-    private fun showPayWall() {
+    private fun showPayWall(callback: (Boolean) -> Unit) {
         viewModel.isNeedToShowPayWall {
             if (it.isSuccess) {
                 val param = PayWallNavigation.Params(it.getOrNull()!!)
@@ -209,8 +215,62 @@ class LessonsFragment :
                         }
                     })
             }
+            callback(it.isSuccess)
         }
     }
+
+    private fun showWillUp(callback: () -> Unit) {
+        viewModel.isNeedToShowWillUp {
+            if (it.isSuccess) {
+                val users = it.getOrNull()!!.map {
+                    TopDialogsNavigation.UserModel(
+                        name = it.name,
+                        score = it.starsCount,
+                        avatar = it.image,
+                        hasPrem = it.hasPrem
+                    )
+                }
+                topDialogsNavigation.navigate(
+                    childFragmentManager,
+                    TopDialogsNavigation.Params(
+                        TopDialogsNavigation.Status.UP,
+                        TopDialogsNavigation.Type.STARS,
+                        users,
+                        callback
+                    )
+                )
+            } else {
+                showWillMore(callback)
+            }
+        }
+    }
+
+    private fun showWillMore(callback: () -> Unit) {
+        viewModel.isNeedToShowMore {
+            if (it.isSuccess) {
+                val users = it.getOrNull()!!.map {
+                    TopDialogsNavigation.UserModel(
+                        name = it.name,
+                        score = it.starsCount,
+                        avatar = it.image,
+                        hasPrem = it.hasPrem
+                    )
+                }
+                topDialogsNavigation.navigate(
+                    childFragmentManager,
+                    TopDialogsNavigation.Params(
+                        TopDialogsNavigation.Status.MORE,
+                        TopDialogsNavigation.Type.STARS,
+                        users,
+                        callback
+                    )
+                )
+            } else {
+                callback()
+            }
+        }
+    }
+
 
     private fun showStarsDialog(stars: Float, starsLesson: Float, callback: () -> Unit) {
         if (starsLesson < stars) {

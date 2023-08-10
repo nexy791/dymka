@@ -11,10 +11,12 @@ import com.ribsky.billing.manager.SubManager
 import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
+import com.ribsky.domain.model.top.BaseTopModel
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCase
 import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.sp.GetRateDialogStatusUseCase
+import com.ribsky.domain.usecase.top.TopInteractor
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import kotlinx.coroutines.launch
 
@@ -25,6 +27,7 @@ class MainViewModel(
     private val dynamicModule: DynamicModule,
     private val getDiscountUseCase: GetDiscountUseCase,
     private val isNeedToFillBioUseCase: IsNeedToFillBioUseCase,
+    private val topInteractor: TopInteractor,
 ) : ViewModel() {
 
     private val _userStatus: MutableLiveData<Resource<BaseUserModel>> =
@@ -124,4 +127,22 @@ class MainViewModel(
             )
         }
     }
+
+    fun isNeedToShowDownStars(callback: (Result<List<BaseTopModel>>) -> Unit) {
+        viewModelScope.launch {
+            val result = topInteractor.getUsersForDownByStars()
+            if (result.size >= 2) callback.invoke(Result.success(result))
+            else callback.invoke(Result.failure(Throwable("Bad result")))
+        }
+    }
+
+    fun isNeedToShowDownTests(callback: (Result<List<BaseTopModel>>) -> Unit) {
+        viewModelScope.launch {
+            val result = topInteractor.getUsersForDownByTests()
+            if (result.size >= 2) callback.invoke(Result.success(result))
+            else callback.invoke(Result.failure(Throwable("Bad result")))
+        }
+    }
+
+
 }

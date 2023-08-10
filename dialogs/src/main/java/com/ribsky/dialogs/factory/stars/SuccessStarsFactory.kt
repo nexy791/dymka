@@ -18,7 +18,7 @@ class SuccessStarsFactory(
     override fun initViews(): Unit = with(binding) {
         Analytics.logEvent(Analytics.Event.STARS_COLLECTED(stars.toInt()))
         playSound(commonRaw.sound_stars)
-        requireContext().vibrate()
+        vibrate()
         btnNext.setOnClickListener {
             dismiss()
         }

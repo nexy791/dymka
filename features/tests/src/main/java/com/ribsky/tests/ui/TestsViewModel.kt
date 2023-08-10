@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
 import com.ribsky.core.Resource
+import com.ribsky.domain.model.top.BaseTopModel
 import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
 import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
 import com.ribsky.domain.usecase.streak.SetTodayStreakUseCase
 import com.ribsky.domain.usecase.test.TestInteractor
+import com.ribsky.domain.usecase.top.TopInteractor
 import com.ribsky.tests.model.TestModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,6 +24,7 @@ class TestsViewModel(
     private val setTodayStreakUseCase: SetTodayStreakUseCase,
     private val isTodayStreakUseCase: IsTodayStreakUseCase,
     private val getDiscountUseCase: GetDiscountUseCase,
+    private val topInteractor: TopInteractor,
 ) : ViewModel() {
 
     private val _testStatus: MutableLiveData<Resource<List<TestModel>>> =
@@ -64,8 +67,8 @@ class TestsViewModel(
     // TODO: refactor this
     fun isNeedToShowPayWall(callback: (Result<String>) -> Unit) {
         viewModelScope.launch {
-            val random = (0..2).random()
-            if (random != 0 && random != 1) {
+            val random = (0..1).random()
+            if (random == 0) {
                 callback.invoke(Result.failure(Throwable("Bad random")))
                 return@launch
             }
@@ -90,4 +93,21 @@ class TestsViewModel(
 
         }
     }
+
+    fun isNeedToShowWillUp(callback: (Result<List<BaseTopModel>>) -> Unit) {
+        viewModelScope.launch {
+            val result = topInteractor.getUsersForUpByTests()
+            if (result.size >= 2) callback.invoke(Result.success(result))
+            else callback.invoke(Result.failure(Throwable("Bad result")))
+        }
+    }
+
+    fun isNeedToShowMore(callback: (Result<List<BaseTopModel>>) -> Unit) {
+        viewModelScope.launch {
+            val result = topInteractor.getUsersForMoreUpByTests()
+            if (result.size >= 2) callback.invoke(Result.success(result))
+            else callback.invoke(Result.failure(Throwable("Bad result")))
+        }
+    }
+
 }

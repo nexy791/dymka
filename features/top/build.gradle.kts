@@ -40,4 +40,5 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
     implementation(project(":dialogs"))
+    implementation(project(mapOf("path" to ":analytics")))
 }

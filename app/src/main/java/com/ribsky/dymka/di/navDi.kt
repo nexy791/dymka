@@ -39,6 +39,7 @@ import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.navigation.features.TestNavigation
 import com.ribsky.navigation.features.TestsNavigation
 import com.ribsky.navigation.features.TopNavigation
+import com.ribsky.navigation.features.TopDialogsNavigation
 import com.ribsky.paywall.nav.PayWallNavigationImpl
 import com.ribsky.settings.nav.LibraryNavigationImpl
 import com.ribsky.settings.nav.SettingsNavigationImpl
@@ -50,6 +51,7 @@ import com.ribsky.shop.nav.ShopNavigationImpl
 import com.ribsky.test.nav.TestNavigationImpl
 import com.ribsky.tests.nav.TestsNavigationImpl
 import com.ribsky.top.nav.TopNavigationImpl
+import com.ribsky.top.nav.TopDialogsNavigationImpl
 import org.koin.dsl.module
 
 val navDi = module {
@@ -152,6 +154,10 @@ val navDi = module {
 
     factory<BotNavigation> {
         BotNavigationImpl()
+    }
+
+    factory<TopDialogsNavigation> {
+        TopDialogsNavigationImpl()
     }
 
 }

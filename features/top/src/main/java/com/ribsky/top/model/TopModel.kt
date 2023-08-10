@@ -10,10 +10,9 @@ data class TopModel(
 ) : BaseTopModel by topModel {
 
     enum class ViewType(val type: Int) {
-        // LESSON(0),
-        TEST(1),
-        STREAK(2),
-        STARS(3)
+        TEST(0),
+        STREAK(1),
+        STARS(2)
     }
 
     constructor(baseUserModel: BaseUserModel, position: Int, type: ViewType) : this(

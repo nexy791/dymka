@@ -28,7 +28,6 @@ import com.ribsky.shop.ui.ShopViewModel
 import com.ribsky.test.ui.TestDetailsViewModel
 import com.ribsky.tests.dialogs.info.TestInfoViewModel
 import com.ribsky.tests.ui.TestsViewModel
-import com.ribsky.top.ui.lessons.TopLessonsViewModel
 import com.ribsky.top.ui.stars.TopStarsViewModel
 import com.ribsky.top.ui.streak.TopStreakViewModel
 import com.ribsky.top.ui.tests.TopTestsViewModel
@@ -44,7 +43,8 @@ val uiDi = module {
             getRateDialogStatusUseCase = get(),
             dynamicModule = get(),
             getDiscountUseCase = get(),
-            isNeedToFillBioUseCase = get()
+            isNeedToFillBioUseCase = get(),
+            topInteractor = get()
         )
     }
 
@@ -101,20 +101,13 @@ val uiDi = module {
             setTodayStreakUseCase = get(),
             isTodayStreakUseCase = get(),
             getDiscountUseCase = get(),
-            addStarsToLessonUseCase = get()
-        )
-    }
-
-    viewModel {
-        TopTestsViewModel(
-            getUserUseCase = get(),
-            getLastTimeUseCase = get(),
+            addStarsToLessonUseCase = get(),
             topInteractor = get()
         )
     }
 
     viewModel {
-        TopLessonsViewModel(
+        TopTestsViewModel(
             getUserUseCase = get(),
             getLastTimeUseCase = get(),
             topInteractor = get()
@@ -197,7 +190,8 @@ val uiDi = module {
             testInteractor = get(),
             setTodayStreakUseCase = get(),
             isTodayStreakUseCase = get(),
-            getDiscountUseCase = get()
+            getDiscountUseCase = get(),
+            topInteractor = get()
         )
     }
 

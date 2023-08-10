@@ -224,8 +224,9 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
         android:layout_weight="0"
-        android:fontFamily="@font/e_ukraine_medium"
+        android:fontFamily="@font/e_ukraine_regular"
         android:gravity="center"
+        style="@style/TextAppearance.Material3.LabelSmall"
         android:text="Нагадати пізніше"
         android:textColor="@color/white"
         android:textSize="14dp" />

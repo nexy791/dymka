@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
+import kotlin.random.Random
 
 @JsonClass(generateAdapter = true)
 @Entity
@@ -23,8 +24,30 @@ data class TopApiModel(
 
     var starsCount: Int = 0,
 ) {
-
     enum class Type {
-        TEST, LESSON, STREAK, PREMIUM, STAR
+        TEST, LESSON, STREAK, PREMIUM, STAR,
+        NEAR_STARS, NEAR_TEST
+    }
+
+    companion object {
+
+        fun fromUserApi(
+            userApiModel: UserApiModel,
+            type: Type,
+        ) = TopApiModel(
+            name = userApiModel.name,
+            image = userApiModel.image,
+            score = userApiModel.score,
+            streak = userApiModel.streak,
+            lessons = userApiModel.lessons,
+            lessonsCount = userApiModel.lessonsCount,
+            hasPrem = userApiModel.hasPrem,
+            id = -Random.nextInt(0, 1000000),
+            type = type,
+            bioLevel = userApiModel.bioLevel,
+            bioGoal = userApiModel.bioGoal,
+            starsCount = userApiModel.starsCount,
+        )
+
     }
 }

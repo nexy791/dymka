@@ -26,6 +26,7 @@ import com.ribsky.navigation.features.BetaNavigation
 import com.ribsky.navigation.features.BotNavigation
 import com.ribsky.navigation.features.IntroNavigation
 import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.navigation.features.TopDialogsNavigation
 import com.skydoves.balloon.balloon
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,6 +41,7 @@ class MainActivity :
     private val shopNavigation: ShopNavigation by inject()
     private val introNavigation: IntroNavigation by inject()
     private val botNavigation: BotNavigation by inject()
+    private val topDialogsNavigation: TopDialogsNavigation by inject()
 
     private val accountNavigation: AccountNavigation by inject()
 
@@ -65,7 +67,9 @@ class MainActivity :
         initCallback()
         checkRateDialog()
         checkBioDialog()
+        checkTopDownDialog()
     }
+
 
     private fun initToolbar() = with(binding) {
         toolBar.setNavigationOnClickListener {
@@ -117,6 +121,69 @@ class MainActivity :
     private fun checkBioDialog() {
         if (viewModel.isNeedToFillBio) {
             introNavigation.navigate(this)
+        }
+    }
+
+    private fun checkTopDownDialog() {
+        val random = (0..1).random()
+        if (random == 0) {
+            checkTopDownTestsDialog {
+                if (!it) checkTopDownStarsDialog {}
+            }
+        } else {
+            checkTopDownStarsDialog {
+                if (!it) checkTopDownTestsDialog {}
+            }
+        }
+    }
+
+    private fun checkTopDownTestsDialog(callback: (Boolean) -> Unit) {
+        viewModel.isNeedToShowDownTests { rTests ->
+            if (rTests.isSuccess) {
+                val users = rTests.getOrNull()!!.map {
+                    TopDialogsNavigation.UserModel(
+                        name = it.name,
+                        score = it.score,
+                        avatar = it.image,
+                        hasPrem = it.hasPrem
+                    )
+                }
+                topDialogsNavigation.navigate(
+                    supportFragmentManager,
+                    TopDialogsNavigation.Params(
+                        TopDialogsNavigation.Status.DOWN,
+                        TopDialogsNavigation.Type.TESTS,
+                        users
+                    ) {}
+                )
+            }
+            callback(rTests.isSuccess)
+        }
+    }
+
+    private fun checkTopDownStarsDialog(callback: (Boolean) -> Unit) {
+        viewModel.isNeedToShowDownStars { rStars ->
+            if (rStars.isSuccess) {
+
+                val users = rStars.getOrNull()!!.map {
+                    TopDialogsNavigation.UserModel(
+                        name = it.name,
+                        score = it.starsCount,
+                        avatar = it.image,
+                        hasPrem = it.hasPrem
+                    )
+                }
+
+                topDialogsNavigation.navigate(
+                    supportFragmentManager,
+                    TopDialogsNavigation.Params(
+                        TopDialogsNavigation.Status.DOWN,
+                        TopDialogsNavigation.Type.STARS,
+                        users
+                    ) {}
+                )
+            }
+            callback(rStars.isSuccess)
         }
     }
 

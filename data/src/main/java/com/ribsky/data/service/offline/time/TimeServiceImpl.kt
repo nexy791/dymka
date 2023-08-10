@@ -8,12 +8,12 @@ class TimeServiceImpl(
     private val sharedPreferences: SharedPreferences,
 ) : TimeService {
 
-    // 6 hours
+    // 4 hours
     override fun isNeedUpdate(): Boolean {
         val lastTimeUpdate = getLastTimeUpdate()
         if (lastTimeUpdate <= 0L) return true
         val currentTime = Date().time
-        return currentTime - lastTimeUpdate > 21600000 || currentTime < lastTimeUpdate
+        return currentTime - lastTimeUpdate > 14400000 || currentTime < lastTimeUpdate
     }
 
     override fun saveLastTimeUpdate() {
@@ -25,7 +25,7 @@ class TimeServiceImpl(
     override fun getLastTimeUpdate(): Long = sharedPreferences.getLong(KEY_LAST_UPDATE, 0)
 
     private companion object {
-        private const val KEY_VERSION = "1.0.0"
+        private const val KEY_VERSION = "1.0.1"
         private const val KEY_LAST_UPDATE = "last_update_$KEY_VERSION"
     }
 }

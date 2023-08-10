@@ -24,6 +24,7 @@ import com.ribsky.navigation.features.BetaNavigation
 import com.ribsky.navigation.features.PayWallNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.navigation.features.TestNavigation
+import com.ribsky.navigation.features.TopDialogsNavigation
 import com.ribsky.tests.adapter.test.TestAdapter
 import com.ribsky.tests.databinding.FragmentTestsBinding
 import com.ribsky.tests.dialogs.info.TestInfoDialog
@@ -39,6 +40,7 @@ class TestsFragment :
     private val testNavigation: TestNavigation by inject()
     private val shopNavigation: ShopNavigation by inject()
     private val payWallNavigation: PayWallNavigation by inject()
+    private val topDialogsNavigation: TopDialogsNavigation by inject()
 
     private var adapter: TestAdapter? = null
 
@@ -53,10 +55,14 @@ class TestsFragment :
                 if (count > 0) showBottomSheetDialog(SuccessFactoryTest(count) {
                     if (count >= 10 && !isTodayStreak) {
                         showBottomSheetDialog(StreakPassedFactory.create() {
-                            showPayWall()
+                            showWillUp {
+                                showPayWall()
+                            }
                         })
                     } else {
-                        showPayWall()
+                        showWillUp {
+                            showPayWall()
+                        }
                     }
                 }.createDialog())
             }
@@ -120,6 +126,58 @@ class TestsFragment :
                 }
 
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
+            }
+        }
+    }
+
+    private fun showWillUp(callback: () -> Unit) {
+        viewModel.isNeedToShowWillUp {
+            if (it.isSuccess) {
+                val users = it.getOrNull()!!.map {
+                    TopDialogsNavigation.UserModel(
+                        name = it.name,
+                        score = it.score,
+                        avatar = it.image,
+                        hasPrem = it.hasPrem
+                    )
+                }
+                topDialogsNavigation.navigate(
+                    childFragmentManager,
+                    TopDialogsNavigation.Params(
+                        TopDialogsNavigation.Status.UP,
+                        TopDialogsNavigation.Type.TESTS,
+                        users,
+                        callback
+                    )
+                )
+            } else {
+                showWillMore(callback)
+            }
+        }
+    }
+
+    private fun showWillMore(callback: () -> Unit) {
+        viewModel.isNeedToShowMore {
+            if (it.isSuccess) {
+                val users = it.getOrNull()!!.map {
+                    TopDialogsNavigation.UserModel(
+                        name = it.name,
+                        score = it.score,
+                        avatar = it.image,
+                        hasPrem = it.hasPrem
+                    )
+                }
+                topDialogsNavigation.navigate(
+                    childFragmentManager,
+                    TopDialogsNavigation.Params(
+                        TopDialogsNavigation.Status.MORE,
+                        TopDialogsNavigation.Type.TESTS,
+                        users,
+                        callback
+                    )
+                )
+            } else {
+                callback()
             }
         }
     }

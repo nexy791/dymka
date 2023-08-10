@@ -25,7 +25,7 @@ class StreakPassedFactory(
     override fun initViews(): Unit = with(binding) {
         Analytics.logEvent(Analytics.Event.STREAK_DONE)
         playSound(commonRaw.sound_streak)
-        requireContext().vibrate()
+        vibrate()
         (imageView.drawable as AnimatedVectorDrawable).apply {
             start()
         }

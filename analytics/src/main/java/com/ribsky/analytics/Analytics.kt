@@ -97,6 +97,18 @@ object Analytics {
 
         class STARS_COLLECTED(val stars: Int) : Event("stars_collected_$stars")
 
+        object TOP_DOWN_STARS : Event("top_down_stars")
+
+        object TOP_DOWN_TESTS : Event("top_down_tests")
+
+        object TOP_UP_STARS : Event("top_up_stars")
+
+        object TOP_UP_TESTS : Event("top_up_tests")
+
+        object TOP_MORE_STARS : Event("top_more_stars")
+
+        object TOP_MORE_TESTS : Event("top_more_tests")
+
         object ERROR : Event("error")
 
 

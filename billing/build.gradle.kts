@@ -37,7 +37,6 @@ dependencies {
     implementation(Deps.androidxAppCompat)
     implementation(Deps.material)
 
-    api(Deps.easyCheckout)
-    api(Deps.billing)
-    api(Deps.billingKtx)
+    api("com.revenuecat.purchases:purchases:6.9.1")
+
 }

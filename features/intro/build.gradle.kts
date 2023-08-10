@@ -45,7 +45,4 @@ dependencies {
     implementation(project(":billing"))
     implementation(project(":dialogs"))
 
-    implementation(Deps.easyflipviewpager)
-
-
 }

@@ -91,6 +91,8 @@ object Analytics {
 
         object INTRO_LEVEL_PICK : Event("intro_level_pick")
 
+        object INTRO_FROM_PICK : Event("intro_from_pick")
+
         object STREAK_OPEN : Event("streak_open")
 
         object STREAK_DONE : Event("streak_done")

@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val billingDi = module {
 
     factory<BillingClient> {
-        BillingClientImpl(context = get())
+        BillingClientImpl()
     }
 
     factory<SubManager> {

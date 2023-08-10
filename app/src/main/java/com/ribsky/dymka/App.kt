@@ -9,6 +9,9 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
+import com.revenuecat.purchases.LogLevel
+import com.revenuecat.purchases.Purchases
+import com.revenuecat.purchases.PurchasesConfiguration
 import com.ribsky.common.utils.coil.CustomImageLoader
 import com.ribsky.common.utils.sound.SoundHelper
 import com.ribsky.dymka.di.billingDi
@@ -35,6 +38,7 @@ class App : SplitCompatApplication(), ImageLoaderFactory {
         initFirebase()
         initKoin()
         initMediaPlayers()
+        initCat()
     }
 
     private fun initFirebase() {
@@ -66,6 +70,13 @@ class App : SplitCompatApplication(), ImageLoaderFactory {
 
     private fun initMediaPlayers() {
         SoundHelper.setContext(this)
+    }
+
+    private fun initCat() {
+        Purchases.logLevel = LogLevel.DEBUG
+        Purchases.configure(
+            PurchasesConfiguration.Builder(this, "goog_zEmHIafiljJfZrJzzFuvKNsTloJ").build()
+        )
     }
 
     override fun newImageLoader(): ImageLoader = CustomImageLoader.build(this)

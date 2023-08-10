@@ -1,101 +1,83 @@
 package com.ribsky.billing.client
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import jp.alessandro.android.iab.BillingApi
-import jp.alessandro.android.iab.BillingContext
-import jp.alessandro.android.iab.BillingException
-import jp.alessandro.android.iab.BillingProcessor
-import jp.alessandro.android.iab.Item
-import jp.alessandro.android.iab.ItemDetails
-import jp.alessandro.android.iab.PurchaseType
-import jp.alessandro.android.iab.Purchases
-import jp.alessandro.android.iab.handler.ItemDetailsHandler
-import jp.alessandro.android.iab.handler.PurchaseHandler
-import jp.alessandro.android.iab.handler.PurchasesHandler
-import jp.alessandro.android.iab.handler.StartActivityHandler
-import jp.alessandro.android.iab.logger.SystemLogger
+import android.app.Activity
+import com.revenuecat.purchases.PurchaseParams
+import com.revenuecat.purchases.Purchases
+import com.revenuecat.purchases.getCustomerInfoWith
+import com.revenuecat.purchases.getProductsWith
+import com.revenuecat.purchases.models.StoreProduct
+import com.revenuecat.purchases.purchaseWith
+import com.revenuecat.purchases.restorePurchasesWith
+import com.revenuecat.purchases.syncPurchasesWith
 
-class BillingClientImpl(
-    private val context: Context,
-) : BillingClient {
+class BillingClientImpl : BillingClient {
 
-    companion object {
-        private const val KEY =
-            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm4XMlKoL+uLKO81p6nmgK6Wvoa8QjBBTb8vQ0TeE+aTwKmQNRS/Um0FghddKaK6RuNAKeE4popuSBxmNWz0JLNqmpbXLD3JCvLzD0IXtlQRzs6+FDFVB+udHJNYpkxptu8MxU92kK37BO0T9phJG2CtJ/dQWpt7lKYy8lt0Zc0+na1Z2GVKq+HUNvhtE85X5mbH35PYYlqWroZP965FqYu05L5zRzjMI53sI3CNIuxq8KpmPN072wk2t9iMTJTTEANXIUDUcyHD0uprP9SUQggBg8B2u0gOp64XSkNNBwAC+dB9paFcPJLUc88C2NkQqpjJhYQwTuVKpjdSJ5eqvuwIDAQAB"
-    }
+    private var activity: Activity? = null
 
-    override var billingProcessor: BillingProcessor? = null
-    private var activity: AppCompatActivity? = null
-    private var handler: PurchaseHandler? = null
-
-    override fun setup(activity: AppCompatActivity, handler: PurchaseHandler) {
-        val builder = BillingContext.Builder()
-            .setContext(context.applicationContext)
-            .setPublicKeyBase64(KEY)
-            .setApiVersion(BillingApi.VERSION_5)
-            .setLogger(SystemLogger())
-        billingProcessor = BillingProcessor(builder.build(), handler)
+    override fun setup(activity: Activity) {
         this.activity = activity
-        this.handler = handler
     }
 
-    override fun purchase(sku: String, type: PurchaseType, callback: (Result<Unit>) -> Unit) {
-        billingProcessor?.startPurchase(
-            activity,
-            0,
-            sku,
-            type,
-            "",
-            object : StartActivityHandler {
-                override fun onSuccess() {
-                    callback(Result.success(Unit))
+    override fun purchase(product: StoreProduct, callback: (Result<Unit>) -> Unit) {
+        if (activity != null) {
+            Purchases.sharedInstance.purchaseWith(
+                PurchaseParams.Builder(activity!!, product).build(),
+                onError = { error, userCancelled ->
+                    if (!userCancelled) callback(Result.failure(Throwable(error.message)))
+                },
+                onSuccess = { _, customerInfo ->
+                    if (customerInfo.entitlements.active.isNotEmpty()) callback(Result.success(Unit))
                 }
-
-                override fun onError(e: BillingException) {
-                    callback(Result.failure(e))
-                }
-            }
-        )
+            )
+        } else {
+            callback(Result.failure(Throwable("Activity is null")))
+        }
     }
 
     override fun getPurchasesList(
         sku: List<String>,
-        type: PurchaseType,
-        callback: (Result<List<Item>>) -> Unit,
+        callback: (Result<List<StoreProduct>>) -> Unit,
     ) {
-        billingProcessor?.getItemDetails(
-            type,
-            ArrayList(sku),
-            object : ItemDetailsHandler {
-                override fun onSuccess(itemDetails: ItemDetails?) {
-                    callback(Result.success(itemDetails!!.all!!))
-                }
-
-                override fun onError(e: BillingException?) {
-                    callback(Result.failure(e!!))
-                }
-            }
+        Purchases.sharedInstance.getProductsWith(sku,
+            onError = { callback(Result.failure(Throwable(it.message))) },
+            onGetStoreProducts = { callback(Result.success(it)) }
         )
     }
 
-    override fun getInventory(type: PurchaseType, callback: (Result<List<String>>) -> Unit) {
-        billingProcessor?.getPurchases(
-            type,
-            object : PurchasesHandler {
-                override fun onSuccess(purchases: Purchases) {
-                    callback.invoke(Result.success(purchases.all.map { it.sku }))
-                }
-
-                override fun onError(e: BillingException) {
-                    callback.invoke(Result.failure(e))
-                }
-            }
-        )
+    override fun getInventory(callback: (Result<List<String>>) -> Unit) {
+        Purchases.sharedInstance.getCustomerInfoWith(
+            onError = {
+                callback.invoke(Result.failure(Throwable(it.message)))
+            },
+            onSuccess = {
+                callback.invoke(Result.success(it.entitlements.active.values.map { p -> p.productIdentifier }))
+            })
     }
 
     override fun destroy() {
-        billingProcessor?.release()
-        billingProcessor = null
+        activity = null
     }
+
+    override fun restorePurchases(callback: (Result<Unit>) -> Unit) {
+        Purchases.sharedInstance.restorePurchasesWith(
+            onSuccess = {
+                callback(Result.success(Unit))
+            },
+            onError = { error ->
+                callback(Result.failure(Throwable(error.message)))
+            }
+        )
+    }
+
+    override fun syncPurchases(callback: (Result<Unit>) -> Unit) {
+        Purchases.sharedInstance.syncPurchasesWith(
+            onSuccess = {
+                callback(Result.success(Unit))
+            },
+            onError = { error ->
+                callback(Result.failure(Throwable(error.message)))
+            }
+        )
+    }
+
 }

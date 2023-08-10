@@ -1,6 +1,5 @@
 package com.ribsky.shop.ui
 
-import android.content.Intent
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,6 +7,7 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import coil.load
 import com.redmadrobot.lib.sd.LoadingStateDelegate
+import com.revenuecat.purchases.models.StoreProduct
 import com.ribsky.analytics.Analytics
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseActivity
@@ -27,8 +27,6 @@ import com.ribsky.shop.adapter.cats.CatsAdapter
 import com.ribsky.shop.adapter.more.CatsMoreAdapter
 import com.ribsky.shop.databinding.ActivityShopBinding
 import com.ribsky.shop.dialogs.sub.SubDialog
-import jp.alessandro.android.iab.Item
-import jp.alessandro.android.iab.handler.PurchaseHandler
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,17 +43,10 @@ class ShopActivity :
             ?: Analytics.Event.PREMIUM_BUY_FROM_UNKNOWN
     }
 
-    private val itemList = mutableListOf<Item>()
+    private val itemList = mutableListOf<StoreProduct>()
     private var state: LoadingStateDelegate? = null
 
-    private val purchaseHandler = PurchaseHandler {
-        if (it.isSuccess) {
-            Analytics.logEvent(analyticEventFrom)
-            loaderNavigation.navigate(this)
-        } else {
-            showErrorDialog(it.exception?.localizedMessage) { finish() }
-        }
-    }
+
     private val billingClientWrapper: BillingClientWrapper by inject()
 
     private var concatAdapter: ConcatAdapter? = null
@@ -64,7 +55,7 @@ class ShopActivity :
 
     private val callback: SubDialog.Callback = object : SubDialog.Callback {
 
-        override fun onResult(product: BillingClientWrapper.Product) {
+        override fun onResult(product: StoreProduct) {
             buyItem(product)
         }
 
@@ -130,7 +121,7 @@ class ShopActivity :
     }
 
     private fun initBilling() {
-        billingClientWrapper.setup(this, purchaseHandler)
+        billingClientWrapper.setup(this)
         getPricesSubs()
     }
 
@@ -194,6 +185,7 @@ class ShopActivity :
         setOnClickListener {
             showRestoreDialog()
         }
+        isGone = viewModel.isSub
     }
 
     private fun initTexts() = with(binding) {
@@ -217,7 +209,15 @@ class ShopActivity :
             positiveButton = "Відновити",
             negativeButton = "Підтримка",
             positiveAction = {
-                loaderNavigation.navigate(this@ShopActivity)
+                billingClientWrapper.restorePurchases {
+                    if (it.isSuccess) {
+                        loaderNavigation.navigate(this@ShopActivity)
+                    } else {
+                        showErrorDialog(
+                            message = it.exceptionOrNull()?.message ?: "Помилка відновлення покупок"
+                        )
+                    }
+                }
             },
             negativeAction = {
                 sendEmail(
@@ -320,27 +320,18 @@ class ShopActivity :
         }
     }
 
-    private fun buyItem(sku: BillingClientWrapper.Product) {
-        billingClientWrapper.purchase(sku) { r ->
+    private fun buyItem(product: StoreProduct) {
+        billingClientWrapper.purchase(product) { r ->
             r.fold(
-                onSuccess = {},
+                onSuccess = {
+                    Analytics.logEvent(analyticEventFrom)
+                    loaderNavigation.navigate(this)
+                },
                 onFailure = {
                     showErrorDialog(it.localizedMessage) { finish() }
                 }
             )
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (billingClientWrapper.billingProcessor?.onActivityResult(
-                requestCode,
-                resultCode,
-                data
-            ) == true
-        ) {
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun clear() {

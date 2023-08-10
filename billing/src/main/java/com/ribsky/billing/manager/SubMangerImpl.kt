@@ -12,6 +12,7 @@ class SubMangerImpl(
         private const val TAG = "SUB_KEY"
         private const val TAG_SKU = "SUB_KEY_SKU"
         private const val TAG_DISCOUNT = "SUB_KEY_DISCOUNT"
+        private const val TAG_SUB_WAS_RESTORED = "SUB_KEY_SUB_WAS_RESTORED"
     }
 
     override fun isSub(): Boolean = sharedPreferences.getBoolean(TAG, false)
@@ -41,5 +42,15 @@ class SubMangerImpl(
 
     override fun isDiscount(): Boolean {
         return sharedPreferences.getBoolean(TAG_DISCOUNT, false)
+    }
+
+    override fun isSubWasRestored(): Boolean =
+        sharedPreferences.getBoolean(TAG_SUB_WAS_RESTORED, false)
+
+
+    override fun saveSubWasRestored(isSubWasRestored: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(TAG_SUB_WAS_RESTORED, isSubWasRestored)
+        }
     }
 }

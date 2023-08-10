@@ -15,4 +15,8 @@ interface SubManager {
     fun saveDiscountState(isDiscount: Boolean)
 
     fun isDiscount(): Boolean
+
+    fun isSubWasRestored(): Boolean
+
+    fun saveSubWasRestored(isSubWasRestored: Boolean)
 }

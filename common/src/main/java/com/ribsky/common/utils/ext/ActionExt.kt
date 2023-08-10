@@ -41,7 +41,7 @@ class ActionExt {
         }
 
         fun Fragment.sendEmail(email: String = Const.EMAIL, subject: String, text: String) {
-            requireContext().sendEmail(email, subject, text)
+            context?.sendEmail(email, subject, text)
         }
 
         fun Context.openWifiSettings() {
@@ -57,7 +57,7 @@ class ActionExt {
         }
 
         fun Fragment.openWifiSettings() {
-            requireContext().openWifiSettings()
+            context?.openWifiSettings()
         }
 
         fun Activity.openAppPage() {

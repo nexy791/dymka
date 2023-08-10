@@ -266,7 +266,8 @@ val dataDi = module {
         BioRepositoryImpl(
             sharedPreferences = get(),
             goalMapper = get(),
-            levelMapper = get()
+            levelMapper = get(),
+            fromMapper = get()
         )
     }
 }

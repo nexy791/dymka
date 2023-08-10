@@ -2,34 +2,29 @@ package com.ribsky.shop.dialogs.sub
 
 import android.annotation.SuppressLint
 import android.text.method.LinkMovementMethod
-import androidx.core.os.bundleOf
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
+import com.revenuecat.purchases.models.StoreProduct
+import com.revenuecat.purchases.models.googleProduct
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseSheet
 import com.ribsky.common.utils.party.Party
 import com.ribsky.shop.databinding.DialogSubBinding
-import jp.alessandro.android.iab.Item
 
 class SubDialog(
-    private val callback: Callback,
+    private val callback: Callback? = null,
+    private val listItems: List<StoreProduct> = listOf(),
+    private val isDiscount: Boolean = false,
 ) : BaseSheet<DialogSubBinding>(DialogSubBinding::inflate) {
 
     interface Callback {
-        fun onResult(product: BillingClientWrapper.Product)
+        fun onResult(product: StoreProduct)
         fun onDiscount()
-    }
-
-    private val listItems: List<Item> by lazy {
-        requireArguments().getParcelableArrayList(KEY) ?: emptyList()
-    }
-
-    private val isDiscount: Boolean by lazy {
-        requireArguments().getBoolean(IS_DISCOUNT)
     }
 
     @SuppressLint("SetTextI18n")
     override fun initViews() = with(binding) {
+        if (callback == null) dismiss()
         initParty()
         initBtns()
         initTexts()
@@ -50,16 +45,16 @@ class SubDialog(
             if (isDiscount) BillingClientWrapper.Product.YEARLY_LITE else BillingClientWrapper.Product.YEARLY_FULL
 
         cardWeek.setOnClickListener {
-            setResultAndDismiss(weekSub)
+            listItems.find { it.googleProduct?.productId == weekSub.sku }?.let { it1 -> setResultAndDismiss(it1) }
         }
         cardMonth.setOnClickListener {
-            setResultAndDismiss(monthSub)
+            listItems.find { it.googleProduct?.productId == monthSub.sku }?.let { it1 -> setResultAndDismiss(it1) }
         }
         cardLifetime.setOnClickListener {
-            setResultAndDismiss(lifetimeSub)
+            listItems.find { it.googleProduct?.productId == lifetimeSub.sku }?.let { it1 -> setResultAndDismiss(it1) }
         }
         cardYear.setOnClickListener {
-            setResultAndDismiss(yearSub)
+            listItems.find { it.googleProduct?.productId == yearSub.sku }?.let { it1 -> setResultAndDismiss(it1) }
         }
     }
 
@@ -67,7 +62,7 @@ class SubDialog(
     private fun initTexts() = with(binding) {
         btnSub.isGone = isDiscount
         btnSub.setOnClickListener {
-            callback.onDiscount()
+            callback?.onDiscount()
             dismiss()
         }
         textDescription.apply {
@@ -82,55 +77,55 @@ class SubDialog(
 
         val lifeTimePrice = listItems.firstOrNull {
             if (isDiscount) {
-                it.sku == BillingClientWrapper.Product.LIFETIME_LITE.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.LIFETIME_LITE.sku
             } else {
-                it.sku == BillingClientWrapper.Product.LIFETIME_FULL.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.LIFETIME_FULL.sku
             }
-        }?.price ?: ""
+        }?.price?.formatted ?: ""
 
         val yearPrice = listItems.firstOrNull {
             if (isDiscount) {
-                it.sku == BillingClientWrapper.Product.YEARLY_LITE.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.YEARLY_LITE.sku
             } else {
-                it.sku == BillingClientWrapper.Product.YEARLY_FULL.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.YEARLY_FULL.sku
             }
-        }?.price ?: ""
+        }?.price?.formatted ?: ""
 
         val monthPrice = listItems.firstOrNull {
             if (isDiscount) {
-                it.sku == BillingClientWrapper.Product.MONTHLY_LITE.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.MONTHLY_LITE.sku
             } else {
-                it.sku == BillingClientWrapper.Product.MONTHLY_FULL.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.MONTHLY_FULL.sku
             }
-        }?.price ?: ""
+        }?.price?.formatted ?: ""
 
         val weekPrice = listItems.firstOrNull {
             if (isDiscount) {
-                it.sku == BillingClientWrapper.Product.WEEKLY_LITE.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.WEEKLY_LITE.sku
             } else {
-                it.sku == BillingClientWrapper.Product.WEEKLY_FULL.sku
+                it.googleProduct?.productId == BillingClientWrapper.Product.WEEKLY_FULL.sku
             }
-        }?.price ?: ""
+        }?.price?.formatted ?: ""
 
         val lifeTimeDiscountSuffix =
             if (isDiscount) "<s>" + listItems.firstOrNull {
-                it.sku == BillingClientWrapper.Product.LIFETIME_FULL.sku
-            }?.price + "</s>" else ""
+                it.googleProduct?.productId == BillingClientWrapper.Product.LIFETIME_FULL.sku
+            }?.price?.formatted + "</s>" else ""
 
         val yearDiscountSuffix =
             if (isDiscount) "<s>" + listItems.firstOrNull {
-                it.sku == BillingClientWrapper.Product.YEARLY_FULL.sku
-            }?.price + "</s>" else ""
+                it.googleProduct?.productId == BillingClientWrapper.Product.YEARLY_FULL.sku
+            }?.price?.formatted + "</s>" else ""
 
         val monthDiscountSuffix =
             if (isDiscount) "<s>" + listItems.firstOrNull {
-                it.sku == BillingClientWrapper.Product.MONTHLY_FULL.sku
-            }?.price + "</s>" else ""
+                it.googleProduct?.productId == BillingClientWrapper.Product.MONTHLY_FULL.sku
+            }?.price?.formatted + "</s>" else ""
 
         val weekDiscountSuffix =
             if (isDiscount) "<s>" + listItems.firstOrNull {
-                it.sku == BillingClientWrapper.Product.WEEKLY_FULL.sku
-            }?.price + "</s>" else ""
+                it.googleProduct?.productId == BillingClientWrapper.Product.WEEKLY_FULL.sku
+            }?.price?.formatted + "</s>" else ""
 
         tvLifetime.text = "$lifeTimeDiscountSuffix $lifeTimePrice один раз".parseAsHtml()
         tvYear.text = "$yearDiscountSuffix $yearPrice на рік".parseAsHtml()
@@ -139,8 +134,8 @@ class SubDialog(
 
     }
 
-    private fun setResultAndDismiss(product: BillingClientWrapper.Product) {
-        callback.onResult(product)
+    private fun setResultAndDismiss(product: StoreProduct) {
+        callback?.onResult(product)
         dismiss()
     }
 
@@ -148,15 +143,11 @@ class SubDialog(
     }
 
     companion object {
-        const val KEY = "SUB_KEY"
-        const val IS_DISCOUNT = "IS_DISCOUNT"
         fun newInstance(
             isDiscount: Boolean,
-            list: List<Item>,
+            list: List<StoreProduct>,
             callback: Callback,
-        ) = SubDialog(callback).apply {
-            arguments = bundleOf(KEY to list, IS_DISCOUNT to isDiscount)
-        }
+        ) = SubDialog(callback, list, isDiscount)
     }
 
     override fun initObserves() {

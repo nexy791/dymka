@@ -13,6 +13,6 @@ class IsNeedToFillBioUseCaseImpl(
 ) : IsNeedToFillBioUseCase {
 
     override fun invoke(): Boolean =
-        bioRepository.getGoal() == null || bioRepository.getLevel() == null
+        bioRepository.getGoal() == null || bioRepository.getLevel() == null || bioRepository.getFrom() == null
 
 }

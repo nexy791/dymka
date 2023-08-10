@@ -49,6 +49,7 @@ class UserServiceImpl(
             streakLastDay = streakRepository.getStreakLastDay()
             bioLevel = bioRepository.getLevel() ?: -1
             bioGoal = bioRepository.getGoal() ?: -1
+            bioFrom = bioRepository.getFrom() ?: -1
             starsCount = activeRepository.getStars().values.sum()
             stars = activeRepository.getStars()
         }
@@ -67,6 +68,7 @@ class UserServiceImpl(
                             streakLastDay = streakRepository.getStreakLastDay()
                             bioLevel = bioRepository.getLevel() ?: -1
                             bioGoal = bioRepository.getGoal() ?: -1
+                            bioFrom = bioRepository.getFrom() ?: -1
                             starsCount = activeRepository.getStars().values.sum()
                             stars = activeRepository.getStars()
                         }.toMap()
@@ -94,6 +96,7 @@ class UserServiceImpl(
 
         bioRepository.saveGoal(user.bioGoal)
         bioRepository.saveLevel(user.bioLevel)
+        bioRepository.saveFrom(user.bioFrom)
 
         activeRepository.setTestScore(user.score)
         activeRepository.setActiveLessons(user.lessons.transformToListString())

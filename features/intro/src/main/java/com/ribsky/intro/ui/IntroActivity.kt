@@ -5,11 +5,11 @@ import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.intro.adapter.ViewPagerAdapter
 import com.ribsky.intro.databinding.ActivityIntroBinding
+import com.ribsky.intro.ui.fragments.from.IntroFromFragment
 import com.ribsky.intro.ui.fragments.goal.IntroGoalFragment
 import com.ribsky.intro.ui.fragments.level.IntroLevelFragment
 import com.ribsky.intro.ui.fragments.success.IntroSuccessFragment
 import com.ribsky.intro.utils.IntroCallback
-import com.wajahatkarim3.easyflipviewpager.BookFlipPageTransformer2
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class IntroActivity :
@@ -26,17 +26,13 @@ class IntroActivity :
 
     private fun initViewPager() {
         viewPagerAdapter = ViewPagerAdapter(this).apply {
-            addFragment(IntroGoalFragment.newInstance())
-            addFragment(IntroLevelFragment.newInstance())
+            if (viewModel.getGoal() == null) addFragment(IntroGoalFragment.newInstance())
+            if (viewModel.getLevel() == null) addFragment(IntroLevelFragment.newInstance())
+            if (viewModel.getFrom() == null) addFragment(IntroFromFragment.newInstance())
             addFragment(IntroSuccessFragment.newInstance())
-        }
-        val pager = BookFlipPageTransformer2().apply {
-            isEnableScale = true
-            scaleAmountPercent = 10f
         }
         binding.viewPager.apply {
             adapter = viewPagerAdapter
-            setPageTransformer(pager)
             isUserInputEnabled = false
         }
     }

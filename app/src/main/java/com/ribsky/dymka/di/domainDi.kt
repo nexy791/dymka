@@ -10,10 +10,14 @@ import com.ribsky.domain.usecase.auth.SignOutUseCase
 import com.ribsky.domain.usecase.auth.SignOutUseCaseImpl
 import com.ribsky.domain.usecase.best.GetBestWordUseCase
 import com.ribsky.domain.usecase.best.GetBestWordUseCaseImpl
+import com.ribsky.domain.usecase.bio.GetCurrentFromBioUseCase
+import com.ribsky.domain.usecase.bio.GetCurrentFromBioUseCaseImpl
 import com.ribsky.domain.usecase.bio.GetCurrentGoalBioUseCase
 import com.ribsky.domain.usecase.bio.GetCurrentGoalBioUseCaseImpl
 import com.ribsky.domain.usecase.bio.GetCurrentLevelBioUseCase
 import com.ribsky.domain.usecase.bio.GetCurrentLevelBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.GetFromsBioUseCase
+import com.ribsky.domain.usecase.bio.GetFromsBioUseCaseImpl
 import com.ribsky.domain.usecase.bio.GetGoalByIdUseCase
 import com.ribsky.domain.usecase.bio.GetGoalByIdUseCaseImpl
 import com.ribsky.domain.usecase.bio.GetGoalsBioUseCase
@@ -24,6 +28,8 @@ import com.ribsky.domain.usecase.bio.GetLevelsBioUseCase
 import com.ribsky.domain.usecase.bio.GetLevelsBioUseCaseImpl
 import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCase
 import com.ribsky.domain.usecase.bio.IsNeedToFillBioUseCaseImpl
+import com.ribsky.domain.usecase.bio.SetFromBioUseCase
+import com.ribsky.domain.usecase.bio.SetFromBioUseCaseImpl
 import com.ribsky.domain.usecase.bio.SetGoalBioUseCase
 import com.ribsky.domain.usecase.bio.SetGoalBioUseCaseImpl
 import com.ribsky.domain.usecase.bio.SetLevelBioUseCase
@@ -271,6 +277,12 @@ val domainUi = module {
         )
     }
 
+    factory<SetFromBioUseCase> {
+        SetFromBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
     factory<GetLevelsBioUseCase> {
         GetLevelsBioUseCaseImpl(
             bioRepository = get()
@@ -301,6 +313,12 @@ val domainUi = module {
         )
     }
 
+    factory<GetCurrentFromBioUseCase> {
+        GetCurrentFromBioUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
     factory<GetGoalByIdUseCase> {
         GetGoalByIdUseCaseImpl(
             bioRepository = get()
@@ -309,6 +327,12 @@ val domainUi = module {
 
     factory<GetLevelByIdUseCase> {
         GetLevelByIdUseCaseImpl(
+            bioRepository = get()
+        )
+    }
+
+    factory<GetFromsBioUseCase> {
+        GetFromsBioUseCaseImpl(
             bioRepository = get()
         )
     }

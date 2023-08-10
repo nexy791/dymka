@@ -2,6 +2,8 @@ package com.ribsky.dymka.di
 
 import com.ribsky.data.mapper.best.BestMapper
 import com.ribsky.data.mapper.best.BestMapperImpl
+import com.ribsky.data.mapper.from.FromMapper
+import com.ribsky.data.mapper.from.FromMapperImpl
 import com.ribsky.data.mapper.goal.GoalMapper
 import com.ribsky.data.mapper.goal.GoalMapperImpl
 import com.ribsky.data.mapper.lesson.LessonMapper
@@ -93,6 +95,10 @@ val mapperDi = module {
 
     factory<GoalMapper> {
         GoalMapperImpl()
+    }
+
+    factory<FromMapper> {
+        FromMapperImpl()
     }
 
 }

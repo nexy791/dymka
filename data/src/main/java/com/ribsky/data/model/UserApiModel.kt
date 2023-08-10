@@ -22,6 +22,7 @@ data class UserApiModel(
 
     override var bioLevel: Int = -1,
     override var bioGoal: Int = -1,
+    override var bioFrom: Int = -1,
 
     override var starsCount: Int = 0,
     override var stars: Map<String, Int> = HashMap(),
@@ -44,6 +45,7 @@ data class UserApiModel(
         var streakLastDay: Long = 0,
         var bioLevel: Int = -1,
         var bioGoal: Int = -1,
+        var bioFrom: Int = -1,
         var starsCount: Int = 0,
         var stars: Map<String, Int> = HashMap(),
     ) {
@@ -62,6 +64,7 @@ data class UserApiModel(
             streakLastDay = user.streakLastDay,
             bioLevel = user.bioLevel,
             bioGoal = user.bioGoal,
+            bioFrom = user.bioFrom,
             starsCount = user.starsCount,
             stars = user.stars,
         )
@@ -82,6 +85,7 @@ data class UserApiModel(
                 "streakLastDay" to streakLastDay,
                 "bioLevel" to bioLevel,
                 "bioGoal" to bioGoal,
+                "bioFrom" to bioFrom,
                 "starsCount" to starsCount,
                 "stars" to stars,
             )
@@ -103,6 +107,7 @@ data class UserApiModel(
         streakLastDay = user.streakLastDay,
         bioLevel = user.bioLevel,
         bioGoal = user.bioGoal,
+        bioFrom = user.bioFrom,
         starsCount = user.starsCount,
         stars = user.stars,
     )

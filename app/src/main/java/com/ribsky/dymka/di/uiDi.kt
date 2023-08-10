@@ -12,6 +12,7 @@ import com.ribsky.game.ui.lobby.LobbyViewModel
 import com.ribsky.games.ui.games.GamesViewModel
 import com.ribsky.intro.ui.IntroViewModel
 import com.ribsky.intro.ui.fragments.BaseViewModel
+import com.ribsky.intro.ui.fragments.from.IntroFromViewModel
 import com.ribsky.intro.ui.fragments.goal.IntroGoalViewModel
 import com.ribsky.intro.ui.fragments.level.IntroLevelViewModel
 import com.ribsky.lesson.ui.LessonViewModel
@@ -225,7 +226,11 @@ val uiDi = module {
     }
 
     viewModel {
-        IntroViewModel()
+        IntroViewModel(
+            getCurrentFromBioUseCase = get(),
+            getCurrentGoalBioUseCase = get(),
+            getCurrentLevelBioUseCase = get(),
+        )
     }
 
     viewModel {
@@ -251,6 +256,13 @@ val uiDi = module {
         IntroLevelViewModel(
             setLevelBioUseCase = get(),
             getLevelsBioUseCase = get()
+        )
+    }
+
+    viewModel {
+        IntroFromViewModel(
+            setFromBioUseCase = get(),
+            getFromsBioUseCase = get()
         )
     }
 

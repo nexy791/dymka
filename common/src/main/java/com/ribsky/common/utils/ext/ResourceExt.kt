@@ -20,6 +20,6 @@ class ResourceExt {
 
         fun Context.drawable(drawable: Int) = ContextCompat.getDrawable(this, drawable)
 
-        fun Fragment.drawable(drawable: Int) = requireContext().drawable(drawable)
+        fun Fragment.drawable(drawable: Int) = context?.drawable(drawable)
     }
 }

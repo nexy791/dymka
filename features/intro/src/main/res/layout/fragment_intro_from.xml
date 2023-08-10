@@ -26,7 +26,7 @@
         android:layout_marginHorizontal="16dp"
         android:fontFamily="@font/e_ukraine_medium"
         android:gravity="center"
-        android:text="Ну останнє!"
+        android:text="І наостанок!"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
         android:textColor="#000"

@@ -54,7 +54,7 @@ class IntroActivity :
 
     override fun next() {
         if (binding.viewPager.currentItem == viewPagerAdapter!!.itemCount - 1) finish()
-        else binding.viewPager.currentItem++
+        else binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
     }
 
 

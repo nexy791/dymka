@@ -5,6 +5,7 @@ import androidx.core.text.parseAsHtml
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
+import com.ribsky.analytics.Analytics
 import com.ribsky.auth.databinding.ActivityAuthBinding
 import com.ribsky.auth.dialogs.DialogSign
 import com.ribsky.auth.utils.auth.helpers.AuthHelperOneTapImpl
@@ -31,6 +32,7 @@ class AuthActivity :
     private var state: LoadingStateDelegate? = null
 
     override fun initView() {
+        Analytics.logEvent(Analytics.Event.OPEN_AUTH)
         clear()
         initState()
         initTexts()
@@ -87,7 +89,11 @@ class AuthActivity :
                     state!!.showLoading()
                 }
 
-                Resource.Status.SUCCESS -> loaderNavigation.navigate(this@AuthActivity)
+                Resource.Status.SUCCESS -> {
+                    Analytics.logEvent(Analytics.Event.PASS_AUTH)
+                    loaderNavigation.navigate(this@AuthActivity)
+                }
+
                 Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage)
             }
         }

@@ -42,4 +42,5 @@ dependencies {
     implementation(project(":dialogs"))
 
     implementation(Deps.auth)
+    implementation(project(mapOf("path" to ":analytics")))
 }

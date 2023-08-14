@@ -119,6 +119,10 @@ object Analytics {
 
         object NOTES_LIMIT : Event("notes_limit")
 
+        object OPEN_AUTH : Event("open_auth")
+
+        object PASS_AUTH : Event("pass_auth")
+
         object ERROR : Event("error")
 
 

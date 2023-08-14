@@ -2,6 +2,7 @@ package com.ribsky.data.mapper.paragraph
 
 import com.ribsky.data.mapper.Mapper
 import com.ribsky.data.model.ParagraphApiModel
+import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.domain.model.paragraph.ParagraphModel
 
 interface ParagraphMapper : Mapper<ParagraphApiModel, ParagraphModel>
@@ -18,7 +19,7 @@ class ParagraphMapperImpl : ParagraphMapper {
             isEmpty = false,
             stars = input.stars,
             isEnoughStars = false,
-            starsHave = 0
+            starsHave = 0,
         )
     }
 }

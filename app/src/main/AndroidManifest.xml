@@ -119,6 +119,9 @@
             android:name="com.ribsky.intro.ui.IntroActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.ribsky.notes.ui.NotesActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.ribsky.share.ui.share.ShareStreakActivity"
             android:screenOrientation="portrait"
             android:theme="@style/StoryThemeYellow" />

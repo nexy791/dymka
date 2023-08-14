@@ -19,7 +19,6 @@ import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.feed.adapter.lm.FeedSpanSizeLookup
 import com.ribsky.feed.adapter.paragraph.ParagraphAdapter
-import com.ribsky.feed.adapter.prem.PremAdapter
 import com.ribsky.feed.adapter.streak.StreakAdapter
 import com.ribsky.feed.adapter.word.BestWordAdapter
 import com.ribsky.feed.databinding.FragmentFeedBinding
@@ -44,13 +43,11 @@ class FeedFragment :
     private var adapter: ConcatAdapter? = null
     private var adapterBestWord: BestWordAdapter? = null
     private var adapterParagraph: ParagraphAdapter? = null
-    private var adapterPrem: PremAdapter? = null
     private var adapterStreak: StreakAdapter? = null
 
     override fun initView() {
         initAdapter()
         initRecycler()
-        updatePremContent(listOf(viewModel.isSub))
     }
 
     private fun initAdapter() {
@@ -58,13 +55,6 @@ class FeedFragment :
             shareNavigation.navigate(requireContext(), ShareWordNavigation.Params(id))
         }
 
-        adapterPrem = PremAdapter() {
-            Analytics.logEvent(Analytics.Event.PREMIUM_FROM_MAIN)
-            shopNavigation.navigate(
-                requireContext(),
-                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_MAIN)
-            )
-        }
 
         adapterParagraph = ParagraphAdapter { model ->
             processParagraphClick(model)
@@ -80,7 +70,7 @@ class FeedFragment :
         }
 
         this@FeedFragment.adapter =
-            ConcatAdapter(adapterBestWord, adapterStreak, adapterPrem, adapterParagraph)
+            ConcatAdapter(adapterBestWord, adapterStreak, adapterParagraph)
     }
 
     private fun processParagraphClick(model: BaseParagraphModel) {
@@ -141,7 +131,6 @@ class FeedFragment :
         paragraphsStatus.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Status.SUCCESS -> {
-                    adapterPrem?.submitList(listOf(viewModel.isSub))
                     updateLessonsContent(result.data!!)
                 }
 
@@ -160,10 +149,6 @@ class FeedFragment :
         adapterParagraph?.submitList(list) {
             showContent()
         }
-    }
-
-    private fun updatePremContent(list: List<Boolean>) {
-        adapterPrem?.submitList(list)
     }
 
     override fun onResume() {
@@ -192,6 +177,5 @@ class FeedFragment :
         adapter = null
         adapterBestWord = null
         adapterParagraph = null
-        adapterPrem = null
     }
 }

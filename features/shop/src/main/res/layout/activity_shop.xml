@@ -428,6 +428,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    custom:shopColor="#CE93D8"
+                    custom:shopDescription="Необмежена кількість повідомлень в конспекті"
+                    custom:shopIcon="📝"
+                    custom:shopTitle="Конспект 📝" />
+
+                <com.ribsky.shop.view.ItemShopView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     custom:shopColor="#FFECB3"
                     custom:shopDescription="Менша ніж один урок у репетитора"
                     custom:shopIcon="🎁"

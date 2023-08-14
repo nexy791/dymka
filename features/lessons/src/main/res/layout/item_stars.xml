@@ -83,15 +83,4 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/e_ukraine_medium"
-        android:paddingBottom="8dp"
-        android:text="Уроки"
-        android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
-
-
 </androidx.appcompat.widget.LinearLayoutCompat>

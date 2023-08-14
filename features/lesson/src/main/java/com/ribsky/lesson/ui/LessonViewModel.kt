@@ -15,6 +15,7 @@ import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.domain.usecase.lesson.GetLessonContentUseCase
 import com.ribsky.domain.usecase.lesson.LessonInteractor
+import com.ribsky.domain.usecase.notes.AddNoteUseCase
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import com.ribsky.lesson.mapper.factory.ChatMapperFactory
 import com.ribsky.lesson.model.ChatModel
@@ -30,6 +31,7 @@ class LessonViewModel(
     private val chatMapperFactory: ChatMapperFactory,
     private val checkerFactory: CheckerFactory,
     private val subManager: SubManager,
+    private val addNoteUseCase: AddNoteUseCase,
 ) : ViewModel() {
 
     var errorCount: Int = 0
@@ -69,6 +71,8 @@ class LessonViewModel(
     private val content get() = _contentStatus.value?.data!!.content
     private val answers get() = content.getOrNull(currentContentIndex)?.answers
 
+    private val paragraphId get() = _lessonStatus.value?.data?.paragraphId!!
+
     fun getLesson(lessonId: String) {
         this.lessonId = lessonId
         viewModelScope.launch {
@@ -94,6 +98,12 @@ class LessonViewModel(
         viewModelScope.launch {
             _userStatus.value = Resource.loading()
             _userStatus.value = getUserUseCase.invoke().asResource()
+        }
+    }
+
+    fun addNote(note: String, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            callback.invoke(addNoteUseCase.invoke(note, paragraphId))
         }
     }
 

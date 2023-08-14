@@ -32,7 +32,9 @@ class ListDialog(
         }
         recycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = ListActionsAdapter().apply {
+            adapter = ListActionsAdapter {
+                dismiss()
+            }.apply {
                 submitList(config.items)
             }
         }

@@ -26,6 +26,7 @@ import com.ribsky.dialogs.factory.success.SuccessFactory
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.lessons.adapter.lessons.header.LessonsHeaderAdapter
 import com.ribsky.lessons.adapter.lessons.item.LessonsAdapter
+import com.ribsky.lessons.adapter.notes.NotesAdapter
 import com.ribsky.lessons.adapter.stars.StarAdapter
 import com.ribsky.lessons.databinding.FragmentLessonsBinding
 import com.ribsky.lessons.dialogs.info.LessonInfoDialog
@@ -33,6 +34,7 @@ import com.ribsky.lessons.model.StarModel
 import com.ribsky.navigation.features.BetaNavigation
 import com.ribsky.navigation.features.LessonNavigation
 import com.ribsky.navigation.features.LessonsNavigation
+import com.ribsky.navigation.features.NotesNavigation
 import com.ribsky.navigation.features.PayWallNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.navigation.features.TopDialogsNavigation
@@ -50,10 +52,12 @@ class LessonsFragment :
     private val betaNavigation: BetaNavigation by inject()
     private val payWallNavigation: PayWallNavigation by inject()
     private val topDialogsNavigation: TopDialogsNavigation by inject()
+    private val notesNavigation: NotesNavigation by inject()
 
     private var adapter: ConcatAdapter? = null
     private var adapterHeader: LessonsHeaderAdapter? = null
     private var adapterStar: StarAdapter? = null
+    private var adapterNotes: NotesAdapter? = null
     private var adapterItem: LessonsAdapter? = null
 
     private val paragraphId by lazy { requireArguments().getString(LessonsNavigation.KEY_ID)!! }
@@ -105,10 +109,16 @@ class LessonsFragment :
         adapterItem = LessonsAdapter { model ->
             processLessonClick(model)
         }
+        adapterNotes = NotesAdapter {
+            notesNavigation.navigate(
+                requireActivity(),
+                NotesNavigation.Params(paragraphId)
+            )
+        }
         adapterStar = StarAdapter {
             processStarClick(it)
         }
-        adapter = ConcatAdapter(adapterHeader, adapterStar, adapterItem)
+        adapter = ConcatAdapter(adapterHeader, adapterStar, adapterNotes, adapterItem)
     }
 
     private fun processStarClick(star: StarModel) {
@@ -138,6 +148,7 @@ class LessonsFragment :
                 Resource.Status.LOADING -> loadContent()
                 Resource.Status.SUCCESS -> {
                     adapterItem?.submitList(result.data)
+                    adapterNotes?.submitList(listOf(Unit))
                     updateStarView(result.data!!)
                 }
 

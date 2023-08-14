@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.ribsky.data.model.ParagraphApiModel
 
-@Database(entities = [ParagraphApiModel::class], version = 5, exportSchema = false)
+@Database(entities = [ParagraphApiModel::class], version = 6, exportSchema = false)
 abstract class ParagraphDataBase : RoomDatabase() {
     abstract val dao: ParagraphDao
 

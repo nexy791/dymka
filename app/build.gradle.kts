@@ -72,6 +72,7 @@ dependencies {
     implementation(project(":features:loader"))
     implementation(project(":features:intro"))
     implementation(project(":features:paywall"))
+    implementation(project(":features:notes"))
     implementation(project(":dialogs"))
     implementation(project(":widget"))
     implementation(project(":analytics"))

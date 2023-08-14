@@ -10,6 +10,7 @@ import com.ribsky.data.repository.ConfigRepositoryImpl
 import com.ribsky.data.repository.DataRepositoryImpl
 import com.ribsky.data.repository.FileRepositoryImpl
 import com.ribsky.data.repository.LessonRepositoryImpl
+import com.ribsky.data.repository.NotesRepositoryImpl
 import com.ribsky.data.repository.ParagraphRepositoryImpl
 import com.ribsky.data.repository.SaveRepositoryImpl
 import com.ribsky.data.repository.SettingsRepositoryImpl
@@ -47,6 +48,7 @@ import com.ribsky.domain.repository.ConfigRepository
 import com.ribsky.domain.repository.DataRepository
 import com.ribsky.domain.repository.FileRepository
 import com.ribsky.domain.repository.LessonRepository
+import com.ribsky.domain.repository.NotesRepository
 import com.ribsky.domain.repository.ParagraphRepository
 import com.ribsky.domain.repository.SaveRepository
 import com.ribsky.domain.repository.SettingsRepository
@@ -270,4 +272,13 @@ val dataDi = module {
             fromMapper = get()
         )
     }
+
+    single<NotesRepository> {
+        NotesRepositoryImpl(
+            notesDao = get(),
+            noteMapper = get(),
+            subManager = get()
+        )
+    }
+
 }

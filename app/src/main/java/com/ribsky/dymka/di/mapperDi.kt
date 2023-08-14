@@ -10,6 +10,8 @@ import com.ribsky.data.mapper.lesson.LessonMapper
 import com.ribsky.data.mapper.lesson.LessonMapperImpl
 import com.ribsky.data.mapper.level.LevelMapper
 import com.ribsky.data.mapper.level.LevelMapperImpl
+import com.ribsky.data.mapper.note.NoteMapper
+import com.ribsky.data.mapper.note.NoteMapperImpl
 import com.ribsky.data.mapper.paragraph.ParagraphMapper
 import com.ribsky.data.mapper.paragraph.ParagraphMapperImpl
 import com.ribsky.data.mapper.test.TestMapper
@@ -99,6 +101,10 @@ val mapperDi = module {
 
     factory<FromMapper> {
         FromMapperImpl()
+    }
+
+    factory<NoteMapper> {
+        NoteMapperImpl()
     }
 
 }

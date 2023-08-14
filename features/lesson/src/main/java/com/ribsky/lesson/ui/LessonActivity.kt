@@ -25,6 +25,8 @@ import com.ribsky.core.Resource
 import com.ribsky.dialogs.base.ListDialog
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.message.MessageActionFactory
+import com.ribsky.dialogs.factory.notes.NoteAddFactory
+import com.ribsky.dialogs.factory.notes.NoteLimitFactory
 import com.ribsky.dialogs.factory.stars.StarsFactory
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.lesson.adapter.chat.ChatAdapter
@@ -172,7 +174,32 @@ class LessonActivity :
                     ListDialog.Item("\uD83D\uDCE3 Поділитися") {
                         shareMessageNavigation.navigate(this, ShareMessageNavigation.Params(text))
                     },
-                    ListDialog.Item("\uD83D\uDCDD Скопіювати") {
+                    ListDialog.Item("\uD83D\uDCDD В конспект") {
+                        viewModel.addNote(text) {
+                            if (it) {
+                                Analytics.logEvent(Analytics.Event.NOTES_ADD)
+                                showBottomSheetDialog(NoteAddFactory().createDialog())
+                            } else {
+                                Analytics.logEvent(Analytics.Event.NOTES_LIMIT)
+                                showBottomSheetDialog(
+                                    NoteLimitFactory(
+                                        onConfirm = {},
+                                        onDismiss = {
+                                            showBottomSheetDialog(SubPromptFactory {
+                                                Analytics.logEvent(Analytics.Event.PREMIUM_FROM_NOTES)
+                                                shopNavigation.navigate(
+                                                    this@LessonActivity,
+                                                    ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_NOTES)
+                                                )
+                                            }.createDialog())
+                                        }
+                                    ).createDialog()
+                                )
+                            }
+                        }
+
+                    },
+                    ListDialog.Item("✏️ Скопіювати") {
                         copy(text.parseAsHtml().toString())
                     },
                     ListDialog.Item("\uD83D\uDC08 Підтримка") {

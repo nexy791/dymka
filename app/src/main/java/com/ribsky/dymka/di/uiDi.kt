@@ -21,6 +21,7 @@ import com.ribsky.lesson.utils.checker.factory.CheckerFactoryImpl
 import com.ribsky.lessons.dialogs.info.LessonInfoViewModel
 import com.ribsky.lessons.ui.LessonsViewModel
 import com.ribsky.loader.ui.LoaderViewModel
+import com.ribsky.notes.ui.NotesViewModel
 import com.ribsky.settings.ui.settings.SettingsViewModel
 import com.ribsky.share.ui.share.ShareStreakViewModel
 import com.ribsky.share.ui.story.ShareStoryViewModel
@@ -84,7 +85,8 @@ val uiDi = module {
             lessonInteractor = get(),
             chatMapperFactory = get(),
             checkerFactory = get(),
-            subManager = get()
+            subManager = get(),
+            addNoteUseCase = get()
         )
     }
 
@@ -263,6 +265,14 @@ val uiDi = module {
         IntroFromViewModel(
             setFromBioUseCase = get(),
             getFromsBioUseCase = get()
+        )
+    }
+
+    viewModel {
+        NotesViewModel(
+            getNotesUseCase = get(),
+            deleteNoteUseCase = get(),
+            subManager = get()
         )
     }
 

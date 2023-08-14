@@ -57,8 +57,9 @@ object Analytics {
         object PREMIUM_FROM_MENU : Event("premium_from_menu")
         object PREMIUM_FROM_SETTINGS : Event("premium_from_settings")
         object PREMIUM_FROM_PAYWALL : Event("premium_from_paywall")
-
         object PREMIUM_FROM_STARS : Event("premium_from_stars")
+
+        object PREMIUM_FROM_NOTES : Event("premium_from_notes")
 
         object PREMIUM_BUY_FROM_LESSON : Event("premium_buy_from_lesson")
         object PREMIUM_BUY_FROM_WORDS : Event("premium_buy_from_words")
@@ -71,8 +72,9 @@ object Analytics {
         object PREMIUM_BUY_FROM_MENU : Event("premium_buy_from_menu")
         object PREMIUM_BUY_FROM_SETTINGS : Event("premium_buy_from_settings")
         object PREMIUM_BUY_FROM_PAYWALL : Event("premium_buy_from_paywall")
-
         object PREMIUM_BUY_FROM_STARS : Event("premium_buy_from_stars")
+
+        object PREMIUM_BUY_FROM_NOTES : Event("premium_buy_from_notes")
 
         object PREMIUM_BUY_FROM_UNKNOWN : Event("premium_buy_from_unknown")
 
@@ -110,6 +112,12 @@ object Analytics {
         object TOP_MORE_STARS : Event("top_more_stars")
 
         object TOP_MORE_TESTS : Event("top_more_tests")
+
+        object NOTES_OPEN : Event("notes_open")
+
+        object NOTES_ADD : Event("notes_add")
+
+        object NOTES_LIMIT : Event("notes_limit")
 
         object ERROR : Event("error")
 

@@ -54,6 +54,12 @@ import com.ribsky.domain.usecase.lesson.GetLessonContentUseCase
 import com.ribsky.domain.usecase.lesson.GetLessonContentUseCaseImpl
 import com.ribsky.domain.usecase.lesson.LessonInteractor
 import com.ribsky.domain.usecase.lesson.LessonInteractorImpl
+import com.ribsky.domain.usecase.notes.AddNoteUseCase
+import com.ribsky.domain.usecase.notes.AddNoteUseCaseImpl
+import com.ribsky.domain.usecase.notes.DeleteNoteUseCase
+import com.ribsky.domain.usecase.notes.DeleteNoteUseCaseImpl
+import com.ribsky.domain.usecase.notes.GetNotesUseCase
+import com.ribsky.domain.usecase.notes.GetNotesUseCaseImpl
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractor
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractorImpl
 import com.ribsky.domain.usecase.save.SaveWordInteractor
@@ -346,6 +352,24 @@ val domainUi = module {
     factory<GetStarsUseCase> {
         GetStarsUseCaseImpl(
             activeRepository = get()
+        )
+    }
+
+    factory<GetNotesUseCase> {
+        GetNotesUseCaseImpl(
+            notesRepository = get()
+        )
+    }
+
+    factory<AddNoteUseCase> {
+        AddNoteUseCaseImpl(
+            notesRepository = get()
+        )
+    }
+
+    factory<DeleteNoteUseCase> {
+        DeleteNoteUseCaseImpl(
+            notesRepository = get()
         )
     }
 

@@ -8,6 +8,7 @@ import com.ribsky.data.service.offline.best.BestWordDao
 import com.ribsky.data.service.offline.best.BestWordDatabase
 import com.ribsky.data.service.offline.lesson.LessonsDao
 import com.ribsky.data.service.offline.lesson.LessonsDataBase
+import com.ribsky.data.service.offline.notes.NotesDataBase
 import com.ribsky.data.service.offline.paragraph.ParagraphDao
 import com.ribsky.data.service.offline.paragraph.ParagraphDataBase
 import com.ribsky.data.service.offline.stars.StarsLessonDatabase
@@ -32,6 +33,8 @@ val dbDi = module {
 
     single { starsDb(get()) }
 
+    single { notesDb(get()) }
+
     single { bestWordDao(get()) }
 
     single { lessonsDao(get()) }
@@ -45,6 +48,8 @@ val dbDi = module {
     single { topDao(get()) }
 
     single { starsDao(get()) }
+
+    single { notesDao(get()) }
 
 }
 
@@ -62,6 +67,8 @@ fun activeDao(activeLessonDatabase: ActiveLessonDatabase): ActiveLessonDao =
 fun topDao(topDatabase: TopDatabase) = topDatabase.dao
 
 fun starsDao(starsLessonDatabase: StarsLessonDatabase) = starsLessonDatabase.dao
+
+fun notesDao(notesDataBase: NotesDataBase) = notesDataBase.dao
 
 fun activeBestWordDb(context: Context): BestWordDatabase {
     return Room.databaseBuilder(
@@ -116,6 +123,16 @@ fun starsDb(context: Context): StarsLessonDatabase {
         context,
         StarsLessonDatabase::class.java,
         StarsLessonDatabase.DATABASE_NAME
+    )
+        .fallbackToDestructiveMigration()
+        .build()
+}
+
+fun notesDb(context: Context): NotesDataBase {
+    return Room.databaseBuilder(
+        context,
+        NotesDataBase::class.java,
+        NotesDataBase.DATABASE_NAME
     )
         .fallbackToDestructiveMigration()
         .build()

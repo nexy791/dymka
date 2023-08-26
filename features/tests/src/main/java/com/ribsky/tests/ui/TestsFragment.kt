@@ -86,13 +86,13 @@ class TestsFragment :
             val dialog = if (test.isInProgress()) {
                 ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog()
             } else if (!test.isActive) {
-                SubPromptFactory {
+                SubPromptFactory(viewModel.discount) {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_WORDS)
                     shopNavigation.navigate(
                         requireContext(),
                         ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_WORDS)
                     )
-                }.createDialog()
+                }
             } else {
                 TestInfoDialog.newInstance(test.id) {
                     testNavigation.navigate(

@@ -13,7 +13,8 @@ val botDi = module {
             addBotScoreUseCase = get(),
             canBotReplyUseCase = get(),
             getBotScoreForTodayUseCase = get(),
-            syncUserUseCase = get()
+            syncUserUseCase = get(),
+            getDiscountUseCase = get(),
         )
     }
 }

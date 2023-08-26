@@ -84,13 +84,13 @@ class FeedFragment :
                 LimitFactory(
                     onConfirm = {},
                     onDismiss = {
-                        showBottomSheetDialog(SubPromptFactory {
+                        showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
                             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
                             shopNavigation.navigate(
                                 requireActivity(),
                                 ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_STARS)
                             )
-                        }.createDialog())
+                        })
                     },
                     stars = model.starsHave,
                     needStars = model.stars

@@ -12,7 +12,7 @@ class SuccessInstallFactory(
 ) : DialogFactory {
 
     override fun createDialog(): SimpleDialog = SimpleDialog.create {
-        title = "Успішно! \uD83D\uDE3B"
+        title = "Фух, успішно! \uD83D\uDE3B"
         description = "Кіт вже чекає на тебе в діалозі"
         icon {
             icon = commonDrawable.ic_round_download_done_24

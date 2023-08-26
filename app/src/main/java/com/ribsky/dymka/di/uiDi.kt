@@ -22,6 +22,7 @@ import com.ribsky.lessons.dialogs.info.LessonInfoViewModel
 import com.ribsky.lessons.ui.LessonsViewModel
 import com.ribsky.loader.ui.LoaderViewModel
 import com.ribsky.notes.ui.NotesViewModel
+import com.ribsky.paywall.dialogs.PayWallViewModel
 import com.ribsky.settings.ui.settings.SettingsViewModel
 import com.ribsky.share.ui.share.ShareStreakViewModel
 import com.ribsky.share.ui.story.ShareStoryViewModel
@@ -75,6 +76,7 @@ val uiDi = module {
             paragraphInteractor = get(),
             isTodayStreakUseCase = get(),
             getCurrentStreakUseCase = get(),
+            getDiscountUseCase = get()
         )
     }
 
@@ -86,7 +88,8 @@ val uiDi = module {
             chatMapperFactory = get(),
             checkerFactory = get(),
             subManager = get(),
-            addNoteUseCase = get()
+            addNoteUseCase = get(),
+            getDiscountUseCase = get()
         )
     }
 
@@ -153,7 +156,8 @@ val uiDi = module {
             getUserUseCase = get(),
             subManager = get(),
             isContentExistsUseCase = get(),
-            testInteractor = get()
+            testInteractor = get(),
+            getDiscountUseCase = get()
         )
     }
 
@@ -205,7 +209,8 @@ val uiDi = module {
             testInteractor = get(),
             subManager = get(),
             addTestScoreUseCase = get(),
-            saveWordInteractor = get()
+            saveWordInteractor = get(),
+            getDiscountUseCase = get()
         )
     }
 
@@ -272,7 +277,14 @@ val uiDi = module {
         NotesViewModel(
             getNotesUseCase = get(),
             deleteNoteUseCase = get(),
-            subManager = get()
+            subManager = get(),
+            getDiscountUseCase = get()
+        )
+    }
+
+    viewModel {
+        PayWallViewModel(
+            topInteractor = get()
         )
     }
 

@@ -1,29 +1,47 @@
 package com.ribsky.dialogs.factory.sub
 
-import android.graphics.Color
-import com.ribsky.common.alias.commonDrawable
-import com.ribsky.dialogs.base.DialogFactory
-import com.ribsky.dialogs.base.SimpleDialog
-import com.ribsky.dialogs.base.SimpleDialog.Companion.icon
-import com.ribsky.dialogs.base.SimpleDialog.Companion.positiveButton
+import com.ribsky.analytics.Analytics
+import com.ribsky.common.base.BaseSheet
+import com.ribsky.dialogs.databinding.DialogPickPremBinding
 
 class SubPromptFactory(
+    private val date: String? = null,
     private val positiveButtonCallback: () -> Unit = {},
-) : DialogFactory {
+) : BaseSheet<DialogPickPremBinding>(DialogPickPremBinding::inflate) {
 
-    override fun createDialog(): SimpleDialog = SimpleDialog.create {
-        title = "Преміум контент \uD83C\uDF1F"
-        description = "Щоб продовжити, необхідно\nмати Преміум-акаунт"
-        imageColor = Color.parseColor("#2c3377")
-        icon {
-            icon = commonDrawable.ic_round_hotel_class_24
-            color = Color.parseColor("#f0be45")
+    override fun initViews() = with(binding) {
+        Analytics.logEvent(Analytics.Event.PREMIUM_OPEN_DIALOG)
+        btnNo.setOnClickListener {
+            dismiss()
         }
-        positiveButton {
-            text = "Продовжити"
-            callback = positiveButtonCallback
-            backgroundColor = Color.parseColor("#2c3377")
-            textColor = Color.parseColor("#ffffff")
+        btnBuy.setOnClickListener {
+            positiveButtonCallback.invoke()
+            dismiss()
         }
+        updateDiscount(date)
+    }
+
+    private fun updateDiscount(date: String?) {
+        if (!date.isNullOrEmpty()) {
+            binding.chip.apply {
+                text = "\uD83C\uDF81 Знижка $date"
+            }
+        } else {
+            binding.chip.apply {
+                text = "\uD83D\uDCF8 Знижка за сторіз"
+            }
+        }
+        binding.chip.setOnClickListener {
+            positiveButtonCallback.invoke()
+            dismiss()
+        }
+    }
+
+    override fun initObserves() {
+
+    }
+
+    override fun clear() {
+
     }
 }

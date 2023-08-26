@@ -45,6 +45,8 @@ object Analytics {
 
         object BOT_REPLY_ERROR : Event("bot_reply_error")
 
+        object PREMIUM_OPEN_DIALOG : Event("premium_open_dialog")
+
         object PREMIUM_OPEN : Event("premium_open")
         object PREMIUM_FROM_LESSON : Event("premium_from_lesson")
         object PREMIUM_FROM_WORDS : Event("premium_from_words")
@@ -124,6 +126,13 @@ object Analytics {
         object PASS_AUTH : Event("pass_auth")
 
         object ERROR : Event("error")
+
+        object NOTIFICATION_DIALOG_OPEN : Event("notification_dialog_open")
+        object NOTIFICATION_DIALOG_CLICK : Event("notification_dialog_click")
+
+        object NOTIFICATION_PERMISSION_GRANTED : Event("notification_permission_granted")
+
+        object NOTIFICATION_PERMISSION_DENIED : Event("notification_permission_denied")
 
 
     }

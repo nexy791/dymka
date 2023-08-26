@@ -39,7 +39,7 @@
         android:gravity="center"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="Це може зайняти деякий час"
+        android:text="Це може зайняти трохи часу 🕐"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="96dp"
         android:indeterminate="true"
+        app:trackCornerRadius="24dp"
         app:layout_constraintBottom_toTopOf="@+id/materialTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -12,7 +12,7 @@ interface PermissionManager {
     fun hasBlockedPermissions(): Boolean
 
     fun requestPermission(
-        callback: PermissionCallback,
+        callback: PermissionCallback?,
     )
 
     fun openAppSettings()

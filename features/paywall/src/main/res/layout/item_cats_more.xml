@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="36sp"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="8dp"
+    android:checkable="false"
+    android:fontFamily="@font/e_ukraine_regular"
+    android:text="Та інші 🐈"
+    android:textIsSelectable="false"
+    android:textSize="16sp"
+    app:chipCornerRadius="16sp"
+    app:chipMinTouchTargetSize="0dp" />

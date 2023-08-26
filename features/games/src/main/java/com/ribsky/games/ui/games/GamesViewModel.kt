@@ -8,6 +8,7 @@ import com.ribsky.billing.manager.SubManager
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.user.BaseUserModel
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
 import com.ribsky.domain.usecase.test.TestInteractor
 import com.ribsky.domain.usecase.user.GetUserUseCase
@@ -20,6 +21,7 @@ class GamesViewModel(
     private val testInteractor: TestInteractor,
     private val subManager: SubManager,
     private val isContentExistsUseCase: IsContentExistsUseCase,
+    private val getDiscountUseCase: GetDiscountUseCase,
 ) : ViewModel() {
 
     private val _userStatus: MutableLiveData<Resource<BaseUserModel>> = MutableLiveData()
@@ -31,6 +33,33 @@ class GamesViewModel(
     val user get() = _userStatus.value?.data
 
     fun isFileExists(content: String) = isContentExistsUseCase.invoke(content)
+
+    private val _discountStatus = MutableLiveData<String?>()
+    val discount get() = _discountStatus.value
+
+    init {
+        getIsFreeDiscountAvailable()
+    }
+
+    private fun getIsFreeDiscountAvailable() {
+        viewModelScope.launch {
+
+            if (subManager.isDiscount()) {
+                _discountStatus.value = "Назавжди ∞"
+                return@launch
+            }
+
+            val result = getDiscountUseCase.invoke()
+            result.fold(
+                onSuccess = {
+                    _discountStatus.value = "до $it"
+                },
+                onFailure = {
+                    _discountStatus.value = null
+                }
+            )
+        }
+    }
 
     fun getProfile() {
         viewModelScope.launch {

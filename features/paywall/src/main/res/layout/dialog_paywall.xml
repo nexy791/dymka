@@ -4,6 +4,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#0f1547"
     android:fitsSystemWindows="false"
     android:orientation="vertical">
@@ -107,6 +108,41 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_sponsors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/e_ukraine_medium"
+                    android:text="Наші котики 🐱"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="16dp"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/e_ukraine_regular"
+                    android:text="Долучайся до нас!"
+                    android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_sponsors" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_cats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/item_cats" />
 
                 <com.ribsky.paywall.view.ItemPaywallView
                     android:layout_width="match_parent"

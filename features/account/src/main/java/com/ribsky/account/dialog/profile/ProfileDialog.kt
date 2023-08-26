@@ -42,6 +42,6 @@ class ProfileDialog : BaseProfileDialog() {
     override fun updatePremInfo(isPrem: Boolean) = with(binding.container) {
         cardShop.isGone = !isPrem
         btnShop.text = "Підтримати"
-        if (isPrem) tvDescriptionPreminum.text = "Цей користувач має Premium-підписку"
+        if (isPrem) tvDescriptionPreminum.text = "Цей користувач має Преміум-підписку"
     }
 }

@@ -88,7 +88,7 @@
             android:layout_marginTop="16dp"
             android:layout_weight="1"
             android:fontFamily="@font/e_ukraine_regular"
-            android:text="Для отримання знижки зроби репост в сторіс і не забудь відмітити @dymka.me\n\nНе забудь відкрити профіль, щоб ми могли перевірити, що ти зробив репост 📸"
+            android:text="Для отримання знижки зроби репост в сторіз і не забудь відмітити @dymka.me\n\nНе забудь відкрити профіль, щоб ми могли перевірити, що ти зробив репост 📸"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintBottom_toTopOf="@+id/btn_next"
             app:layout_constraintEnd_toEndOf="parent"

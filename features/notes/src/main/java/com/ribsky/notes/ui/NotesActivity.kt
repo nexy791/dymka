@@ -62,13 +62,13 @@ class NotesActivity :
                     onConfirm = {},
                     onDismiss = {
                         if (!viewModel.isSub) {
-                            showBottomSheetDialog(SubPromptFactory {
+                            showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
                                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_NOTES)
                                 shopNavigation.navigate(
                                     this@NotesActivity,
                                     ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_NOTES)
                                 )
-                            }.createDialog())
+                            })
                         }
                     }
                 ).createDialog()
@@ -153,13 +153,13 @@ class NotesActivity :
             showBottomSheetDialog(NoteLimitFactory(
                 onConfirm = {},
                 onDismiss = {
-                    showBottomSheetDialog(SubPromptFactory {
+                    showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
                         Analytics.logEvent(Analytics.Event.PREMIUM_FROM_NOTES)
                         shopNavigation.navigate(
                             this@NotesActivity,
                             ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_NOTES)
                         )
-                    }.createDialog())
+                    })
                 }
             ).createDialog())
         }

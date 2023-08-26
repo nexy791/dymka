@@ -9,6 +9,7 @@ import com.ribsky.core.Resource
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.domain.usecase.best.GetBestWordUseCase
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractor
 import com.ribsky.domain.usecase.streak.GetCurrentStreakUseCase
 import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
@@ -21,6 +22,7 @@ class FeedViewModel(
     private val subManager: SubManager,
     private val isTodayStreakUseCase: IsTodayStreakUseCase,
     private val getCurrentStreakUseCase: GetCurrentStreakUseCase,
+    private val getDiscountUseCase: GetDiscountUseCase,
 ) : ViewModel() {
 
     private val _paragraphsStatus: MutableLiveData<Resource<List<BaseParagraphModel>>> =
@@ -32,6 +34,33 @@ class FeedViewModel(
     private val _bestWordStatus: MutableLiveData<Resource<BaseBestWordModel>> =
         MutableLiveData()
     val bestWordStatus: LiveData<Resource<BaseBestWordModel>> get() = _bestWordStatus
+
+    private val _discountStatus = MutableLiveData<String?>()
+    val discount get() =  _discountStatus.value
+
+    init {
+        getIsFreeDiscountAvailable()
+    }
+
+    private fun getIsFreeDiscountAvailable() {
+        viewModelScope.launch {
+
+            if (subManager.isDiscount()) {
+                _discountStatus.value = "Назавжди ∞"
+                return@launch
+            }
+
+            val result = getDiscountUseCase.invoke()
+            result.fold(
+                onSuccess = {
+                    _discountStatus.value = "до $it"
+                },
+                onFailure = {
+                    _discountStatus.value = null
+                }
+            )
+        }
+    }
 
     fun getBestWord() {
         viewModelScope.launch {

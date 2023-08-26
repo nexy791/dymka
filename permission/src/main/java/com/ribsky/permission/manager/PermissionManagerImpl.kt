@@ -21,14 +21,14 @@ class PermissionManagerImpl(
     override fun hasBlockedPermissions(): Boolean =
         activity.hasBlockedPermissions(*permissionChecker.permissions.toTypedArray())
 
-    override fun requestPermission(callback: PermissionManager.PermissionCallback) {
+    override fun requestPermission(callback: PermissionManager.PermissionCallback?) {
         activity.requestPermissions(
             *permissionChecker.permissions.toTypedArray(),
             callback = { isGranted ->
                 if (isGranted) {
-                    callback.onPermissionGranted()
+                    callback?.onPermissionGranted()
                 } else {
-                    callback.onPermissionDenied()
+                    callback?.onPermissionDenied()
                 }
             }
         )

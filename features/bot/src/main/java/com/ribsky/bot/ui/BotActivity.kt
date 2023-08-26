@@ -200,13 +200,13 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
             positiveButtonCallback = {
                 if (!viewModel.isSub) {
                     showBottomSheetDialog(
-                        SubPromptFactory {
+                        SubPromptFactory(viewModel.discount) {
                             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_BOT)
                             shopNavigation.navigate(
                                 this@BotActivity,
                                 ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_BOT)
                             )
-                        }.createDialog()
+                        }
                     )
                 }
             }

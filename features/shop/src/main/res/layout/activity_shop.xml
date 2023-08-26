@@ -166,7 +166,7 @@
                             android:backgroundTint="#EFBD46"
                             android:clickable="false"
                             android:fontFamily="@font/e_ukraine_medium"
-                            android:text="Зробити сторіс"
+                            android:text="Зробити сторіз"
                             android:textColor="#0F1547"
                             android:textSize="16sp"
                             app:layout_constraintBottom_toBottomOf="parent"

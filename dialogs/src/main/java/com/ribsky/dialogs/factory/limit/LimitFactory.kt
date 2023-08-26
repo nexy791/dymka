@@ -21,7 +21,7 @@ class LimitFactory(
         val starsCount = needStars - stars
         title = "$stars/$needStars зірок ⭐"
         description =
-            "Набери ще ${starsCount.formatStarsV2()} в минулій темі, щоб отримати доступ до нової теми. Або розблокуй усі теми з Преміум"
+            "Набери ще ${starsCount.formatStarsV2()} в минулій темі, щоб отримати доступ до нової! Або розблокуй усі теми з Преміум"
         icon {
             icon = commonDrawable.ic_round_star_24
         }

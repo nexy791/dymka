@@ -13,6 +13,7 @@ import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.content.BaseContentModel
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.domain.model.user.BaseUserModel
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.lesson.GetLessonContentUseCase
 import com.ribsky.domain.usecase.lesson.LessonInteractor
 import com.ribsky.domain.usecase.notes.AddNoteUseCase
@@ -32,6 +33,7 @@ class LessonViewModel(
     private val checkerFactory: CheckerFactory,
     private val subManager: SubManager,
     private val addNoteUseCase: AddNoteUseCase,
+    private val getDiscountUseCase: GetDiscountUseCase,
 ) : ViewModel() {
 
     var errorCount: Int = 0
@@ -72,6 +74,33 @@ class LessonViewModel(
     private val answers get() = content.getOrNull(currentContentIndex)?.answers
 
     private val paragraphId get() = _lessonStatus.value?.data?.paragraphId!!
+
+    private val _discountStatus = MutableLiveData<String?>()
+    val discount get() =  _discountStatus.value
+
+    init {
+        getIsFreeDiscountAvailable()
+    }
+
+    private fun getIsFreeDiscountAvailable() {
+        viewModelScope.launch {
+
+            if (subManager.isDiscount()) {
+                _discountStatus.value = "Назавжди ∞"
+                return@launch
+            }
+
+            val result = getDiscountUseCase.invoke()
+            result.fold(
+                onSuccess = {
+                    _discountStatus.value = "до $it"
+                },
+                onFailure = {
+                    _discountStatus.value = null
+                }
+            )
+        }
+    }
 
     fun getLesson(lessonId: String) {
         this.lessonId = lessonId

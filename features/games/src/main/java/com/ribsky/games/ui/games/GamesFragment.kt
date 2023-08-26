@@ -45,8 +45,7 @@ class GamesFragment :
 
     private var adapter: GamesAdapter? = null
 
-    private var _permissionManager: PermissionManager? = null
-    private val permissionManager: PermissionManager get() = _permissionManager!!
+    private var permissionManager: PermissionManager? = null
 
     private val permissionCallback = object : PermissionManager.PermissionCallback {
         override fun onPermissionGranted() {
@@ -68,7 +67,7 @@ class GamesFragment :
     }
 
     private fun initPermissionManager() {
-        _permissionManager = PermissionManagerImpl(
+        permissionManager = PermissionManagerImpl(
             requireActivity() as AppCompatActivity,
             GamePermissionChecker()
         )
@@ -100,13 +99,13 @@ class GamesFragment :
                 if (game.isActive) {
                     adapter?.setPicked(game)
                 } else {
-                    showBottomSheetDialog(SubPromptFactory {
+                    showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
                         Analytics.logEvent(Analytics.Event.PREMIUM_FROM_GAME)
                         shopNavigation.navigate(
                             requireContext(),
                             ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_GAME)
                         )
-                    }.createDialog())
+                    })
                 }
             } else {
                 showBottomSheetDialog(ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog())
@@ -160,11 +159,11 @@ class GamesFragment :
 
 
     private fun processRequestPermission() {
-        if (!permissionManager.hasPermissions()) {
-            if (permissionManager.hasBlockedPermissions()) {
-                permissionManager.openAppSettings()
+        if (permissionManager?.hasPermissions() == false) {
+            if (permissionManager?.hasBlockedPermissions() == true) {
+                permissionManager?.openAppSettings()
             } else {
-                permissionManager.requestPermission(permissionCallback)
+                permissionManager?.requestPermission(permissionCallback)
             }
         } else if (!isGeolocationEnabled()) {
             turnOnGeolocation()
@@ -174,7 +173,7 @@ class GamesFragment :
     }
 
     private fun updateUi() {
-        if (permissionManager.hasPermissions() && isGeolocationEnabled()) {
+        if (permissionManager?.hasPermissions() == true && isGeolocationEnabled()) {
             showContent()
         } else {
             showStub()
@@ -221,6 +220,6 @@ class GamesFragment :
 
     override fun clear() {
         adapter = null
-        _permissionManager = null
+        permissionManager = null
     }
 }

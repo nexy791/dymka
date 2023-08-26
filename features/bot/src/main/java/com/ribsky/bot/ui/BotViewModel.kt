@@ -20,6 +20,7 @@ import com.ribsky.domain.usecase.bot.AddBotScoreUseCase
 import com.ribsky.domain.usecase.bot.CanBotReplyUseCase
 import com.ribsky.domain.usecase.bot.GetBotScoreForTodayUseCase
 import com.ribsky.domain.usecase.config.GetBotTokenUseCase
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.user.GetUserUseCase
 import com.ribsky.domain.usecase.user.SyncUserUseCase
 import kotlinx.coroutines.delay
@@ -33,6 +34,7 @@ class BotViewModel(
     private val getBotScoreForTodayUseCase: GetBotScoreForTodayUseCase,
     private val syncUserUseCase: SyncUserUseCase,
     private val getBotTokenUseCase: GetBotTokenUseCase,
+    private val getDiscountUseCase: GetDiscountUseCase,
 ) : ViewModel() {
 
     private val _chatStatus: MutableLiveData<Resource<List<ChatModel>>> = MutableLiveData()
@@ -53,9 +55,36 @@ class BotViewModel(
     private val _syncStatus: MutableLiveData<Resource<Unit>> = MutableLiveData()
     val syncStatus: LiveData<Resource<Unit>> get() = _syncStatus
 
+    private val _discountStatus = MutableLiveData<String?>()
+    val discount get() =  _discountStatus.value
+
     private val botHelper: BotHelper by lazy { BotHelperImpl() }
     private val translatorHelper: TranslatorHelper by lazy { TranslatorHelperImpl() }
     private val smartReplyHelper: SmartReplyHelper by lazy { SmartReplyHelperImpl() }
+
+    init {
+        getIsFreeDiscountAvailable()
+    }
+
+    private fun getIsFreeDiscountAvailable() {
+        viewModelScope.launch {
+
+            if (subManager.isDiscount()) {
+                _discountStatus.value = "Назавжди ∞"
+                return@launch
+            }
+
+            val result = getDiscountUseCase.invoke()
+            result.fold(
+                onSuccess = {
+                    _discountStatus.value = "до $it"
+                },
+                onFailure = {
+                    _discountStatus.value = null
+                }
+            )
+        }
+    }
 
     fun getBot() {
         viewModelScope.launch {

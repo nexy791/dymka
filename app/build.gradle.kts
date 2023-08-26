@@ -76,4 +76,5 @@ dependencies {
     implementation(project(":dialogs"))
     implementation(project(":widget"))
     implementation(project(":analytics"))
+    implementation(project(mapOf("path" to ":permission")))
 }

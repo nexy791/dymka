@@ -88,13 +88,13 @@ class LessonActivity :
                     negativeButtonCallback = {
                         if (!viewModel.isSub) {
                             showBottomSheetDialog(
-                                SubPromptFactory {
+                                SubPromptFactory(viewModel.discount) {
                                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
                                     shopNavigation.navigate(
                                         this@LessonActivity,
                                         ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_STARS)
                                     )
-                                }.createDialog()
+                                }
                             )
                         }
                     },
@@ -185,13 +185,13 @@ class LessonActivity :
                                     NoteLimitFactory(
                                         onConfirm = {},
                                         onDismiss = {
-                                            showBottomSheetDialog(SubPromptFactory {
+                                            showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
                                                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_NOTES)
                                                 shopNavigation.navigate(
                                                     this@LessonActivity,
                                                     ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_NOTES)
                                                 )
-                                            }.createDialog())
+                                            })
                                         }
                                     ).createDialog()
                                 )
@@ -359,13 +359,13 @@ class LessonActivity :
             }.show()
         } else {
             showBottomSheetDialog(
-                SubPromptFactory {
+                SubPromptFactory(viewModel.discount) {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_HINT)
                     shopNavigation.navigate(
                         this@LessonActivity,
                         ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_HINT)
                     )
-                }.createDialog()
+                }
             )
         }
     }

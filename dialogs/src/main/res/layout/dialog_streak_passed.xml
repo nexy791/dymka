@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="@+id/image"
         app:layout_constraintStart_toStartOf="@+id/image"
         app:layout_constraintTop_toTopOf="@+id/image"
-        app:trackCornerRadius="16dp"
+        app:trackCornerRadius="24dp"
         app:trackThickness="8dp" />
 
     <com.google.android.material.textview.MaterialTextView

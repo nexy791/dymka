@@ -118,13 +118,13 @@ class TestDetailsActivity :
 
     private fun likeTest() {
         if (!viewModel.isSub) {
-            showBottomSheetDialog(SubPromptFactory {
+            showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LIKE)
                 shopNavigation.navigate(
                     this@TestDetailsActivity,
                     ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_LIKE)
                 )
-            }.createDialog())
+            })
         } else {
             val isSaved = viewModel.toggleWord()
             updateLikeButton(isSaved)

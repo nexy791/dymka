@@ -66,6 +66,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:progress="43"
+        app:trackCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

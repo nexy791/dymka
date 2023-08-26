@@ -11,7 +11,11 @@ class PayWallNavigationImpl : PayWallNavigation {
         params: PayWallNavigation.Params,
         callback: PayWallNavigation.Callback,
     ) {
-        PayWallDialog.newInstance(params.date, callback).show(navigation, PayWallDialog.TAG)
+        runCatching {
+            if (navigation.isDestroyed) return
+            if (navigation.findFragmentByTag(PayWallDialog.TAG) != null) return
+            PayWallDialog.newInstance(params.date, callback).show(navigation, PayWallDialog.TAG)
+        }
     }
 
 }

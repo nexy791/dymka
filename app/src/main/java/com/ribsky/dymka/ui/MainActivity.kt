@@ -1,5 +1,6 @@
 package com.ribsky.dymka.ui
 
+import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.NavHostFragment
 import coil.load
@@ -15,6 +16,7 @@ import com.ribsky.common.utils.update.AppUpdate
 import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.dynamic.SuccessInstallFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
+import com.ribsky.dialogs.factory.notification.NotificationPermissionFactory
 import com.ribsky.domain.exceptions.Exceptions
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.dymka.R
@@ -27,6 +29,9 @@ import com.ribsky.navigation.features.BotNavigation
 import com.ribsky.navigation.features.IntroNavigation
 import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.navigation.features.TopDialogsNavigation
+import com.ribsky.permission.manager.PermissionManager
+import com.ribsky.permission.manager.PermissionManagerImpl
+import com.ribsky.permission.permissions.NotificationPermissionChecker
 import com.skydoves.balloon.balloon
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -59,6 +64,18 @@ class MainActivity :
 
     private val balloon by balloon<ProfileBalloonFactory>()
 
+    private var permissionManager: PermissionManager? = null
+
+    private val permissionCallback = object : PermissionManager.PermissionCallback {
+        override fun onPermissionGranted() {
+            Analytics.logEvent(Analytics.Event.NOTIFICATION_PERMISSION_GRANTED)
+        }
+
+        override fun onPermissionDenied() {
+            Analytics.logEvent(Analytics.Event.NOTIFICATION_PERMISSION_DENIED)
+        }
+    }
+
 
     override fun initView() {
         initToolbar()
@@ -68,6 +85,7 @@ class MainActivity :
         checkRateDialog()
         checkBioDialog()
         checkTopDownDialog()
+        checkPermission()
     }
 
 
@@ -136,6 +154,28 @@ class MainActivity :
             }
         }
     }
+
+    private fun checkPermission() {
+        permissionManager = PermissionManagerImpl(
+            this,
+            NotificationPermissionChecker()
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (permissionManager?.hasPermissions() == false) {
+                showBottomSheetDialog(
+                    NotificationPermissionFactory {
+                        Analytics.logEvent(Analytics.Event.NOTIFICATION_DIALOG_CLICK)
+                        if (permissionManager?.hasBlockedPermissions() == true) {
+                            permissionManager?.openAppSettings()
+                        } else {
+                            permissionManager?.requestPermission(permissionCallback)
+                        }
+                    }.createDialog()
+                )
+            }
+        }
+    }
+
 
     private fun checkTopDownTestsDialog(callback: (Boolean) -> Unit) {
         viewModel.isNeedToShowDownTests { rTests ->

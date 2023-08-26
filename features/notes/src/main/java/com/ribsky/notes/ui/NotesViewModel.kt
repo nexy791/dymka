@@ -7,6 +7,7 @@ import com.ribsky.billing.manager.SubManager
 import com.ribsky.core.Resource
 import com.ribsky.domain.model.note.BaseNoteModel
 import com.ribsky.domain.model.note.NoteModel
+import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.notes.DeleteNoteUseCase
 import com.ribsky.domain.usecase.notes.GetNotesUseCase
 import kotlinx.coroutines.launch
@@ -15,10 +16,38 @@ class NotesViewModel(
     private val getNotesUseCase: GetNotesUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase,
     private val subManager: SubManager,
+    private val getDiscountUseCase: GetDiscountUseCase,
 ) : ViewModel() {
 
     private val _status: MutableLiveData<Resource<List<BaseNoteModel>>> = MutableLiveData()
     val status: MutableLiveData<Resource<List<BaseNoteModel>>> = _status
+
+    private val _discountStatus = MutableLiveData<String?>()
+    val discount get() = _discountStatus.value
+
+    init {
+        getIsFreeDiscountAvailable()
+    }
+
+    private fun getIsFreeDiscountAvailable() {
+        viewModelScope.launch {
+
+            if (subManager.isDiscount()) {
+                _discountStatus.value = "Назавжди ∞"
+                return@launch
+            }
+
+            val result = getDiscountUseCase.invoke()
+            result.fold(
+                onSuccess = {
+                    _discountStatus.value = "до $it"
+                },
+                onFailure = {
+                    _discountStatus.value = null
+                }
+            )
+        }
+    }
 
     fun getNotesForParagraph(paragraphId: String) {
         _status.value = Resource.loading()

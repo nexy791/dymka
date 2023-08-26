@@ -16,7 +16,7 @@ class NoteLimitFactory(
     override fun createDialog(): SimpleDialog = SimpleDialog.create {
         title = "Розмір конспекту \uD83D\uDCDD"
         description =
-            "Звичайні користувачі можуть додавати до 25 повідомлень в конспект до однієї теми, а Преміум - нескінчено"
+            "Звичайні користувачі можуть додавати до 25 повідомлень в конспект до однієї теми, а Преміум – нескінчено"
         icon {
             icon = commonDrawable.ic_outline_note_alt_24
         }

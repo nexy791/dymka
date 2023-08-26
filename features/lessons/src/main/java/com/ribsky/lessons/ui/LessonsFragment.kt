@@ -124,13 +124,13 @@ class LessonsFragment :
     private fun processStarClick(star: StarModel) {
         showBottomSheetDialog(StarsFactory(star.stars, star.allStars, negativeButtonCallback = {
             if (!viewModel.isSub) {
-                showBottomSheetDialog(SubPromptFactory {
+                showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
                     shopNavigation.navigate(
                         requireActivity(),
                         ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_STARS)
                     )
-                }.createDialog())
+                })
             }
         }
         ).createDialog())
@@ -187,13 +187,13 @@ class LessonsFragment :
             val dialog = if (model.isInProgress()) {
                 ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog()
             } else if (model.hasPrem && !viewModel.isSub) {
-                SubPromptFactory {
+                SubPromptFactory(viewModel.discount) {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LESSON)
                     shopNavigation.navigate(
                         requireContext(),
                         ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_LESSON)
                     )
-                }.createDialog()
+                }
             } else {
                 LessonInfoDialog.newInstance(model.id) {
                     lessonNavigation.navigate(

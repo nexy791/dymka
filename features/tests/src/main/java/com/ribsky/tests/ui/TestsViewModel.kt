@@ -34,12 +34,36 @@ class TestsViewModel(
     private val isSub get() = subManager.isSub()
     val isTodayStreak get() = isTodayStreakUseCase.invoke()
 
-    fun updateTodayStreak() {
-        setTodayStreakUseCase.invoke()
-    }
+    private val _discountStatus = MutableLiveData<String?>()
+    val discount get() = _discountStatus.value
 
     init {
+        getIsFreeDiscountAvailable()
         getTests()
+    }
+
+    private fun getIsFreeDiscountAvailable() {
+        viewModelScope.launch {
+
+            if (subManager.isDiscount()) {
+                _discountStatus.value = "Назавжди ∞"
+                return@launch
+            }
+
+            val result = getDiscountUseCase.invoke()
+            result.fold(
+                onSuccess = {
+                    _discountStatus.value = "до $it"
+                },
+                onFailure = {
+                    _discountStatus.value = null
+                }
+            )
+        }
+    }
+
+    fun updateTodayStreak() {
+        setTodayStreakUseCase.invoke()
     }
 
     fun isFileExists(content: String): Boolean {
@@ -67,8 +91,8 @@ class TestsViewModel(
     // TODO: refactor this
     fun isNeedToShowPayWall(callback: (Result<String>) -> Unit) {
         viewModelScope.launch {
-            val random = (0..1).random()
-            if (random == 0) {
+            val random = (0..2).random()
+            if (random == 0 || random == 1) {
                 callback.invoke(Result.failure(Throwable("Bad random")))
                 return@launch
             }
@@ -77,20 +101,13 @@ class TestsViewModel(
                 return@launch
             }
 
-            val isLifeTimeDiscount = subManager.isDiscount()
-            val isDiscountAvailable = getDiscountUseCase.invoke()
-
-            if (isLifeTimeDiscount) {
-                callback.invoke(Result.success("Назавжди ∞"))
-                return@launch
-            } else if (isDiscountAvailable.isSuccess) {
-                callback.invoke(Result.success("до ${isDiscountAvailable.getOrNull()}"))
+            if (discount != null) {
+                callback.invoke(Result.success(discount!!))
                 return@launch
             } else {
-                callback.invoke(Result.failure(Throwable(isDiscountAvailable.exceptionOrNull()?.message)))
+                callback.invoke(Result.failure(Throwable("Bad discount")))
                 return@launch
             }
-
         }
     }
 

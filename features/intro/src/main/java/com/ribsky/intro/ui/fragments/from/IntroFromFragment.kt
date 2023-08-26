@@ -1,11 +1,11 @@
 package com.ribsky.intro.ui.fragments.from
 
 import androidx.core.os.bundleOf
+import com.revenuecat.purchases.Purchases
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.utils.chip.ChipBuilder.Companion.createChip
 import com.ribsky.intro.databinding.FragmentIntroFromBinding
-import com.ribsky.intro.databinding.FragmentIntroLevelBinding
 import com.ribsky.intro.utils.IntroCallback
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -68,33 +68,39 @@ class LoaderActivity :
     }
 
     private fun getSubInfo(user: BaseUserModel) {
-        val id = Firebase.auth.currentUser?.uid!!
-        Purchases.sharedInstance.logInWith(id,
-            onSuccess = { _, _ ->
-                billingClientWrapper.getInventory { r ->
-                    r.fold(
-                        onSuccess = {
-                            Purchases.sharedInstance.apply {
-                                setEmail(user.email)
-                                setDisplayName(user.name)
-                                setCampaign(user.bioFrom.toString())
+        val id = Firebase.auth.currentUser?.uid
+        if (id != null) {
+            Purchases.sharedInstance.logInWith(id,
+                onSuccess = { _, _ ->
+                    billingClientWrapper.getInventory { r ->
+                        r.fold(
+                            onSuccess = {
+                                Purchases.sharedInstance.apply {
+                                    setEmail(user.email)
+                                    setDisplayName(user.name)
+                                    setCampaign(user.bioFrom.toString())
+                                }
+                                viewModel.loadData()
+                            },
+                            onFailure = {
+                                showError(it.message.orEmpty().ifEmpty { "Помилка!" }) {
+                                    getSubInfo(user)
+                                }
                             }
-                            viewModel.loadData()
-                        },
-                        onFailure = {
-                            showError(it.message.orEmpty().ifEmpty { "Помилка!" }) {
-                                getSubInfo(user)
-                            }
-                        }
-                    )
+                        )
+                    }
+                },
+                onError = {
+                    showError(it.message.ifEmpty { "Помилка!" }) {
+                        viewModel.loadUser()
+                    }
                 }
-            },
-            onError = {
-                showError(it.message.ifEmpty { "Помилка!" }) {
-                    viewModel.loadUser()
-                }
+            )
+        } else {
+            showError("Помилка!") {
+                authNavigation.navigate(this@LoaderActivity)
             }
-        )
+        }
     }
 
     override fun initView() {}

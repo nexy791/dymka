@@ -41,7 +41,7 @@ dymka – новий застосунок, за допомогою якого в
 - [Avatarview](https://github.com/GetStream/avatarview-android)
 
 #### Інше:
-- [Easy-checkout](https://github.com/alessandrojp/android-easy-checkout)
+- RevenueCat
 - [Kpermissions](https://github.com/fondesa/kpermissions)
 - [Moshi](https://github.com/square/moshi)
 - Room
@@ -52,6 +52,9 @@ dymka – новий застосунок, за допомогою якого в
 - Nearby
 - Android Jetpack
 - EncryptedSharedPreferences
+- Dynamic Module
+- OpenAI API
+- Google ML API
 
 #### Архітектура:
 

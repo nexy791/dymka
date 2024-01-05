@@ -15,8 +15,8 @@ class ChatAdapter(
     private val callback: OnChatClickListener,
 ) : ListAdapter<ChatModel, BaseViewHolder<ChatModel>>(DiffCallbackChat) {
 
-    interface OnChatClickListener {
-        fun onTextClick(text: String)
+    fun interface OnChatClickListener {
+        fun onTextClick(text: String, id: Int)
     }
 
     fun showLoading() {

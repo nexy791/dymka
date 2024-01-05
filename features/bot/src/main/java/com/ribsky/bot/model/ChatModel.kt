@@ -8,7 +8,8 @@ sealed class ChatModel {
 
     class User(val message: String, override val id: Int = Random.nextInt()) : ChatModel()
 
-    class Bot(val message: String, override val id: Int = Random.nextInt()) : ChatModel()
+    class Bot(val message: String, val label: String? = null, override val id: Int = Random.nextInt()) :
+        ChatModel()
 
     object Loading : ChatModel() {
         override val id: Int = Random.nextInt()

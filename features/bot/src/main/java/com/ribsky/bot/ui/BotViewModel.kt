@@ -56,7 +56,7 @@ class BotViewModel(
     val syncStatus: LiveData<Resource<Unit>> get() = _syncStatus
 
     private val _discountStatus = MutableLiveData<String?>()
-    val discount get() =  _discountStatus.value
+    val discount get() = _discountStatus.value
 
     private val botHelper: BotHelper by lazy { BotHelperImpl() }
     private val translatorHelper: TranslatorHelper by lazy { TranslatorHelperImpl() }
@@ -114,10 +114,16 @@ class BotViewModel(
         viewModelScope.launch {
             _chatStatus.value = Resource.success(
                 listOf(
-                    ChatModel.Bot("Привіт! \uD83D\uDC4B"),
-                    ChatModel.Bot("Мене звати Думка, тут ти можеш поставити мені будь-яке питання з української мови або літератури \uD83C\uDDFA\uD83C\uDDE6"),
-                    ChatModel.Bot("А я з радістю на нього відповім! \uD83D\uDE0A"),
-                    ChatModel.Bot("Але іноді я можу помилятись і відповідати не зовсім правильно \uD83D\uDE39"),
+                    ChatModel.Bot("Привіт! \uD83D\uDC4B", null, 0),
+                    ChatModel.Bot(
+                        "Мене звати Думка, тут ти можеш поставити мені будь-яке питання з української мови або літератури \uD83C\uDDFA\uD83C\uDDE6",
+                        null, 1
+                    ),
+                    ChatModel.Bot("А я з радістю на нього відповім! \uD83D\uDE0A", null, 2),
+                    ChatModel.Bot(
+                        "Але іноді я можу помилятись і відповідати не зовсім правильно \uD83D\uDE39",
+                        null, 3
+                    ),
 
                     )
             )
@@ -146,7 +152,12 @@ class BotViewModel(
                     updateSmartReply(question, it)
                     viewModelScope.launch {
                         delay(300)
-                        _chatStatus.value = Resource.success(list + ChatModel.Bot(it))
+                        _chatStatus.value = Resource.success(
+                            list + ChatModel.Bot(
+                                it,
+                                "Згенеровано за допомогою AI"
+                            )
+                        )
                     }
                 },
                 error = {
@@ -224,6 +235,21 @@ class BotViewModel(
         viewModelScope.launch {
             syncUserUseCase.invoke()
             _syncStatus.value = Resource.success(Unit)
+        }
+    }
+
+    fun deleteMessage(id: Int) {
+        viewModelScope.launch {
+            _chatStatus.value = _chatStatus.value?.data?.map {
+                if (it.id == id && id !in 0..3) {
+                    ChatModel.Bot(
+                        "\uD83D\uDDD1 Це повідомлення було видалено",
+                        null,
+                    )
+                } else {
+                    it
+                }
+            }.let { Resource.success(it.orEmpty()) }
         }
     }
 

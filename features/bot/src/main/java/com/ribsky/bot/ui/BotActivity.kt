@@ -310,14 +310,10 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
 
     private fun initAdapter(photo: String) {
         adapter = ChatAdapter(
-            photo,
-            object : ChatAdapter.OnChatClickListener {
-
-                override fun onTextClick(text: String) {
-                    showSmsDialog(text)
-                }
-            }
-        )
+            photo
+        ) { text, id ->
+            showSmsDialog(text, id)
+        }
         replyAdapter = ReplyAdapter(object : ReplyAdapter.OnReplyClickListener {
             override fun onReplyClick(text: String) {
                 Analytics.logEvent(Analytics.Event.BOT_HINT_CLICK)
@@ -330,26 +326,29 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
         })
     }
 
-    private fun showSmsDialog(text: String) {
+    private fun showSmsDialog(text: String, id: Int) {
         val text = text.parseAsHtml().toString()
-        showBottomSheetDialog(
-            MessageActionFactory(
-                listOf(
-                    ListDialog.Item("\uD83D\uDCE3 Поділитися") {
-                        shareMessageNavigation.navigate(this, ShareMessageNavigation.Params(text))
-                    },
-                    ListDialog.Item("\uD83D\uDCDD Скопіювати") {
-                        copy(text)
-                    },
-                    ListDialog.Item("\uD83D\uDC08 Підтримка") {
-                        sendEmail(
-                            subject = "dymka повідомити про проблему",
-                            text = "«$text»"
-                        )
-                    },
+        var actions = listOf(
+            ListDialog.Item("\uD83D\uDCE3 Поділитися") {
+                shareMessageNavigation.navigate(this, ShareMessageNavigation.Params(text))
+            },
+            ListDialog.Item("\uD83D\uDCDD Скопіювати") {
+                copy(text)
+            },
+            ListDialog.Item("\uD83D\uDC08 Поскаржитись") {
+                sendEmail(
+                    subject = "dymka повідомити про проблему",
+                    text = "«$text»"
                 )
-            ).createDialog()
-        )
+            })
+
+        if (id !in 0..3) {
+            actions = actions + ListDialog.Item("\uD83D\uDDD1 Видалити") {
+                viewModel.deleteMessage(id)
+            }
+        }
+
+        showBottomSheetDialog(MessageActionFactory(actions).createDialog())
     }
 
     private fun initRecycler() = with(binding) {

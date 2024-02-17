@@ -54,7 +54,7 @@ class BillingClientWrapperImpl(
                 r.fold(
                     onSuccess = { list ->
                         val productList =
-                            list.map { BillingClientWrapper.Product.fromSku(it)!! }
+                            list.map { BillingClientWrapper.Product.fromSku(it) ?: BillingClientWrapper.Product.PROMO }
                         saveSubInfoToCache(productList)
                         callback(Result.success(productList))
                     },

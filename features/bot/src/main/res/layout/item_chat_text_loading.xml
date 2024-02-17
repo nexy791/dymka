@@ -29,7 +29,7 @@
             app:dots_color="#63B3F3"
             app:dots_count="3"
             app:dots_duration="500"
-            app:dots_size="tiny" />
+            app:dots_size="3dp" />
 
     </FrameLayout>
 

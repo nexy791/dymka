@@ -65,7 +65,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
 
     private var messageQuestion: String? = null
 
-    private val activityResultRegistry = registerForActivityResult(
+    private val activityResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         val data: Intent? = result.data
@@ -192,7 +192,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
                 putExtra(RecognizerIntent.EXTRA_PROMPT, "Можна говорити")
             }
-        activityResultRegistry.launch(speechRecognizerIntent)
+        activityResult.launch(speechRecognizerIntent)
     }
 
     private fun showLimitDialog() = showBottomSheetDialog(

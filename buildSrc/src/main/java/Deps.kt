@@ -1,28 +1,28 @@
 object Deps {
 
     object Versions {
-        const val androidxAppCompat = "1.6.0"
-        const val androidxCore = "1.7.0"
+        const val androidxAppCompat = "1.6.1"
+        const val androidxCore = "1.12.0"
         const val material = "1.7.0"
 
-        const val firebaseBom = "31.2.2"
-        const val appCheck = "16.1.1"
+        const val firebaseBom = "32.7.2"
+        const val appCheck = "17.1.2"
 
-        const val coroutines = "1.6.4"
+        const val coroutines = "1.8.0"
 
-        const val room = "2.4.3"
+        const val room = "2.6.1"
 
-        const val lifecycle = "2.5.1"
+        const val lifecycle = "2.7.0"
 
-        const val koin = "3.3.2"
+        const val koin = "3.5.3"
 
         const val crypto = "1.1.0-alpha03"
 
         const val stateDelegator = "1.7"
 
-        const val moshi = "1.14.0"
+        const val moshi = "1.15.1"
 
-        const val navigation = "2.5.3"
+        const val navigation = "2.7.7"
 
         const val coil = "2.2.0"
         const val coilFire = "2.0.0-rc03"
@@ -31,39 +31,33 @@ object Deps {
 
         const val progressCircle = "3.1.0"
 
-        const val appUpdate = "2.0.1"
+        const val appUpdate = "2.1.0"
 
-        const val recyclerView = "1.2.1"
+        const val recyclerView = "1.3.2"
 
         const val shimmer = "0.5.0"
 
-        const val konfetti = "2.0.2"
+        const val konfetti = "2.0.4"
 
-        const val easyCheckout = "v1.0.4"
-
-        const val billing = "5.0.0"
-
-        const val auth = "20.4.0"
+        const val auth = "21.0.0"
 
         const val kPermissions = "3.4.0"
 
-        const val nearby = "18.3.0"
+        const val nearby = "19.1.0"
 
         const val multiWave = "1.0.0-andx"
 
         const val rippleView = "v1.0"
 
-        const val avatarView = "1.0.6"
+        const val avatarView = "1.0.7"
 
         const val mlKitSmartReply = "17.0.2"
         const val mlKitTranslate = "17.0.1"
         const val openAi = "1.1.5"
 
-        const val loadingDots = "1.3.0"
+        const val loadingDots = "1.3.2"
 
-        const val balloon = "1.5.3"
-
-        const val easyflipviewpager = "2.0.1"
+        const val balloon = "1.6.4"
 
         const val typeWriter = "v1.3"
 
@@ -71,7 +65,7 @@ object Deps {
 
         const val deliveryDynamic = "16.0.0-beta2"
 
-        const val mlKit = "18.8.0"
+        const val mlKit = "18.10.0"
 
     }
 
@@ -146,11 +140,6 @@ object Deps {
 
     const val konfetti = "nl.dionsegijn:konfetti-xml:${Versions.konfetti}"
 
-    const val easyCheckout = "jp.alessandro.android:easy-checkout:${Versions.easyCheckout}"
-
-    const val billing = "com.android.billingclient:billing:${Versions.billing}"
-    const val billingKtx = "com.android.billingclient:billing-ktx:${Versions.billing}"
-
     const val auth = "com.google.android.gms:play-services-auth:${Versions.auth}"
 
     const val kPermissions = "com.github.fondesa:kpermissions-coroutines:${Versions.kPermissions}"
@@ -171,8 +160,6 @@ object Deps {
     const val loadingDots = "com.github.razaghimahdi:Android-Loading-Dots:${Versions.loadingDots}"
 
     const val balloon = "com.github.skydoves:balloon:${Versions.balloon}"
-
-    const val easyflipviewpager = "com.wajahatkarim:easyflipviewpager:${Versions.easyflipviewpager}"
 
     const val typeWriter = "com.github.NitishGadangi:TypeWriter-TextView:${Versions.typeWriter}"
 

@@ -1,6 +1,8 @@
 package com.ribsky.dymka.ui
 
 import android.os.Build
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.NavHostFragment
 import coil.load
@@ -54,7 +56,7 @@ class MainActivity :
 
     private val appUpdate: AppUpdate by inject()
 
-    private val activityResultRegistry =
+    private val activityResult: ActivityResultLauncher<IntentSenderRequest> =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
         }
 
@@ -282,7 +284,7 @@ class MainActivity :
                 DynamicModule.State.NONE -> if (loadingDialog?.isAdded == true) loadingDialog?.dismiss()
                 is DynamicModule.State.REQUIRES_USER_CONFIRMATION -> mDynamicModule.requestUserConfirmation(
                     result.state,
-                    activityResultRegistry
+                    activityResult
                 )
 
                 is DynamicModule.State.FAILED -> {

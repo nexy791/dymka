@@ -12,7 +12,8 @@ interface BillingClientWrapper {
         ),
         WEEKLY_LITE("dymka_week_lite"), MONTHLY_LITE("dymka_month_lite"), YEARLY_LITE("dymka_year_lite"), LIFETIME_LITE(
             "dymka_lifetime_lite"
-        );
+        ),
+        PROMO("dymka_promo");
 
         companion object {
             fun fromSku(sku: String): Product? {

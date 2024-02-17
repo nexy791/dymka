@@ -9,12 +9,20 @@ class GamePermissionChecker : PermissionChecker {
 
     override val permissions: List<String>
         get() {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                permissions31Above()
-            } else {
-                permissions30Below()
+            return when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> permissions33Above()
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> permissions31Above()
+                else -> permissions30Below()
             }
         }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun permissions33Above() = listOf(
+        Manifest.permission.BLUETOOTH_ADVERTISE,
+        Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.NEARBY_WIFI_DEVICES
+    )
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun permissions31Above() = listOf(

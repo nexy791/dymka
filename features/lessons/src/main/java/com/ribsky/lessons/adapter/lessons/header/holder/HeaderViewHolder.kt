@@ -3,9 +3,9 @@ package com.ribsky.lessons.adapter.lessons.header.holder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.common.alias.commonDrawable
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.lessons.adapter.lessons.header.LessonsHeaderAdapter
 import com.ribsky.lessons.databinding.ItemLessonHeaderBinding
@@ -19,13 +19,11 @@ class HeaderViewHolder(private val binding: ItemLessonHeaderBinding) :
         item: BaseParagraphModel,
         onClickListener: LessonsHeaderAdapter.OnClickListener,
     ) = with(binding) {
-        root.setOnClickListener {
-            onClickListener.onClick()
-        }
+        root.setOnClickListener { onClickListener.onClick() }
         circularProgressBar.setProgressWithAnimation(item.percent)
         tvTitle.text = item.name
         tvDescription.text = item.description
-        imageView.load(storage.getReferenceFromUrl(item.image)) {
+        imageView.loadImage(storage.getReferenceFromUrl(item.image)) {
             placeholder(commonDrawable.placeholder_content)
         }
     }

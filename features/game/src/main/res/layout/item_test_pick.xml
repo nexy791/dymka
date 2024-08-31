@@ -23,7 +23,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:fontFamily="@font/e_ukraine_medium"
+            app:fontFamily="@font/e_ukraine_medium"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="Урок 1" />
 
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/e_ukraine_medium"
+            app:fontFamily="@font/e_ukraine_medium"
             android:text="🎉"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:visibility="gone" />

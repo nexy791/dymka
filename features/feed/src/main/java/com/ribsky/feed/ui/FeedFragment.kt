@@ -1,11 +1,14 @@
 package com.ribsky.feed.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
+import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
 import com.ribsky.common.utils.ext.ViewExt.Companion.hide
 import com.ribsky.common.utils.ext.ViewExt.Companion.show
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
@@ -14,11 +17,13 @@ import com.ribsky.core.Resource.Status
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.limit.LimitFactory
 import com.ribsky.dialogs.factory.progress.ProgressFactory
-import com.ribsky.dialogs.factory.sub.SubPromptFactory
+import com.ribsky.dialogs.factory.sub.SubPrompt.Companion.navigateSub
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
+import com.ribsky.domain.model.promo.BasePromoModel
 import com.ribsky.feed.adapter.lm.FeedSpanSizeLookup
 import com.ribsky.feed.adapter.paragraph.ParagraphAdapter
+import com.ribsky.feed.adapter.promo.PromoAdapter
 import com.ribsky.feed.adapter.streak.StreakAdapter
 import com.ribsky.feed.adapter.word.BestWordAdapter
 import com.ribsky.feed.databinding.FragmentFeedBinding
@@ -42,6 +47,7 @@ class FeedFragment :
 
     private var adapter: ConcatAdapter? = null
     private var adapterBestWord: BestWordAdapter? = null
+    private var adapterPromo: PromoAdapter? = null
     private var adapterParagraph: ParagraphAdapter? = null
     private var adapterStreak: StreakAdapter? = null
 
@@ -55,6 +61,33 @@ class FeedFragment :
             shareNavigation.navigate(requireContext(), ShareWordNavigation.Params(id))
         }
 
+        adapterPromo = PromoAdapter {
+            Analytics.logEvent(Analytics.Event.PROMO_CLICK)
+            if (it.contains("https")) {
+                requireActivity().showAlert(
+                    title = "Оголошення",
+                    message = "Відкрити сайт: " + it + " ?",
+                    positiveButton = "Добре",
+                    positiveAction = {
+                        Analytics.logEvent(Analytics.Event.PROMO_OPEN)
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+                    },
+                    negativeButton = "Закрити",
+                    negativeAction = { }
+                )
+            } else if (it.isNotBlank()) {
+                requireActivity().showAlert(
+                    title = "Оголошення",
+                    message = it,
+                    positiveButton = "Добре",
+                    positiveAction = {
+                        Analytics.logEvent(Analytics.Event.PROMO_OPEN)
+                    },
+                    negativeButton = "Закрити",
+                    negativeAction = { }
+                )
+            }
+        }
 
         adapterParagraph = ParagraphAdapter { model ->
             processParagraphClick(model)
@@ -70,7 +103,7 @@ class FeedFragment :
         }
 
         this@FeedFragment.adapter =
-            ConcatAdapter(adapterBestWord, adapterStreak, adapterParagraph)
+            ConcatAdapter(adapterBestWord, adapterPromo, adapterStreak, adapterParagraph)
     }
 
     private fun processParagraphClick(model: BaseParagraphModel) {
@@ -84,7 +117,7 @@ class FeedFragment :
                 LimitFactory(
                     onConfirm = {},
                     onDismiss = {
-                        showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
+                        showBottomSheetDialog(navigateSub(viewModel.discount) {
                             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
                             shopNavigation.navigate(
                                 requireActivity(),
@@ -100,9 +133,7 @@ class FeedFragment :
     }
 
     private fun initRecycler() = with(binding.recyclerView) {
-        layoutManager = GridLayoutManager(requireContext(), 2).apply {
-            spanSizeLookup = FeedSpanSizeLookup()
-        }
+        layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = this@FeedFragment.adapter
     }
 
@@ -132,10 +163,31 @@ class FeedFragment :
             when (result.status) {
                 Status.SUCCESS -> {
                     updateLessonsContent(result.data!!)
+                    getPromo()
                 }
 
                 Status.LOADING -> {}
                 Status.ERROR -> showErrorDialog(result.exception?.localizedMessage) { findNavController().navigateUp() }
+            }
+        }
+        promoStatus.observe(viewLifecycleOwner) { result ->
+            when (result.status) {
+                Status.SUCCESS -> {
+                    binding.recyclerView.layoutManager = binding.recyclerView.layoutManager?.apply {
+                        (this as GridLayoutManager).spanSizeLookup = FeedSpanSizeLookup(true)
+                    }
+                    updatePromoContent(listOf(result.data!!))
+                    showContent()
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    binding.recyclerView.layoutManager = binding.recyclerView.layoutManager?.apply {
+                        (this as GridLayoutManager).spanSizeLookup = FeedSpanSizeLookup(false)
+                    }
+                    showContent()
+                    Analytics.logEvent(Analytics.Event.PROMO_FEED_ERROR)
+                }
             }
         }
     }
@@ -146,9 +198,11 @@ class FeedFragment :
     }
 
     private fun updateLessonsContent(list: List<BaseParagraphModel>) {
-        adapterParagraph?.submitList(list) {
-            showContent()
-        }
+        adapterParagraph?.submitList(list) {}
+    }
+
+    private fun updatePromoContent(list: List<BasePromoModel>) {
+        adapterPromo?.submitList(list)
     }
 
     override fun onResume() {
@@ -177,5 +231,7 @@ class FeedFragment :
         adapter = null
         adapterBestWord = null
         adapterParagraph = null
+        adapterPromo = null
+        adapterStreak = null
     }
 }

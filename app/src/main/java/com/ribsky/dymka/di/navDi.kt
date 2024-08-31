@@ -2,6 +2,7 @@ package com.ribsky.dymka.di
 
 import com.ribsky.account.nav.AccountNavigationImpl
 import com.ribsky.account.nav.ProfileNavigationImpl
+import com.ribsky.article.nav.ArticleNavigationImpl
 import com.ribsky.auth.nav.AuthNavigationImpl
 import com.ribsky.beta.nav.BetaNavigationImpl
 import com.ribsky.dymka.nav.MainNavigationImpl
@@ -14,6 +15,7 @@ import com.ribsky.lesson.nav.LessonNavigationImpl
 import com.ribsky.lessons.nav.LessonsNavigationImpl
 import com.ribsky.loader.nav.LoaderNavigationImpl
 import com.ribsky.navigation.features.AccountNavigation
+import com.ribsky.navigation.features.ArticleNavigation
 import com.ribsky.navigation.features.AuthNavigation
 import com.ribsky.navigation.features.BetaNavigation
 import com.ribsky.navigation.features.BotNavigation
@@ -62,12 +64,12 @@ val navDi = module {
         MainNavigationImpl()
     }
 
-    factory<LoaderNavigation> {
-        LoaderNavigationImpl()
-    }
-
     factory<AuthNavigation> {
         AuthNavigationImpl()
+    }
+
+    factory<LoaderNavigation> {
+        LoaderNavigationImpl()
     }
 
     factory<ShopNavigation> {
@@ -164,6 +166,10 @@ val navDi = module {
 
     factory<NotesNavigation> {
         NotesNavigationImpl()
+    }
+
+    factory<ArticleNavigation> {
+        ArticleNavigationImpl()
     }
 
 }

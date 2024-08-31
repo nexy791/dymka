@@ -1,5 +1,7 @@
 package com.ribsky.dymka.di
 
+import com.ribsky.data.mapper.article.ArticleMapper
+import com.ribsky.data.mapper.article.ArticleMapperImpl
 import com.ribsky.data.mapper.best.BestMapper
 import com.ribsky.data.mapper.best.BestMapperImpl
 import com.ribsky.data.mapper.from.FromMapper
@@ -14,6 +16,8 @@ import com.ribsky.data.mapper.note.NoteMapper
 import com.ribsky.data.mapper.note.NoteMapperImpl
 import com.ribsky.data.mapper.paragraph.ParagraphMapper
 import com.ribsky.data.mapper.paragraph.ParagraphMapperImpl
+import com.ribsky.data.mapper.promo.PromoMapper
+import com.ribsky.data.mapper.promo.PromoMapperImpl
 import com.ribsky.data.mapper.test.TestMapper
 import com.ribsky.data.mapper.test.TestMapperImpl
 import com.ribsky.data.mapper.top.TopMapper
@@ -105,6 +109,14 @@ val mapperDi = module {
 
     factory<NoteMapper> {
         NoteMapperImpl()
+    }
+
+    factory<PromoMapper> {
+        PromoMapperImpl()
+    }
+
+    factory<ArticleMapper> {
+        ArticleMapperImpl()
     }
 
 }

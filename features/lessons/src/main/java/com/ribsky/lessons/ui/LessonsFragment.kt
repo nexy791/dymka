@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ribsky.analytics.Analytics
+import com.ribsky.billing.BillingState
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
 import com.ribsky.common.utils.ext.ActionExt.Companion.openWifiSettings
@@ -21,7 +22,7 @@ import com.ribsky.dialogs.factory.progress.ProgressFactory
 import com.ribsky.dialogs.factory.stars.StarsFactory
 import com.ribsky.dialogs.factory.stars.SuccessStarsFactory
 import com.ribsky.dialogs.factory.streak.StreakPassedFactory
-import com.ribsky.dialogs.factory.sub.SubPromptFactory
+import com.ribsky.dialogs.factory.sub.SubPrompt.Companion.navigateSub
 import com.ribsky.dialogs.factory.success.SuccessFactory
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.lessons.adapter.lessons.header.LessonsHeaderAdapter
@@ -124,7 +125,7 @@ class LessonsFragment :
     private fun processStarClick(star: StarModel) {
         showBottomSheetDialog(StarsFactory(star.stars, star.allStars, negativeButtonCallback = {
             if (!viewModel.isSub) {
-                showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
+                showBottomSheetDialog(navigateSub(viewModel.discount) {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
                     shopNavigation.navigate(
                         requireActivity(),
@@ -187,7 +188,7 @@ class LessonsFragment :
             val dialog = if (model.isInProgress()) {
                 ProgressFactory({ betaNavigation.navigate(requireContext()) }).createDialog()
             } else if (model.hasPrem && !viewModel.isSub) {
-                SubPromptFactory(viewModel.discount) {
+                navigateSub(viewModel.discount) {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LESSON)
                     shopNavigation.navigate(
                         requireContext(),
@@ -212,7 +213,10 @@ class LessonsFragment :
     private fun showPayWall(callback: (Boolean) -> Unit) {
         viewModel.isNeedToShowPayWall {
             if (it.isSuccess) {
-                val param = PayWallNavigation.Params(it.getOrNull()!!)
+                val param = PayWallNavigation.Params(
+                    it.getOrNull()!!,
+                    viewModel.discount is BillingState.WelcomeDiscount
+                )
                 payWallNavigation.navigate(
                     childFragmentManager,
                     param,
@@ -222,6 +226,14 @@ class LessonsFragment :
                             shopNavigation.navigate(
                                 requireContext(),
                                 ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_PAYWALL)
+                            )
+                        }
+
+                        override fun onWelcome() {
+                            Analytics.logEvent(Analytics.Event.PREMIUM_FROM_PAYWALL_WELCOME)
+                            shopNavigation.navigate(
+                                requireContext(),
+                                ShopNavigation.Params(Analytics.Event.PREMIUM_BUY_FROM_PAYWALL_WELCOME)
                             )
                         }
                     })

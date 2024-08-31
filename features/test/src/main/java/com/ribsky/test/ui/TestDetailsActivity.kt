@@ -5,6 +5,9 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.view.MotionEvent
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SimpleOnItemTouchListener
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import coil.load
 import com.google.firebase.storage.FirebaseStorage
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonDrawable
+import com.ribsky.common.alias.commonFont
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
@@ -25,20 +28,26 @@ import com.ribsky.common.utils.ext.ResourceExt.Companion.toColorState
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.common.utils.ext.ViewExt.Companion.snackbar
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
+import com.ribsky.common.utils.party.Party
 import com.ribsky.common.utils.sound.SoundHelper.playSound
 import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
-import com.ribsky.dialogs.factory.sub.SubPromptFactory
+import com.ribsky.dialogs.factory.sub.SubPrompt.Companion.navigateSub
 import com.ribsky.domain.model.test.BaseTestModel
 import com.ribsky.domain.model.word.BaseWordModel
 import com.ribsky.navigation.features.ShopNavigation
 import com.ribsky.navigation.features.TestNavigation
+import com.ribsky.test.R
 import com.ribsky.test.adapter.test.TestAdapter
 import com.ribsky.test.databinding.ActivityTestDetailsBinding
 import com.ribsky.test.model.WordModel
+import com.ribsky.test.utils.AnimListener
+import com.ribsky.test.utils.EmojiMapper
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
+
 
 class TestDetailsActivity :
     BaseActivity<TestDetailsViewModel, ActivityTestDetailsBinding>(
@@ -47,6 +56,7 @@ class TestDetailsActivity :
 
     override val viewModel: TestDetailsViewModel by viewModel()
     private val shopNavigation: ShopNavigation by inject()
+    private val emojiMapper = EmojiMapper()
 
     private var state: LoadingStateDelegate? = null
     private val testId by lazy { intent.getStringExtra(TestNavigation.KEY_TEST_ID)!! }
@@ -63,6 +73,8 @@ class TestDetailsActivity :
         initAdapter()
         initRecyclerView()
         initBtns()
+
+        binding.tvScore.typeface = ResourcesCompat.getFont(this, commonFont.e_ukraine_bold)
     }
 
     private fun initState() = with(binding) {
@@ -79,6 +91,7 @@ class TestDetailsActivity :
                 playSound(commonRaw.sound_success)
                 Analytics.logEvent(Analytics.Event.WORDS_ANSWER_CORRECT)
                 viewModel.addScore()
+                updateScore()
             } else {
                 playSound(commonRaw.sound_error)
                 Analytics.logEvent(Analytics.Event.WORDS_ANSWER_INCORRECT)
@@ -86,6 +99,28 @@ class TestDetailsActivity :
             }
             mAdapter?.showAll(position)
         }
+    }
+
+    private fun updateScore() {
+        val score = viewModel.getScore()
+        binding.tvScore.setText(score.toString(), true)
+
+        val emoji = emojiMapper.getEmoji(score)
+
+        val animatorIn = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+
+        val animatorOut = AnimationUtils.loadAnimation(this, R.anim.fade_out).apply {
+            setAnimationListener(object : AnimListener() {
+                override fun onAnimationEnd(animation: Animation?) {
+                    if (this@TestDetailsActivity.isDestroyed) return
+                    binding.tvScoreEmoji.text = emoji
+                    binding.tvScoreEmoji.startAnimation(animatorIn)
+                }
+            })
+        }
+
+        binding.tvScoreEmoji.startAnimation(animatorOut)
+
     }
 
     private fun initRecyclerView() = with(binding.recyclerView) {
@@ -118,7 +153,7 @@ class TestDetailsActivity :
 
     private fun likeTest() {
         if (!viewModel.isSub) {
-            showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
+            showBottomSheetDialog(navigateSub(viewModel.discount) {
                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_LIKE)
                 shopNavigation.navigate(
                     this@TestDetailsActivity,
@@ -221,7 +256,7 @@ class TestDetailsActivity :
         cardTest.isGone = false
         tvTitleCard.text = data.title
         tvDescriptionCard.text = data.description
-        tvIcon.load(storage.getReferenceFromUrl(data.image)) {
+        tvIcon.loadImage(storage.getReferenceFromUrl(data.image)) {
             placeholder(null)
             error(null)
         }
@@ -250,6 +285,7 @@ class TestDetailsActivity :
     }
 
     override fun clear() {
+        binding.tvScoreEmoji.clearAnimation()
         state = null
         mAdapter = null
     }

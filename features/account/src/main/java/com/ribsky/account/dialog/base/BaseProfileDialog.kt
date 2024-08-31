@@ -3,8 +3,6 @@ package com.ribsky.account.dialog.base
 import android.graphics.drawable.AnimatedVectorDrawable
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.account.databinding.DialogProfileBinding
 import com.ribsky.account.model.UserModel
@@ -12,6 +10,7 @@ import com.ribsky.analytics.Analytics
 import com.ribsky.common.base.BaseSheetFullScreen
 import com.ribsky.common.utils.chip.ChipBuilder.Companion.createChip
 import com.ribsky.common.utils.ext.ViewExt.Companion.formatUserName
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.navigation.features.BetaNavigation
@@ -94,9 +93,7 @@ abstract class BaseProfileDialog :
     }
 
     private fun updateInfo(data: UserModel) = with(binding.container) {
-        ivAccount.load(data.image) {
-            transformations(CircleCropTransformation())
-        }
+        ivAccount.loadImage(data.image)
         tvName.text = data.name.formatUserName(data.isPrem)
         tvEmail.text = data.email
     }

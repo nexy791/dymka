@@ -15,10 +15,13 @@ object Analytics {
         object SHARE_WORDS : Event("share_words")
         object SHARE_STORY : Event("share_story")
         object SHARE_STREAK : Event("share_streak")
+        object SHARE_ARTICLE : Event("share_article")
 
         object START_LESSON : Event("start_lesson")
         object START_GAME : Event("start_game")
         object START_WORDS : Event("start_words")
+
+        object START_ARTICLE : Event("start_article")
 
         object END_LESSON : Event("end_lesson")
 
@@ -30,6 +33,7 @@ object Analytics {
         object END_WORDS : Event("end_words")
 
         object PAYWALL_OPEN : Event("paywall_open")
+        object PAYWALL_WELCOME_OPEN : Event("paywall_welcome_open")
 
         object BOT_OPEN : Event("bot_open")
         object BOT_OPEN_FROM_LESSON : Event("bot_open_from_lesson")
@@ -47,6 +51,8 @@ object Analytics {
 
         object PREMIUM_OPEN_DIALOG : Event("premium_open_dialog")
 
+        object PREMIUM_OPEN_DIALOG_WELCOME : Event("premium_open_dialog_welcome")
+
         object PREMIUM_OPEN : Event("premium_open")
         object PREMIUM_FROM_LESSON : Event("premium_from_lesson")
         object PREMIUM_FROM_WORDS : Event("premium_from_words")
@@ -59,7 +65,9 @@ object Analytics {
         object PREMIUM_FROM_MENU : Event("premium_from_menu")
         object PREMIUM_FROM_SETTINGS : Event("premium_from_settings")
         object PREMIUM_FROM_PAYWALL : Event("premium_from_paywall")
+        object PREMIUM_FROM_PAYWALL_WELCOME : Event("premium_from_paywall_welcome")
         object PREMIUM_FROM_STARS : Event("premium_from_stars")
+        object PREMIUM_FROM_ARTICLE : Event("premium_from_article")
 
         object PREMIUM_FROM_NOTES : Event("premium_from_notes")
 
@@ -74,11 +82,17 @@ object Analytics {
         object PREMIUM_BUY_FROM_MENU : Event("premium_buy_from_menu")
         object PREMIUM_BUY_FROM_SETTINGS : Event("premium_buy_from_settings")
         object PREMIUM_BUY_FROM_PAYWALL : Event("premium_buy_from_paywall")
+        object PREMIUM_BUY_FROM_PAYWALL_WELCOME : Event("premium_buy_from_paywall_welcome")
         object PREMIUM_BUY_FROM_STARS : Event("premium_buy_from_stars")
 
         object PREMIUM_BUY_FROM_NOTES : Event("premium_buy_from_notes")
 
+        object PREMIUM_BUY_FROM_ARTICLE : Event("premium_buy_from_article")
+
+
         object PREMIUM_BUY_FROM_UNKNOWN : Event("premium_buy_from_unknown")
+
+        object PREMIUM_BUY_WITH: Event("premium_buy_with_")
 
         object LESSON_ANSWER_CORRECT : Event("lesson_answer_correct")
         object LESSON_ANSWER_INCORRECT : Event("lesson_answer_incorrect")
@@ -122,10 +136,14 @@ object Analytics {
         object NOTES_LIMIT : Event("notes_limit")
 
         object OPEN_AUTH : Event("open_auth")
-
+        object START_AUTH : Event("start_auth")
+        object ERROR_AUTH_CREDS : Event("error_auth_creds")
+        object ERROR_AUTH_ONE_TAP : Event("error_auth_one_tap")
+        object ERROR_AUTH_SIGN_IN : Event("error_auth_sign_in")
+        object ERROR_AUTH_SERVER : Event("error_auth_server")
         object PASS_AUTH : Event("pass_auth")
 
-        object ERROR : Event("error")
+        object ERROR : Event("dialog_error")
 
         object NOTIFICATION_DIALOG_OPEN : Event("notification_dialog_open")
         object NOTIFICATION_DIALOG_CLICK : Event("notification_dialog_click")
@@ -134,10 +152,23 @@ object Analytics {
 
         object NOTIFICATION_PERMISSION_DENIED : Event("notification_permission_denied")
 
+        object PROMO_CLICK : Event("promo_click")
+
+        object PROMO_OPEN : Event("promo_open")
+
+        object PROMO_FEED_ERROR : Event("promo_feed_error")
+
 
     }
 
     fun logEvent(event: Event, bundle: Bundle? = null) {
+        when (isDebug()) {
+            true -> logEventWithLogcat(event, bundle)
+            false -> logEventWithFirebase(event, bundle)
+        }
+    }
+
+    fun logEvent(event: String, bundle: Bundle? = null) {
         when (isDebug()) {
             true -> logEventWithLogcat(event, bundle)
             false -> logEventWithFirebase(event, bundle)
@@ -150,6 +181,14 @@ object Analytics {
 
     private fun logEventWithLogcat(event: Event, bundle: Bundle? = null) {
         println("Analytics: name: ${event.param}, bundle: $bundle")
+    }
+
+    private fun logEventWithFirebase(event: String, bundle: Bundle? = null) {
+        Firebase.analytics.logEvent(event, bundle)
+    }
+
+    private fun logEventWithLogcat(event: String, bundle: Bundle? = null) {
+        println("Analytics: name: $event, bundle: $bundle")
     }
 
 }

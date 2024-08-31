@@ -7,12 +7,14 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="16dp"
     app:strokeWidth="0dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="16dp">
@@ -24,9 +26,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:fontFamily="@font/e_ukraine_medium"
             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
             android:textColor="#000000"
+            app:fontFamily="@font/e_ukraine_medium"
             tools:text="Урок 1" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -34,10 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/e_ukraine_medium"
             android:text="🎉"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:fontFamily="@font/e_ukraine_medium" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

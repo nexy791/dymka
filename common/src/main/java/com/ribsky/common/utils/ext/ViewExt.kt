@@ -1,6 +1,8 @@
 package com.ribsky.common.utils.ext
 
-import android.content.*
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -99,6 +101,16 @@ class ViewExt {
 
         fun String.formatUserName(isPrem: Boolean): String =
             if (isPrem) "$this \uD83C\uDDFA\uD83C\uDDE6" else this
+
+        fun String.formatHours(): String {
+            val hours = this.toIntOrNull() ?: return "$this годин"
+            return when {
+                hours % 100 in 11..14 -> "$hours годин"
+                hours % 10 == 1 -> "$hours година"
+                hours % 10 in 2..4 -> "$hours години"
+                else -> "$hours годин"
+            }
+        }
 
         fun Int.formatDays(): String =
             if (this == 1) "$this день" else "$this днів"

@@ -43,4 +43,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":billing"))
     implementation(project(":dialogs"))
+    implementation("com.robinhood.ticker:ticker:2.0.4")
+
 }

@@ -5,15 +5,16 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.NavHostFragment
-import coil.load
-import coil.request.CachePolicy
 import com.ribsky.analytics.Analytics
+import com.ribsky.billing.BillingState
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.common.utils.party.ProfileBalloonFactory
+import com.ribsky.common.utils.party.ProfileWelcomeBalloonFactory
 import com.ribsky.common.utils.update.AppUpdate
 import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.dynamic.SuccessInstallFactory
@@ -58,6 +59,7 @@ class MainActivity :
 
     private val activityResult: ActivityResultLauncher<IntentSenderRequest> =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+
         }
 
     private val navController by lazy {
@@ -65,6 +67,7 @@ class MainActivity :
     }
 
     private val balloon by balloon<ProfileBalloonFactory>()
+    private val balloonWelcome by balloon<ProfileWelcomeBalloonFactory>()
 
     private var permissionManager: PermissionManager? = null
 
@@ -232,7 +235,6 @@ class MainActivity :
 
     override fun initObs() = with(viewModel) {
         getProfile()
-        getDiscount()
         userStatus.observe(this@MainActivity) { result ->
             when (result.status) {
                 Resource.Status.SUCCESS -> updateUi(result.data!!)
@@ -248,9 +250,28 @@ class MainActivity :
         }
         discountStatus.observe(this@MainActivity) { result ->
             when (result.status) {
-                Resource.Status.SUCCESS -> result.data?.let {
+                Resource.Status.SUCCESS -> binding.btnPremium.post {
                     if (!viewModel.isSub) {
-                        balloon.showAlignBottom(binding.btnPremium, yOff = 8)
+                        when (result.data) {
+                            is BillingState.Discount -> balloon.showAlignBottom(
+                                binding.btnPremium,
+                                yOff = 8
+                            )
+
+                            is BillingState.Infinite -> balloon.showAlignBottom(
+                                binding.btnPremium,
+                                yOff = 8
+                            )
+
+                            is BillingState.WelcomeDiscount -> balloonWelcome.showAlignBottom(
+                                binding.btnPremium,
+                                yOff = 8
+                            )
+
+                            is BillingState.NoDiscount -> {}
+
+                            else -> {}
+                        }
                     }
                 }
 
@@ -306,13 +327,9 @@ class MainActivity :
 
     private fun updateUi(user: BaseUserModel) = with(binding) {
         btnPremium.setPremium(viewModel.isSub)
-        ivAvatar.load(user.image) {
-            crossfade(true)
+        ivAvatar.loadImage(user.image) {
             placeholder(commonDrawable.cat)
             error(commonDrawable.cat)
-            diskCachePolicy(CachePolicy.ENABLED)
-            networkCachePolicy(CachePolicy.ENABLED)
-            memoryCachePolicy(CachePolicy.ENABLED)
         }
     }
 
@@ -322,7 +339,7 @@ class MainActivity :
     override fun onBackPressed() {
         if (!navController.navigateUp()) {
             showExitAlert(
-                positiveAction = { finish() },
+                positiveAction = { super.onBackPressed() },
                 negativeAction = {}
             )
         }

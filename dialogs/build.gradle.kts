@@ -40,4 +40,5 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":navigation"))
     implementation(project(":analytics"))
+    implementation(project(":billing"))
 }

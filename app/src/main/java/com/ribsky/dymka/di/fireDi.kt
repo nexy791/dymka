@@ -4,6 +4,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.LocalCacheSettings
+import com.google.firebase.firestore.PersistentCacheSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
@@ -14,7 +16,9 @@ import org.koin.dsl.module
 
 val fireDi = module {
 
-    single { Firebase.auth }
+    single { Firebase.auth.apply {
+        setLanguageCode("uk")
+    } }
 
     single {
         Firebase.firestore.apply {
@@ -33,7 +37,7 @@ val fireDi = module {
         Firebase.remoteConfig.apply {
             setConfigSettingsAsync(
                 FirebaseRemoteConfigSettings.Builder()
-                    .setFetchTimeoutInSeconds(43200) // 12h
+                    .setFetchTimeoutInSeconds(14400)
                     .build()
             )
         }

@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "com.ribsky.ratingbar"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -38,5 +38,5 @@ dependencies {
     implementation(Deps.androidxAppCompat)
     implementation(Deps.androidxCore)
     implementation(Deps.material)
-    api("com.google.android:flexbox:1.1.1")
+    api("com.google.android:flexbox:2.0.1")
 }

@@ -5,11 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.core.Resource
+import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.best.BaseBestWordModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
+import com.ribsky.domain.model.promo.BasePromoModel
 import com.ribsky.domain.usecase.best.GetBestWordUseCase
 import com.ribsky.domain.usecase.config.GetDiscountUseCase
+import com.ribsky.domain.usecase.config.GetPromoUseCase
 import com.ribsky.domain.usecase.paragraph.ParagraphInteractor
 import com.ribsky.domain.usecase.streak.GetCurrentStreakUseCase
 import com.ribsky.domain.usecase.streak.IsTodayStreakUseCase
@@ -23,44 +27,19 @@ class FeedViewModel(
     private val isTodayStreakUseCase: IsTodayStreakUseCase,
     private val getCurrentStreakUseCase: GetCurrentStreakUseCase,
     private val getDiscountUseCase: GetDiscountUseCase,
-) : ViewModel() {
+    private val getPromoUseCase: GetPromoUseCase,
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     private val _paragraphsStatus: MutableLiveData<Resource<List<BaseParagraphModel>>> =
         MutableLiveData()
     val paragraphsStatus: LiveData<Resource<List<BaseParagraphModel>>> get() = _paragraphsStatus
 
-    val paragraphs get() = _paragraphsStatus.value?.data
-
     private val _bestWordStatus: MutableLiveData<Resource<BaseBestWordModel>> =
         MutableLiveData()
     val bestWordStatus: LiveData<Resource<BaseBestWordModel>> get() = _bestWordStatus
 
-    private val _discountStatus = MutableLiveData<String?>()
-    val discount get() =  _discountStatus.value
-
-    init {
-        getIsFreeDiscountAvailable()
-    }
-
-    private fun getIsFreeDiscountAvailable() {
-        viewModelScope.launch {
-
-            if (subManager.isDiscount()) {
-                _discountStatus.value = "Назавжди ∞"
-                return@launch
-            }
-
-            val result = getDiscountUseCase.invoke()
-            result.fold(
-                onSuccess = {
-                    _discountStatus.value = "до $it"
-                },
-                onFailure = {
-                    _discountStatus.value = null
-                }
-            )
-        }
-    }
+    private val _promoStatus = MutableLiveData<Resource<BasePromoModel>>()
+    val promoStatus: LiveData<Resource<BasePromoModel>> get() = _promoStatus
 
     fun getBestWord() {
         viewModelScope.launch {
@@ -80,9 +59,15 @@ class FeedViewModel(
         }
     }
 
+    fun getPromo() {
+        viewModelScope.launch {
+            _promoStatus.value = Resource.loading()
+            _promoStatus.value = getPromoUseCase.invoke().asResource()
+        }
+    }
+
     val isTodayStreak get() = isTodayStreakUseCase.invoke()
 
     val currentStreak get() = getCurrentStreakUseCase.invoke()
 
-    val isSub get() = subManager.isSub()
 }

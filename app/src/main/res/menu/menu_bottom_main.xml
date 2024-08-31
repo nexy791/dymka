@@ -5,7 +5,7 @@
     <item
         android:id="@+id/nav_feed"
         android:icon="@drawable/ic_outline_history_edu_24"
-        android:title="Курси"
+        android:title="Уроки"
         app:showAsAction="always" />
 
     <item
@@ -21,15 +21,15 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/nav_games"
-        android:icon="@drawable/ic_outline_sports_esports_24"
-        android:title="Ігри"
+        android:id="@+id/nav_articles"
+        android:icon="@drawable/ic_rounded_article_24"
+        android:title="Добірки"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/nav_top"
         android:icon="@drawable/ic_outline_emoji_events_24"
-        android:title="Рейтинг"
+        android:title="Топ"
         app:showAsAction="always" />
 
 

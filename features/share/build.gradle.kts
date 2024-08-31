@@ -40,6 +40,5 @@ dependencies {
     implementation(project(":navigation"))
     implementation(project(":analytics"))
     implementation(project(":domain"))
-    implementation(project(":widget"))
     implementation(project(":dialogs"))
 }

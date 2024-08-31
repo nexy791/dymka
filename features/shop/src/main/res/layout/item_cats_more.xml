@@ -6,7 +6,7 @@
     android:layout_marginHorizontal="4dp"
     android:layout_marginVertical="8dp"
     android:checkable="false"
-    android:fontFamily="@font/e_ukraine_regular"
+    app:fontFamily="@font/e_ukraine_regular"
     android:text="Та інші 🐈"
     android:textIsSelectable="false"
     android:textSize="16sp"

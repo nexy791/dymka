@@ -3,10 +3,10 @@ package com.ribsky.games.adapter.games
 import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.games.databinding.ItemGameBinding
 import com.ribsky.games.model.GameModel
 import org.koin.java.KoinJavaComponent.inject
@@ -26,7 +26,7 @@ class GamesViewHolder(private val binding: ItemGameBinding) :
         }
         tvTitle.text = item.title
 
-        tvIcon.load(storage.getReferenceFromUrl(item.image)) {
+        tvIcon.loadImage(storage.getReferenceFromUrl(item.image)) {
             placeholder(null)
             error(null)
         }

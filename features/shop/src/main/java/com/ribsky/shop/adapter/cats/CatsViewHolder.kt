@@ -3,7 +3,7 @@ package com.ribsky.shop.adapter.cats
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.domain.model.top.BaseTopModel
 import com.ribsky.shop.databinding.ItemCatsBinding
 
@@ -17,9 +17,7 @@ class CatsViewHolder(private val binding: ItemCatsBinding) :
         root.setOnClickListener {
             onCatClick(item)
         }
-        imageView.load(item.image) {
-            crossfade(true)
-        }
+        imageView.loadImage(item.image)
     }
 
     companion object {

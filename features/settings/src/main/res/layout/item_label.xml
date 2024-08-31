@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tv_title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:fontFamily="@font/e_ukraine_medium"
+    app:fontFamily="@font/e_ukraine_medium"
     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
     tools:text="Поділитись" />

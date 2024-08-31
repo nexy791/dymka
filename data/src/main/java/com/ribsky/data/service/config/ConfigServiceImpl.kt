@@ -1,8 +1,9 @@
 package com.ribsky.data.service.config
 
-import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.ribsky.core.utils.DateUtils.Companion.formatDateDDMMMMYYYY
+import com.ribsky.data.model.PromoApiModel
+import com.ribsky.data.utils.moshi.Adapters
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 
@@ -14,7 +15,7 @@ class ConfigServiceImpl(
 
     private var token: String? = null
     private var discount: Long? = null
-
+    private var promo: PromoApiModel? = null
 
     override suspend fun getBotToken(): Result<String> {
         val result = activate()
@@ -49,11 +50,29 @@ class ConfigServiceImpl(
         }
     }
 
+    override suspend fun getPromo(): Result<PromoApiModel> {
+        val result = activate()
+        return if (isActivated) {
+            if (promo != null) {
+                Result.success(promo!!)
+            } else {
+                Result.failure(Throwable("Помилка"))
+            }
+        } else {
+            Result.failure(
+                result.exceptionOrNull()
+                    ?: Throwable("Помилка отримання promo\nЯкщо помилка повторюється, спробуй перевстановити застосунок")
+            )
+        }
+    }
+
     private suspend fun activate() = runCatching {
         if (isActivated) return@runCatching
         remoteConfig.fetchAndActivate().await()
         token = remoteConfig.getString(KEY_BOT)
         discount = remoteConfig.getLong(KEY_DISCOUNT)
+        promo = runCatching { Adapters.promo.fromJson(remoteConfig.getString(KEY_PROMO)) }.getOrNull()
+
         if (token?.isNotEmpty() == true && (discount ?: 0) > 0) {
             isActivated = true
         } else {
@@ -66,5 +85,6 @@ class ConfigServiceImpl(
     companion object {
         const val KEY_BOT = "api_key"
         const val KEY_DISCOUNT = "discount"
+        const val KEY_PROMO = "promo"
     }
 }

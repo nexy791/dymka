@@ -14,12 +14,14 @@ class AppUpdateImpl : AppUpdate {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    activity,
-                    REQUEST_CODE
-                )
+                runCatching {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.IMMEDIATE,
+                        activity,
+                        REQUEST_CODE
+                    )
+                }
             }
         }
     }

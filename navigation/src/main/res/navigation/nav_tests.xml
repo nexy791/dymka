@@ -8,6 +8,8 @@
         android:id="@+id/testsFragment"
         android:name="com.ribsky.tests.ui.TestsFragment" />
 
+    <include app:graph="@navigation/nav_games" />
+
     <dialog
         android:id="@+id/testInfoDialog"
         android:name="com.ribsky.tests.dialogs.info.TestInfoDialog">

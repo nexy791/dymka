@@ -3,11 +3,11 @@ package com.ribsky.tests.dialogs.info
 import android.graphics.PorterDuff
 import androidx.core.os.bundleOf
 import androidx.core.text.parseAsHtml
-import coil.load
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseSheet
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.common.utils.sound.SoundHelper.playSound
 import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
@@ -44,7 +44,7 @@ class TestInfoDialog(
         tvTitle.text = test.title
         tvDescription.text = test.description.parseAsHtml()
 
-        tvIcon.load(storage.getReferenceFromUrl(test.image)) {
+        tvIcon.loadImage(storage.getReferenceFromUrl(test.image)) {
             placeholder(null)
             error(null)
         }

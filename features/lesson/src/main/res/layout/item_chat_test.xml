@@ -18,6 +18,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView4"
+        style="@style/Widget.Material3.CardView.Outlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -27,21 +28,23 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="0dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#DBEFFF"
             android:padding="16dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/e_ukraine_medium"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="#000000"
+                app:fontFamily="@font/e_ukraine_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -70,7 +73,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/e_ukraine_regular"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
@@ -82,6 +84,7 @@
         android:textColor="@color/md_theme_light_primary"
         android:textSize="11sp"
         app:backgroundTint="#ffffff"
+        app:fontFamily="@font/e_ukraine_regular"
         app:layout_constraintStart_toStartOf="@+id/materialCardView4"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
         app:strokeColor="@color/md_theme_light_primary"

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.test.BaseTestModel
@@ -27,7 +28,7 @@ class TestDetailsViewModel(
     private val saveWordInteractor: SaveWordInteractor,
     private val testInteractor: TestInteractor,
     private val getDiscountUseCase: GetDiscountUseCase,
-) : ViewModel() {
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     private var words: List<WordModel> = emptyList()
     private val word: WordModel? get() = wordStatus.value?.data
@@ -45,35 +46,7 @@ class TestDetailsViewModel(
 
     private var score = 0
 
-    private val _discountStatus = MutableLiveData<String?>()
-    val discount get() =  _discountStatus.value
-
-    init {
-        getIsFreeDiscountAvailable()
-    }
-
-    private fun getIsFreeDiscountAvailable() {
-        viewModelScope.launch {
-
-            if (subManager.isDiscount()) {
-                _discountStatus.value = "Назавжди ∞"
-                return@launch
-            }
-
-            val result = getDiscountUseCase.invoke()
-            result.fold(
-                onSuccess = {
-                    _discountStatus.value = "до $it"
-                },
-                onFailure = {
-                    _discountStatus.value = null
-                }
-            )
-        }
-    }
-
     fun getScore(): Int = score
-
 
     fun getTestInfo(id: String) {
         viewModelScope.launch {
@@ -176,5 +149,4 @@ class TestDetailsViewModel(
         }
     }
 
-    val isSub get() = subManager.isSub()
 }

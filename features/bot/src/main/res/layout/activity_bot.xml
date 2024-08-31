@@ -89,6 +89,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:text="Може помилятись, перевіряйте інформацію\nПолітика конфіденційності та умови використання"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_replies"
             android:layout_width="0dp"
@@ -119,7 +130,7 @@
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/privacy"
             app:layout_constraintEnd_toStartOf="@+id/btn_main"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -128,14 +139,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/e_ukraine_regular"
                 android:hint="Повідомлення..."
                 android:imeOptions="actionSend"
                 android:inputType="textCapSentences"
                 android:lines="1"
                 android:maxLength="150"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:fontFamily="@font/e_ukraine_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,7 +172,8 @@
         app:backgroundTint="@color/blue"
         app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:layout_width="wrap_content"
@@ -181,6 +193,7 @@
         android:id="@+id/empty_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        tools:visibility="gone"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -204,7 +217,7 @@
             android:id="@+id/materialTextView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/e_ukraine_medium"
+            app:fontFamily="@font/e_ukraine_medium"
             android:gravity="center"
             android:text="Загружаємо..."
             android:textAlignment="center"

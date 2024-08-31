@@ -38,7 +38,7 @@
             android:layout_height="18dp"
             android:layout_marginTop="8dp"
             android:background="#CCCCCC"
-            android:fontFamily="@font/e_ukraine_medium"
+            app:fontFamily="@font/e_ukraine_medium"
             android:textColor="#000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="5:1"

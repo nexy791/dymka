@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.analytics.Analytics
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.core.Event
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
@@ -34,7 +35,7 @@ class LessonViewModel(
     private val subManager: SubManager,
     private val addNoteUseCase: AddNoteUseCase,
     private val getDiscountUseCase: GetDiscountUseCase,
-) : ViewModel() {
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     var errorCount: Int = 0
     private var currentContentIndex = -1
@@ -74,33 +75,6 @@ class LessonViewModel(
     private val answers get() = content.getOrNull(currentContentIndex)?.answers
 
     private val paragraphId get() = _lessonStatus.value?.data?.paragraphId!!
-
-    private val _discountStatus = MutableLiveData<String?>()
-    val discount get() =  _discountStatus.value
-
-    init {
-        getIsFreeDiscountAvailable()
-    }
-
-    private fun getIsFreeDiscountAvailable() {
-        viewModelScope.launch {
-
-            if (subManager.isDiscount()) {
-                _discountStatus.value = "Назавжди ∞"
-                return@launch
-            }
-
-            val result = getDiscountUseCase.invoke()
-            result.fold(
-                onSuccess = {
-                    _discountStatus.value = "до $it"
-                },
-                onFailure = {
-                    _discountStatus.value = null
-                }
-            )
-        }
-    }
 
     fun getLesson(lessonId: String) {
         this.lessonId = lessonId
@@ -254,5 +228,4 @@ class LessonViewModel(
         else -> answers
     }?.joinToString(" • ").orEmpty()
 
-    val isSub get() = subManager.isSub()
 }

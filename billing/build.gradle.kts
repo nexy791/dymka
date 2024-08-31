@@ -37,6 +37,6 @@ dependencies {
     implementation(Deps.androidxAppCompat)
     implementation(Deps.material)
 
-    api("com.revenuecat.purchases:purchases:6.9.1")
+    api("com.revenuecat.purchases:purchases:8.6.0")
 
 }

@@ -2,6 +2,10 @@ package com.ribsky.dymka.di
 
 import com.ribsky.account.dialog.account.AccountViewModel
 import com.ribsky.account.dialog.profile.ProfileViewModel
+import com.ribsky.article.ui.ArticleViewModel
+import com.ribsky.article.ui.fragments.base.BaseArticleViewModel
+import com.ribsky.articles.dialogs.info.ArticleInfoViewModel
+import com.ribsky.articles.ui.ArticlesViewModel
 import com.ribsky.auth.ui.AuthViewModel
 import com.ribsky.dymka.ui.MainViewModel
 import com.ribsky.feed.ui.FeedViewModel
@@ -22,7 +26,7 @@ import com.ribsky.lessons.dialogs.info.LessonInfoViewModel
 import com.ribsky.lessons.ui.LessonsViewModel
 import com.ribsky.loader.ui.LoaderViewModel
 import com.ribsky.notes.ui.NotesViewModel
-import com.ribsky.paywall.dialogs.PayWallViewModel
+import com.ribsky.paywall.dialogs.paywall.PayWallViewModel
 import com.ribsky.settings.ui.settings.SettingsViewModel
 import com.ribsky.share.ui.share.ShareStreakViewModel
 import com.ribsky.share.ui.story.ShareStoryViewModel
@@ -76,7 +80,8 @@ val uiDi = module {
             paragraphInteractor = get(),
             isTodayStreakUseCase = get(),
             getCurrentStreakUseCase = get(),
-            getDiscountUseCase = get()
+            getDiscountUseCase = get(),
+            getPromoUseCase = get()
         )
     }
 
@@ -141,7 +146,7 @@ val uiDi = module {
         LoaderViewModel(
             loadDataUseCase = get(),
             syncUserUseCase = get(),
-            getUserUseCase = get()
+            getUserUseCase = get(),
         )
     }
 
@@ -198,7 +203,8 @@ val uiDi = module {
             setTodayStreakUseCase = get(),
             isTodayStreakUseCase = get(),
             getDiscountUseCase = get(),
-            topInteractor = get()
+            topInteractor = get(),
+            getTestScoreUseCase = get()
         )
     }
 
@@ -286,6 +292,32 @@ val uiDi = module {
         PayWallViewModel(
             topInteractor = get()
         )
+    }
+
+    viewModel {
+        ArticlesViewModel(
+            subManager = get(),
+            getDiscountUseCase = get(),
+            isContentExistsUseCase = get(),
+            getArticlesUseCase = get()
+        )
+    }
+
+    viewModel {
+        ArticleViewModel(
+            getArticleContentUseCase = get(),
+            getArticleUseCase = get()
+        )
+    }
+
+    viewModel {
+        ArticleInfoViewModel(
+            getArticleUseCase = get()
+        )
+    }
+
+    viewModel {
+        BaseArticleViewModel()
     }
 
     single<ConnectionManager> {

@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:fontFamily="@font/e_ukraine_medium"
+        app:fontFamily="@font/e_ukraine_medium"
         android:gravity="center"
         android:text="Молодець!"
         android:textAlignment="center"
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="📚 Уроки"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="📝 Завдання"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="📊 Результати"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="🎮 Ігри"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -99,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="#️⃣ Рішення ДЗ"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="😺 Кіт-помічник"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="🧑‍💻 Тести"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -126,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:text="📖 Підготовка до ЗНО"
             android:textSize="16sp"
             app:chipCornerRadius="16dp" />
@@ -141,7 +141,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:fontFamily="@font/e_ukraine_regular"
+        app:fontFamily="@font/e_ukraine_regular"
         android:text="Почати"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:textColor="@color/md_theme_light_onPrimary"

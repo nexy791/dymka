@@ -4,10 +4,10 @@ import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.tests.databinding.ItemTestBinding
 import com.ribsky.tests.model.TestModel
 import org.koin.java.KoinJavaComponent
@@ -25,16 +25,16 @@ class TestViewHolder(private val binding: ItemTestBinding) :
         }
         tvTitle.text = item.title
         if (!item.isInProgress()) {
-            icNext.load(
+            icNext.loadImage(
                 when (item.isActive) {
                     true -> commonDrawable.ic_round_navigate_next_24
                     false -> commonDrawable.ic_outline_lock_24
                 }
             )
         } else {
-            icNext.load(commonDrawable.ic_outline_draw_24)
+            icNext.loadImage(commonDrawable.ic_outline_draw_24)
         }
-        tvIcon.load(storage.getReferenceFromUrl(item.image)) {
+        tvIcon.loadImage(storage.getReferenceFromUrl(item.image)) {
             placeholder(null)
             error(null)
         }

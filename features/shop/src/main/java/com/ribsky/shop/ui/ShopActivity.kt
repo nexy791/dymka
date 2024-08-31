@@ -1,20 +1,24 @@
 package com.ribsky.shop.ui
 
+import android.text.method.LinkMovementMethod
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import coil.load
 import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.revenuecat.purchases.models.StoreProduct
 import com.ribsky.analytics.Analytics
+import com.ribsky.billing.BillingState
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.ActionExt.Companion.openSubscriptions
 import com.ribsky.common.utils.ext.ActionExt.Companion.sendEmail
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
+import com.ribsky.common.utils.ext.ViewExt.Companion.formatHours
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.common.utils.party.Party
 import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.cats.CatsFactory
@@ -102,20 +106,46 @@ class ShopActivity :
     }
 
     private fun initDiscount() = with(binding) {
-        cardDiscount.isGone = !viewModel.isDiscount
-        cardShare.isGone = viewModel.isDiscount
+        when (val state = viewModel.discount) {
+            is BillingState.Discount -> {
+                cardDiscount.isGone = false
+                cardWelcome.isGone = true
+                cardShare.isGone = true
+                tvDescPrice2.text = "Вітаємо! Ти маєш знижку на підписку до ${state.date!!}"
+            }
+
+            is BillingState.Infinite -> {
+                cardDiscount.isGone = true
+                cardWelcome.isGone = false
+                cardShare.isGone = true
+            }
+
+            is BillingState.WelcomeDiscount -> {
+                cardDiscount.isGone = true
+                cardWelcome.isGone = false
+                cardShare.isGone = true
+                tvDescWelcome.text = "Вітаємо! Ти маєш знижку на підписку!"
+                chipWelcome.text = "⏳ Залишилось: ${state.date.formatHours()}"
+            }
+
+            is BillingState.NoDiscount -> {
+                cardDiscount.isGone = true
+                cardWelcome.isGone = true
+                cardShare.isGone = false
+            }
+
+            null -> TODO()
+        }
         if (viewModel.isSub) {
             cardShare.isGone = true
             cardDiscount.isGone = true
+            cardWelcome.isGone = true
         }
         btnSub23.setOnClickListener {
-            showBottomSheetDialog(
-                SubDialog.newInstance(viewModel.isDiscount, itemList, callback),
-            )
+            showBottomSheetDialog(SubDialog.newInstance(viewModel.discount, itemList, callback))
         }
-        if (viewModel.isDiscount) {
-            tvDescPrice2.text =
-                "Вітаємо! Ти маєш знижку на підписку ${viewModel.discountStatus.value!!.data!!}"
+        btnWelcome.setOnClickListener {
+            showBottomSheetDialog(SubDialog.newInstance(viewModel.discount, itemList, callback))
         }
 
     }
@@ -175,7 +205,7 @@ class ShopActivity :
                 }
             } else {
                 showBottomSheetDialog(
-                    SubDialog.newInstance(viewModel.isDiscount, itemList, callback)
+                    SubDialog.newInstance(viewModel.discount, itemList, callback)
                 )
             }
         }
@@ -200,6 +230,15 @@ class ShopActivity :
             btnSub.text = "Оформити підписку"
             konfettiView.stop(Party.rain)
         }
+        binding.textDescription.apply {
+            movementMethod = LinkMovementMethod.getInstance()
+            text = """
+Підписка поновлюється автоматично, поки її не скасувати у налаштуваннях або в магазині.<br>
+Скасування в будь-який момент<br>
+При покупці підписки «Назавжди» твої кошти списуються лише один раз<br><br>
+<a href="https://dymka.me/privacy.html">Політика конфіденційності</a><br><a href="https://dymka.me/rules.html">Правила користування</a>
+            """.trimIndent().parseAsHtml()
+        }
     }
 
     private fun showRestoreDialog() {
@@ -221,8 +260,8 @@ class ShopActivity :
             },
             negativeAction = {
                 sendEmail(
-                    subject = "Відновлення покупок",
-                    text = "Відправлено з додатку Дімка"
+                    subject = "Відновлення покупок dymka",
+                    text = "Відправлено з додатку dymka"
                 )
             }
         )
@@ -278,7 +317,6 @@ class ShopActivity :
                 Resource.Status.LOADING -> {}
                 Resource.Status.SUCCESS -> {
                     updateProfileImage(it.data?.image)
-                    getIsFreeDiscountAvailable()
                     getTop()
                 }
 
@@ -300,9 +338,7 @@ class ShopActivity :
     }
 
     private fun updateProfileImage(image: String?) {
-        image?.let {
-            binding.imageAvatar.load(it)
-        }
+        image?.let { binding.imageAvatar.loadImage(it) }
     }
 
     private fun getPricesSubs() {
@@ -321,10 +357,20 @@ class ShopActivity :
     }
 
     private fun buyItem(product: StoreProduct) {
+        Analytics.logEvent(analyticEventFrom)
+        Analytics.logEvent(
+            Analytics.Event.PREMIUM_BUY_WITH.param +
+            when (viewModel.discount) {
+                is BillingState.Discount -> "discount"
+                is BillingState.Infinite -> "infinite"
+                is BillingState.NoDiscount -> "no_discount"
+                is BillingState.WelcomeDiscount -> "welcome_discount"
+                null -> "unknown"
+            }
+        )
         billingClientWrapper.purchase(product) { r ->
             r.fold(
                 onSuccess = {
-                    Analytics.logEvent(analyticEventFrom)
                     loaderNavigation.navigate(this)
                 },
                 onFailure = {

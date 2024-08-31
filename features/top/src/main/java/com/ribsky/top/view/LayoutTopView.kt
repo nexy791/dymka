@@ -4,9 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import coil.load
-import coil.request.CachePolicy
 import com.ribsky.common.alias.commonDrawable
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.top.databinding.LayoutTopBinding
 
 class LayoutTopView @JvmOverloads constructor(
@@ -26,13 +25,9 @@ class LayoutTopView @JvmOverloads constructor(
     }
 
     fun setPhoto(photo: String) {
-        binding?.ivAccount?.load(photo) {
-            crossfade(true)
+        binding?.ivAccount?.loadImage(photo) {
             placeholder(commonDrawable.cat)
             error(commonDrawable.cat)
-            diskCachePolicy(CachePolicy.ENABLED)
-            networkCachePolicy(CachePolicy.ENABLED)
-            memoryCachePolicy(CachePolicy.ENABLED)
         }
     }
 

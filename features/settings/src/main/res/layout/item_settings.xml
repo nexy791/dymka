@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8sp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/e_ukraine_medium"
+            app:fontFamily="@font/e_ukraine_medium"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ic_next"

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.ribsky.data.service.offline.active.ActiveLessonDao
 import com.ribsky.data.service.offline.active.ActiveLessonDatabase
+import com.ribsky.data.service.offline.article.ArticlesDao
+import com.ribsky.data.service.offline.article.ArticlesDatabase
 import com.ribsky.data.service.offline.best.BestWordDao
 import com.ribsky.data.service.offline.best.BestWordDatabase
 import com.ribsky.data.service.offline.lesson.LessonsDao
@@ -35,6 +37,8 @@ val dbDi = module {
 
     single { notesDb(get()) }
 
+    single { articlesDb(get()) }
+
     single { bestWordDao(get()) }
 
     single { lessonsDao(get()) }
@@ -50,6 +54,8 @@ val dbDi = module {
     single { starsDao(get()) }
 
     single { notesDao(get()) }
+
+    single { articlesDao(get()) }
 
 }
 
@@ -69,6 +75,8 @@ fun topDao(topDatabase: TopDatabase) = topDatabase.dao
 fun starsDao(starsLessonDatabase: StarsLessonDatabase) = starsLessonDatabase.dao
 
 fun notesDao(notesDataBase: NotesDataBase) = notesDataBase.dao
+
+fun articlesDao(articlesDatabase: ArticlesDatabase) = articlesDatabase.dao
 
 fun activeBestWordDb(context: Context): BestWordDatabase {
     return Room.databaseBuilder(
@@ -97,6 +105,16 @@ fun paragraphDb(context: Context): ParagraphDataBase {
         context,
         ParagraphDataBase::class.java,
         ParagraphDataBase.DATABASE_NAME
+    )
+        .fallbackToDestructiveMigration()
+        .build()
+}
+
+fun articlesDb(context: Context): ArticlesDatabase {
+    return Room.databaseBuilder(
+        context,
+        ArticlesDatabase::class.java,
+        ArticlesDatabase.DATABASE_NAME
     )
         .fallbackToDestructiveMigration()
         .build()

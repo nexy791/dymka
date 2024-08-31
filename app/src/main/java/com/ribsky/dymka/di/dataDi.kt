@@ -1,7 +1,8 @@
 package com.ribsky.dymka.di
 
 import com.ribsky.data.repository.ActiveRepositoryImpl
-import com.ribsky.data.repository.AuthRepositoryImpl
+import com.ribsky.data.repository.ArticleRepositoryImpl
+import com.ribsky.data.repository.auth.AuthRepositoryImpl
 import com.ribsky.data.repository.BestWordRepositoryImpl
 import com.ribsky.data.repository.BioRepositoryImpl
 import com.ribsky.data.repository.BotRepositoryImpl
@@ -24,6 +25,8 @@ import com.ribsky.data.service.file.FileService
 import com.ribsky.data.service.file.FileServiceImpl
 import com.ribsky.data.service.offline.time.TimeService
 import com.ribsky.data.service.offline.time.TimeServiceImpl
+import com.ribsky.data.service.online.article.ArticleService
+import com.ribsky.data.service.online.article.ArticleServiceImpl
 import com.ribsky.data.service.online.best.BestWordService
 import com.ribsky.data.service.online.best.BestWordServiceImpl
 import com.ribsky.data.service.online.lesson.LessonService
@@ -39,6 +42,7 @@ import com.ribsky.data.service.user.UserServiceImpl
 import com.ribsky.data.utils.crypto.CryptoManager
 import com.ribsky.data.utils.crypto.CryptoManagerImpl
 import com.ribsky.domain.repository.ActiveRepository
+import com.ribsky.domain.repository.ArticleRepository
 import com.ribsky.domain.repository.AuthRepository
 import com.ribsky.domain.repository.BestWordRepository
 import com.ribsky.domain.repository.BioRepository
@@ -194,6 +198,7 @@ val dataDi = module {
             paragraphRepository = get(),
             bestWordRepository = get(),
             topRepository = get(),
+            articleRepository = get(),
             internetManager = get(),
             timeService = get()
         )
@@ -208,7 +213,8 @@ val dataDi = module {
             lessonsDao = get(),
             testsDao = get(),
             paragraphDao = get(),
-            activeLessonDao = get()
+            activeLessonDao = get(),
+            articlesDao = get(),
         )
     }
 
@@ -248,7 +254,8 @@ val dataDi = module {
 
     single<ConfigRepository> {
         ConfigRepositoryImpl(
-            configService = get()
+            configService = get(),
+            promoMapper = get()
         )
     }
 
@@ -278,6 +285,22 @@ val dataDi = module {
             notesDao = get(),
             noteMapper = get(),
             subManager = get()
+        )
+    }
+
+    single<ArticleRepository> {
+        ArticleRepositoryImpl(
+            articleService = get(),
+            fileService = get(),
+            articlesDao = get(),
+            cryptoManager = get(),
+            mapper = get()
+        )
+    }
+
+    single<ArticleService> {
+        ArticleServiceImpl(
+            db = get()
         )
     }
 

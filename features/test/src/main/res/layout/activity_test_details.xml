@@ -6,6 +6,73 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_avatar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
+        android:background="@color/md_theme_light_primary"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:shapeAppearanceOverlay="@style/CircleImage" />
+
+
+    <com.robinhood.ticker.TickerView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="#FF7043"
+        app:fontFamily="@font/e_ukraine_bold"
+        app:layout_constraintBottom_toBottomOf="@+id/image_avatar"
+        app:layout_constraintStart_toEndOf="@+id/image_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextView"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:ticker_animationDuration="300"
+        app:ticker_defaultCharacterList="alphabet"
+        app:ticker_defaultPreferredScrollingDirection="down" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:alpha="0.5"
+        android:text="Правильних відповідей"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textColor="@color/black"
+        app:fontFamily="@font/e_ukraine_regular"
+        app:layout_constraintBottom_toTopOf="@+id/tv_score"
+        app:layout_constraintStart_toEndOf="@+id/image_avatar"
+        app:layout_constraintTop_toTopOf="@+id/image_avatar"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_score_emoji"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:padding="11dp"
+        android:text="😐"
+        android:textColor="@color/white"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/image_avatar"
+        app:layout_constraintEnd_toEndOf="@+id/image_avatar"
+        app:layout_constraintStart_toStartOf="@+id/image_avatar"
+        app:layout_constraintTop_toTopOf="@+id/image_avatar" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_round_navigate_next_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -66,11 +133,11 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:progress="43"
-        app:trackCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:trackCornerRadius="24dp" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/container"
@@ -85,16 +152,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="11dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@+id/card_test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+        app:layout_constraintTop_toBottomOf="@+id/image_avatar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:padding="8dp">
 
             <com.google.android.material.textview.MaterialTextView
@@ -104,9 +173,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:fontFamily="@font/e_ukraine_regular"
                 android:text="Вибери правильний варіант"
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                app:fontFamily="@font/e_ukraine_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -116,11 +185,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/e_ukraine_medium"
                 android:gravity="start"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
                 android:textColor="#000"
+                app:fontFamily="@font/e_ukraine_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_small_title"
@@ -135,7 +204,9 @@
                 android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_test_pick" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/materialDivider"
@@ -150,15 +221,17 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_like"
+                style="@style/Widget.App.FloatingActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:src="@drawable/ic_round_favorite_border_24"
-                app:backgroundTint="#FFFFFF"
+                app:backgroundTint="@color/white"
                 app:elevation="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialDivider"
+                app:shapeAppearanceOverlay="@style/CircleImage"
                 app:tint="@color/md_theme_light_primary"
                 tools:ignore="SpeakableTextPresentCheck" />
 
@@ -167,10 +240,11 @@
                 style="@style/Widget.Material3.Button.TonalButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/e_ukraine_regular"
+                android:layout_marginEnd="8dp"
                 android:text="Продовжити"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                 android:textColor="@color/md_theme_light_onPrimary"
+                app:fontFamily="@font/e_ukraine_regular"
                 app:icon="@drawable/ic_round_navigate_next_24"
                 app:iconGravity="end"
                 app:iconSize="24dp"
@@ -226,11 +300,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:fontFamily="@font/e_ukraine_medium"
                 android:text="123"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                 android:textColor="#000"
+                app:fontFamily="@font/e_ukraine_medium"
                 app:layout_constraintBottom_toTopOf="@+id/tv_description_card"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -243,11 +317,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:fontFamily="@font/e_ukraine_thin"
                 android:text="123"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="#000"
+                app:fontFamily="@font/e_ukraine_thin"
                 app:layout_constraintBottom_toBottomOf="@+id/image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

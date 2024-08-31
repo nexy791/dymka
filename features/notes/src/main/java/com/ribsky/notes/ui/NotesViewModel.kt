@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.core.Resource
 import com.ribsky.domain.model.note.BaseNoteModel
 import com.ribsky.domain.model.note.NoteModel
@@ -17,37 +18,10 @@ class NotesViewModel(
     private val deleteNoteUseCase: DeleteNoteUseCase,
     private val subManager: SubManager,
     private val getDiscountUseCase: GetDiscountUseCase,
-) : ViewModel() {
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     private val _status: MutableLiveData<Resource<List<BaseNoteModel>>> = MutableLiveData()
     val status: MutableLiveData<Resource<List<BaseNoteModel>>> = _status
-
-    private val _discountStatus = MutableLiveData<String?>()
-    val discount get() = _discountStatus.value
-
-    init {
-        getIsFreeDiscountAvailable()
-    }
-
-    private fun getIsFreeDiscountAvailable() {
-        viewModelScope.launch {
-
-            if (subManager.isDiscount()) {
-                _discountStatus.value = "Назавжди ∞"
-                return@launch
-            }
-
-            val result = getDiscountUseCase.invoke()
-            result.fold(
-                onSuccess = {
-                    _discountStatus.value = "до $it"
-                },
-                onFailure = {
-                    _discountStatus.value = null
-                }
-            )
-        }
-    }
 
     fun getNotesForParagraph(paragraphId: String) {
         _status.value = Resource.loading()
@@ -70,7 +44,5 @@ class NotesViewModel(
             getNotesForParagraph(paragraphId)
         }
     }
-
-    val isSub get() = subManager.isSub()
 
 }

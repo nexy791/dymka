@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -49,7 +50,6 @@ dependencies {
     api(Deps.konfetti)
 
     // Firebase
-    api(platform(Deps.firebaseBom))
     api(Deps.firebaseAuth)
     api(Deps.firebaseDatabase)
     api(Deps.firebaseFirestore)
@@ -61,6 +61,7 @@ dependencies {
     api(Deps.firebaseAppCheckPlayIntegrity)
     api(Deps.firebaseRemoteConfig)
     api(Deps.auth)
+    api(Deps.firebaseStorageUi)
 
 
     // Lifecycle
@@ -81,6 +82,8 @@ dependencies {
     api(Deps.navigationRuntimeKtx)
     api(Deps.navigationFragmentKtx)
     api(Deps.navigationUiKtx)
+    implementation(project(":billing"))
+    implementation(project(":domain"))
 
     kapt(Deps.roomCompiler)
 
@@ -98,10 +101,10 @@ dependencies {
     api(Deps.moshiKotlin)
     api(Deps.moshiAdapters)
 
-    // Coil
-    api(Deps.coil)
-    api(Deps.coilSvg)
-    api(Deps.coilFire)
+    // Glide
+    api(Deps.glide)
+    api("com.github.qoqa:glide-svg:4.0.2")
+    kapt(Deps.glideAnnotation)
 
     // CircleProgress
     api(Deps.progressCircle)
@@ -111,6 +114,7 @@ dependencies {
     implementation(Deps.appUpdateKtx)
 
     implementation(Deps.splashScreen)
+    api("dev.chrisbanes.insetter:insetter:0.6.1")
 
     api(Deps.delivery)
     api(Deps.mlKit)

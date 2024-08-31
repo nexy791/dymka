@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.core.Resource
 import com.ribsky.domain.model.lesson.BaseLessonModel
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
@@ -32,7 +33,7 @@ class LessonsViewModel(
     private val getDiscountUseCase: GetDiscountUseCase,
     private val addStarsToLessonUseCase: AddStarsToLessonUseCase,
     private val topInteractor: TopInteractor,
-) : ViewModel() {
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     private val _lessonsStatus: MutableLiveData<Resource<List<BaseLessonModel>>> =
         MutableLiveData()
@@ -43,34 +44,6 @@ class LessonsViewModel(
     val paragraphStatus: LiveData<Resource<BaseParagraphModel>> get() = _paragraphStatus
 
     val lessons get() = _lessonsStatus.value?.data
-
-
-    private val _discountStatus = MutableLiveData<String?>()
-    val discount get() = _discountStatus.value
-
-    init {
-        getIsFreeDiscountAvailable()
-    }
-
-    private fun getIsFreeDiscountAvailable() {
-        viewModelScope.launch {
-
-            if (subManager.isDiscount()) {
-                _discountStatus.value = "Назавжди ∞"
-                return@launch
-            }
-
-            val result = getDiscountUseCase.invoke()
-            result.fold(
-                onSuccess = {
-                    _discountStatus.value = "до $it"
-                },
-                onFailure = {
-                    _discountStatus.value = null
-                }
-            )
-        }
-    }
 
     fun isFileExists(content: String) = isContentExistsUseCase.invoke(content)
 
@@ -107,30 +80,6 @@ class LessonsViewModel(
     }
 
 
-    // TODO: refactor this
-    fun isNeedToShowPayWall(callback: (Result<String>) -> Unit) {
-        viewModelScope.launch {
-            val random = (0..2).random()
-            if (random == 0 || random == 1) {
-                callback.invoke(Result.failure(Throwable("Bad random")))
-                return@launch
-            }
-            if (subManager.isSub()) {
-                callback.invoke(Result.failure(Throwable("Bad Sub")))
-                return@launch
-            }
-
-            if (discount != null) {
-                callback.invoke(Result.success(discount!!))
-                return@launch
-            } else {
-                callback.invoke(Result.failure(Throwable("Bad discount")))
-                return@launch
-            }
-
-        }
-    }
-
     fun isNeedToShowWillUp(callback: (Result<List<BaseTopModel>>) -> Unit) {
         viewModelScope.launch {
             val result = topInteractor.getUsersForUpByStars()
@@ -146,9 +95,6 @@ class LessonsViewModel(
             else callback.invoke(Result.failure(Throwable("Bad result")))
         }
     }
-
-
-    val isSub get() = subManager.isSub()
 
     val isTodayStreak get() = isTodayStreakUseCase.invoke()
 }

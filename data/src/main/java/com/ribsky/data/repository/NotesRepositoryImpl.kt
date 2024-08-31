@@ -26,6 +26,6 @@ class NotesRepositoryImpl(
     }
 
     companion object {
-        private const val LIMIT_FOR_NOTES = 25
+        private const val LIMIT_FOR_NOTES = 20
     }
 }

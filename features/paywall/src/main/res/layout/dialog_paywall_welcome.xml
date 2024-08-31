@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <nl.dionsegijn.konfetti.xml.KonfettiView
+                android:id="@+id/konfettiView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:padding="36dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/cat_welcome"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:checkable="false"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="🎁 Подарунок"
+                        android:textSize="14sp"
+                        app:chipCornerRadius="16sp"
+                        app:chipMinTouchTargetSize="0dp"
+                        app:fontFamily="@font/e_ukraine_regular"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:checkable="false"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="⏳ До 20.09.2021"
+                        android:textSize="14sp"
+                        app:chipCornerRadius="16sp"
+                        app:chipMinTouchTargetSize="0dp"
+                        app:fontFamily="@font/e_ukraine_regular"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="start"
+                    android:text="Знижка для новеньких!"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/e_ukraine_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/chip" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="start"
+                    android:text="Отримай знижку на будь-яку підписку dymka, а разом із нею такі переваги:"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/e_ukraine_regular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_sponsors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Наші котики 🐱"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/e_ukraine_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Долучайся до нас!"
+                    android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+                    android:textColor="@color/black"
+                    app:fontFamily="@font/e_ukraine_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_sponsors" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_cats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/item_cats" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    custom:shopColor="#D1C4E9"
+                    custom:shopDescription="Доступ до всіх уроків"
+                    custom:shopIcon="🔔"
+                    custom:shopTitle="Уроки 🔔" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#B3E5FC"
+                    custom:shopDescription="Доступ до всіх тестів"
+                    custom:shopIcon="📚"
+                    custom:shopTitle="Тести 📚" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#FFE0B2"
+                    custom:shopDescription="Доступ до всіх добірок"
+                    custom:shopIcon="📬"
+                    custom:shopTitle="Добірки 📬" />
+
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#C7E5C8"
+                    custom:shopDescription="Доступ до всіх режимів гри"
+                    custom:shopIcon="🎮"
+                    custom:shopTitle="Ігри 🎮" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#E0BCFF"
+                    custom:shopDescription="Можливість зберігати слова для роботи над помилками"
+                    custom:shopIcon="❤"
+                    custom:shopTitle="Обране ❤" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#FFEB3B"
+                    custom:shopDescription="Невеличкий прапорець біля твого імені, котрий виділяє тебе"
+                    custom:shopIcon="🇺🇦"
+                    custom:shopTitle="Прапорець 🇺🇦" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#DCEDC8"
+                    custom:shopDescription="Підказки в уроках, які допоможуть проходити їх швидше"
+                    custom:shopIcon="💡"
+                    custom:shopTitle="Підказки 💡" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#FF8A65"
+                    custom:shopDescription="До 50 відповідей від кота-помічника на день"
+                    custom:shopIcon="😺"
+                    custom:shopTitle="Кіт-помічник 😺" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#80CBC4"
+                    custom:shopDescription="Проходь уроки в будь-якому порядку"
+                    custom:shopIcon="⭐"
+                    custom:shopTitle="Зірочки ⭐" />
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#CE93D8"
+                    custom:shopDescription="Необмежена кількість повідомлень в конспекті"
+                    custom:shopIcon="📝"
+                    custom:shopTitle="Конспект 📝" />
+
+
+                <com.ribsky.paywall.view.ItemShopWelcomeView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    custom:shopColor="#FFECB3"
+                    custom:shopDescription="Менша ніж один урок у репетитора"
+                    custom:shopIcon="🎁"
+                    custom:shopTitle="Ціна 🎁" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_get_discount"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="0"
+        android:text="Отримати знижку"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="@color/md_theme_light_primary"
+        app:fontFamily="@font/e_ukraine_regular"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_later"
+        style="@style/TextAppearance.Material3.LabelSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:text="Нагадати пізніше"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        app:fontFamily="@font/e_ukraine_regular" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+

@@ -5,7 +5,7 @@
     app:startDestination="@id/nav_feed">
 
     <include app:graph="@navigation/nav_feed" />
-    <include app:graph="@navigation/nav_games" />
+    <include app:graph="@navigation/nav_articles" />
     <include app:graph="@navigation/nav_tests" />
     <include app:graph="@navigation/nav_top" />
 

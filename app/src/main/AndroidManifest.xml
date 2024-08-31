@@ -93,6 +93,8 @@
         <activity
             android:name="com.ribsky.auth.ui.AuthActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="com.ribsky.article.ui.ArticleActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.ribsky.share.ui.word.ShareWordActivity"
             android:screenOrientation="portrait" />

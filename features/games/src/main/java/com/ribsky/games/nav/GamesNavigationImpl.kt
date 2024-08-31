@@ -6,6 +6,6 @@ import com.ribsky.navigation.features.GamesNavigation
 
 class GamesNavigationImpl : GamesNavigation {
     override fun navigate(navigation: NavController) {
-        navigation.navigate(navId.gamesFragment)
+        navigation.navigate(navId.nav_games)
     }
 }

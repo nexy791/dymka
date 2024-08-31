@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:fontFamily="@font/e_ukraine_medium"
+            app:fontFamily="@font/e_ukraine_medium"
             android:text="📣 Поділитися"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintBottom_toBottomOf="parent"

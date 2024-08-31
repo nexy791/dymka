@@ -8,99 +8,118 @@
     app:shimmer_repeat_count="100"
     app:shimmer_repeat_mode="restart">
 
-    <GridLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="2"
-        android:orientation="horizontal"
-        grid:alignmentMode="alignBounds"
-        grid:rowOrderPreserved="false"
-        grid:useDefaultMargins="true">
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
         <include
             layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
             android:layout_margin="8dp" />
 
         <include
             layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
             android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            grid:alignmentMode="alignBounds"
+            grid:rowOrderPreserved="false"
+            grid:useDefaultMargins="true">
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
-        <include
-            layout="@layout/item_test_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp" />
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
+
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
+
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
+
+            <include
+                layout="@layout/item_test_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp" />
 
 
-    </GridLayout>
+        </GridLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </com.facebook.shimmer.ShimmerFrameLayout>

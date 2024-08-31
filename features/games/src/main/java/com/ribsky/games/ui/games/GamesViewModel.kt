@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.user.BaseUserModel
@@ -22,7 +23,7 @@ class GamesViewModel(
     private val subManager: SubManager,
     private val isContentExistsUseCase: IsContentExistsUseCase,
     private val getDiscountUseCase: GetDiscountUseCase,
-) : ViewModel() {
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     private val _userStatus: MutableLiveData<Resource<BaseUserModel>> = MutableLiveData()
     val userStatus: LiveData<Resource<BaseUserModel>> get() = _userStatus
@@ -33,33 +34,6 @@ class GamesViewModel(
     val user get() = _userStatus.value?.data
 
     fun isFileExists(content: String) = isContentExistsUseCase.invoke(content)
-
-    private val _discountStatus = MutableLiveData<String?>()
-    val discount get() = _discountStatus.value
-
-    init {
-        getIsFreeDiscountAvailable()
-    }
-
-    private fun getIsFreeDiscountAvailable() {
-        viewModelScope.launch {
-
-            if (subManager.isDiscount()) {
-                _discountStatus.value = "Назавжди ∞"
-                return@launch
-            }
-
-            val result = getDiscountUseCase.invoke()
-            result.fold(
-                onSuccess = {
-                    _discountStatus.value = "до $it"
-                },
-                onFailure = {
-                    _discountStatus.value = null
-                }
-            )
-        }
-    }
 
     fun getProfile() {
         viewModelScope.launch {
@@ -86,5 +60,4 @@ class GamesViewModel(
         return isSub
     }
 
-    private val isSub get() = subManager.isSub()
 }

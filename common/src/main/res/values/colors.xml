@@ -25,7 +25,8 @@
     <color name="md_theme_light_inverseOnSurface">#FFFFFF</color>
     <color name="md_theme_light_inverseSurface">#0B0B0B</color>
     <color name="md_theme_light_primaryInverse">#FFFFFF</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="indigo">#0f1547</color>
     <color name="blue">#64B5F6</color>
+    <color name="black">#0B0B0B</color>
 </resources>

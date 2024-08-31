@@ -18,12 +18,8 @@ class ErrorFactory(
     private val crashlytics: FirebaseCrashlytics by inject(FirebaseCrashlytics::class.java)
 
     override fun createDialog(): FullScreenDialog = FullScreenDialog.create {
+        Analytics.logEvent(Analytics.Event.ERROR)
         crashlytics.recordException(Exception(error))
-        Analytics.logEvent(
-            Analytics.Event.ERROR, bundle = bundleOf(
-                "error" to error.orEmpty(),
-            )
-        )
         title = funnyErrors.random()
         description = error.orEmpty().ifEmpty { "Невідома помилка" }
         onDismiss = this@ErrorFactory.onDismiss
@@ -36,15 +32,17 @@ class ErrorFactory(
                 "Ну як так! \uD83D\uDC08\u200D⬛",
                 "Я заплутався! \uD83D\uDE48",
                 "Що це було? \uD83D\uDC7B",
-                "От я нестелепа! \uD83D\uDE40"
+                "От я нестелепа! \uD83D\uDE40",
             )
 
         fun FragmentManager.showErrorDialog(
             error: String?,
             onDismiss: () -> Unit = {},
         ) {
-            ErrorFactory(error, onDismiss).createDialog()
-                .show(this, "error")
+            if (this.isDestroyed) return
+            runCatching {
+                ErrorFactory(error, onDismiss).createDialog().show(this, "error")
+            }
         }
 
         fun AppCompatActivity.showErrorDialog(
@@ -58,7 +56,7 @@ class ErrorFactory(
             message: String?,
             onDismiss: () -> Unit = {},
         ) {
-            (requireActivity() as AppCompatActivity).showErrorDialog(message, onDismiss)
+            (activity as? AppCompatActivity)?.showErrorDialog(message, onDismiss)
         }
     }
 }

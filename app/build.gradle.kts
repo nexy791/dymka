@@ -74,7 +74,8 @@ dependencies {
     implementation(project(":features:paywall"))
     implementation(project(":features:notes"))
     implementation(project(":dialogs"))
-    implementation(project(":widget"))
     implementation(project(":analytics"))
     implementation(project(mapOf("path" to ":permission")))
+    implementation(project(":features:articles"))
+    implementation(project(":features:article"))
 }

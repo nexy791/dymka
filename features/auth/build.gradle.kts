@@ -41,6 +41,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":dialogs"))
 
+    implementation("androidx.credentials:credentials:1.3.0-rc01")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-rc01")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
     implementation(Deps.auth)
     implementation(project(mapOf("path" to ":analytics")))
 }

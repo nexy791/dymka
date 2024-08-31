@@ -3,11 +3,10 @@ package com.ribsky.feed.adapter.paragraph.holder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.request.CachePolicy
 import com.google.firebase.storage.FirebaseStorage
 import com.ribsky.common.alias.commonDrawable
-import com.ribsky.common.utils.coil.GrayscaleTransformation
+import com.ribsky.common.utils.glide.GrayscaleTransformation
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.domain.model.paragraph.BaseParagraphModel
 import com.ribsky.feed.adapter.paragraph.ParagraphAdapter
 import com.ribsky.feed.databinding.ItemParagraphBinding
@@ -24,10 +23,8 @@ class ParagraphViewHolder(private val binding: ItemParagraphBinding) :
                 onClickListener.onClick(item)
             }
             tvTitle.text = item.name
-            background.load(storage.getReferenceFromUrl(item.image)) {
+            background.loadImage(storage.getReferenceFromUrl(item.image), transformation = GrayscaleTransformation(100 - item.percent)) {
                 placeholder(commonDrawable.placeholder_content)
-                memoryCachePolicy(CachePolicy.DISABLED)
-                transformations(GrayscaleTransformation(100 - item.percent))
             }
         }
 

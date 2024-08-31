@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/e_ukraine_medium"
+        app:fontFamily="@font/e_ukraine_medium"
         android:text="Твій профіль"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/e_ukraine_medium"
+                app:fontFamily="@font/e_ukraine_medium"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintBottom_toTopOf="@+id/tv_description"
                 app:layout_constraintEnd_toStartOf="@+id/ic_next"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/e_ukraine_medium"
+                app:fontFamily="@font/e_ukraine_medium"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_account"
                 app:layout_constraintStart_toEndOf="@+id/iv_account"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:backgroundTint="#fff"
-                android:fontFamily="@font/e_ukraine_medium"
+                app:fontFamily="@font/e_ukraine_medium"
                 android:text="5 місце"
                 android:textColor="#2D3047"
                 android:textSize="14sp"
@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/e_ukraine_medium"
+        app:fontFamily="@font/e_ukraine_medium"
         android:text="Інші акаунти"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
@@ -110,7 +110,7 @@
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/e_ukraine_regular"
+        app:fontFamily="@font/e_ukraine_regular"
         android:text="Останнє оновлення:"
         android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 

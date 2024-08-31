@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:background="@drawable/incoming_bubble"
-            android:fontFamily="@font/e_ukraine_regular"
+            app:fontFamily="@font/e_ukraine_regular"
             android:gravity="start"
             android:lineSpacingExtra="2dp"
             android:paddingStart="15dp"

@@ -28,6 +28,7 @@ import com.ribsky.dialogs.factory.message.MessageActionFactory
 import com.ribsky.dialogs.factory.notes.NoteAddFactory
 import com.ribsky.dialogs.factory.notes.NoteLimitFactory
 import com.ribsky.dialogs.factory.stars.StarsFactory
+import com.ribsky.dialogs.factory.sub.SubPrompt.Companion.navigateSub
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.databinding.ActivityLessonBinding
@@ -88,7 +89,7 @@ class LessonActivity :
                     negativeButtonCallback = {
                         if (!viewModel.isSub) {
                             showBottomSheetDialog(
-                                SubPromptFactory(viewModel.discount) {
+                                navigateSub(viewModel.discount) {
                                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_STARS)
                                     shopNavigation.navigate(
                                         this@LessonActivity,
@@ -185,7 +186,7 @@ class LessonActivity :
                                     NoteLimitFactory(
                                         onConfirm = {},
                                         onDismiss = {
-                                            showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
+                                            showBottomSheetDialog(navigateSub(viewModel.discount) {
                                                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_NOTES)
                                                 shopNavigation.navigate(
                                                     this@LessonActivity,
@@ -204,7 +205,7 @@ class LessonActivity :
                     },
                     ListDialog.Item("\uD83D\uDC08 Підтримка") {
                         sendEmail(
-                            subject = "dymka повідомити про проблему ",
+                            subject = "dymka повідомити про проблему",
                             text = "Урок #${lessonId}\n\n«${text.parseAsHtml()}»"
                         )
                     },
@@ -359,7 +360,7 @@ class LessonActivity :
             }.show()
         } else {
             showBottomSheetDialog(
-                SubPromptFactory(viewModel.discount) {
+                navigateSub(viewModel.discount) {
                     Analytics.logEvent(Analytics.Event.PREMIUM_FROM_HINT)
                     shopNavigation.navigate(
                         this@LessonActivity,

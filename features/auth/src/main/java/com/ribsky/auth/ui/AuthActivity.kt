@@ -8,10 +8,12 @@ import com.redmadrobot.lib.sd.LoadingStateDelegate
 import com.ribsky.analytics.Analytics
 import com.ribsky.auth.databinding.ActivityAuthBinding
 import com.ribsky.auth.dialogs.DialogSign
+import com.ribsky.auth.utils.auth.helpers.AuthHelperCreditsImpl
 import com.ribsky.auth.utils.auth.helpers.AuthHelperOneTapImpl
 import com.ribsky.auth.utils.auth.helpers.AuthHelperSignInImpl
 import com.ribsky.auth.utils.auth.helpers.base.AuthHelper
 import com.ribsky.common.base.BaseActivity
+import com.ribsky.common.utils.ext.AlertsExt.Companion.showAlert
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
 import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
@@ -28,6 +30,7 @@ class AuthActivity :
 
     private var authHelperOneTap: AuthHelper? = null
     private var authHelperSignIn: AuthHelper? = null
+    private var authHelperCredentials: AuthHelper? = null
 
     private var state: LoadingStateDelegate? = null
 
@@ -58,7 +61,7 @@ class AuthActivity :
         btnAuth.setOnClickListener {
             showBottomSheetDialog(DialogSign.newInstance {
                 when (it) {
-                    DialogSign.Type.GOOGLE -> authHelperOneTap!!.auth()
+                    DialogSign.Type.GOOGLE -> authHelperCredentials!!.auth()
                 }
             })
         }
@@ -79,6 +82,13 @@ class AuthActivity :
         ).apply {
             lifecycle.addObserver(this)
         }
+
+        authHelperCredentials = AuthHelperCreditsImpl(
+            activity = this,
+            callback = this,
+        ).apply {
+            lifecycle.addObserver(this)
+        }
     }
 
     override fun initObs() = with(viewModel) {
@@ -94,7 +104,10 @@ class AuthActivity :
                     loaderNavigation.navigate(this@AuthActivity)
                 }
 
-                Resource.Status.ERROR -> showErrorDialog(result.exception?.localizedMessage)
+                Resource.Status.ERROR -> {
+                    Analytics.logEvent(Analytics.Event.ERROR_AUTH_SERVER)
+                    showErrorDialog(result.exception?.localizedMessage)
+                }
             }
         }
     }
@@ -113,15 +126,47 @@ class AuthActivity :
         state!!.showContent()
 
         when (type) {
-            AuthHelper.AuthType.ONE_TAP -> authHelperSignIn!!.auth()
-            AuthHelper.AuthType.SIGN_IN -> showErrorDialog(error.localizedMessage)
+            AuthHelper.AuthType.CREDENTIALS -> {
+                Analytics.logEvent(Analytics.Event.ERROR_AUTH_CREDS)
+                showAlertError(
+                    success = { authHelperOneTap!!.auth() },
+                    error = { showErrorDialog(error.localizedMessage) }
+                )
+            }
+            AuthHelper.AuthType.ONE_TAP -> {
+                Analytics.logEvent(Analytics.Event.ERROR_AUTH_ONE_TAP)
+                showAlertError(
+                    success = { authHelperSignIn!!.auth() },
+                    error = { showErrorDialog(error.localizedMessage) }
+                )
+            }
+            AuthHelper.AuthType.SIGN_IN -> {
+                Analytics.logEvent(Analytics.Event.ERROR_AUTH_SIGN_IN)
+                showErrorDialog(error.localizedMessage)
+            }
         }
+    }
+
+    private fun showAlertError(
+        success: () -> Unit,
+        error: () -> Unit
+    ) {
+        showAlert(
+            title = "Помилка",
+            message = "Помилка авторизації, давай спробуємо ще раз? \uD83D\uDC31",
+            cancelable = false,
+            positiveButton = "Повторити",
+            positiveAction = success,
+            negativeButton = "Вийти",
+            negativeAction = error
+        )
     }
 
     override fun clear() {
         viewModel.clear()
         authHelperSignIn = null
         authHelperOneTap = null
+        authHelperCredentials = null
         state = null
     }
 

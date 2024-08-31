@@ -5,6 +5,7 @@ interface AuthHelper {
     enum class AuthType {
         ONE_TAP,
         SIGN_IN,
+        CREDENTIALS
     }
 
     interface AuthCallback {

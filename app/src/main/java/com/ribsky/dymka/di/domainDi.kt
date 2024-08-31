@@ -4,6 +4,12 @@ import com.ribsky.domain.usecase.active.AddActiveLessonUseCase
 import com.ribsky.domain.usecase.active.AddActiveLessonUseCaseImpl
 import com.ribsky.domain.usecase.active.GetActiveLessonsUseCase
 import com.ribsky.domain.usecase.active.GetActiveLessonsUseCaseImpl
+import com.ribsky.domain.usecase.article.GetArticleContentUseCase
+import com.ribsky.domain.usecase.article.GetArticleContentUseCaseImpl
+import com.ribsky.domain.usecase.article.GetArticleUseCase
+import com.ribsky.domain.usecase.article.GetArticleUseCaseImpl
+import com.ribsky.domain.usecase.article.GetArticlesUseCase
+import com.ribsky.domain.usecase.article.GetArticlesUseCaseImpl
 import com.ribsky.domain.usecase.auth.AuthUseCase
 import com.ribsky.domain.usecase.auth.AuthUseCaseImpl
 import com.ribsky.domain.usecase.auth.SignOutUseCase
@@ -46,6 +52,8 @@ import com.ribsky.domain.usecase.config.GetBotTokenUseCase
 import com.ribsky.domain.usecase.config.GetBotTokenUseCaseImpl
 import com.ribsky.domain.usecase.config.GetDiscountUseCase
 import com.ribsky.domain.usecase.config.GetDiscountUseCaseImpl
+import com.ribsky.domain.usecase.config.GetPromoUseCase
+import com.ribsky.domain.usecase.config.GetPromoUseCaseImpl
 import com.ribsky.domain.usecase.data.LoadDataUseCase
 import com.ribsky.domain.usecase.data.LoadDataUseCaseImpl
 import com.ribsky.domain.usecase.file.IsContentExistsUseCase
@@ -247,6 +255,12 @@ val domainUi = module {
         )
     }
 
+    factory<GetPromoUseCase> {
+        GetPromoUseCaseImpl(
+            configRepository = get()
+        )
+    }
+
     factory<GetBotTokenUseCase> {
         GetBotTokenUseCaseImpl(
             configRepository = get()
@@ -370,6 +384,24 @@ val domainUi = module {
     factory<DeleteNoteUseCase> {
         DeleteNoteUseCaseImpl(
             notesRepository = get()
+        )
+    }
+
+    factory<GetArticlesUseCase> {
+        GetArticlesUseCaseImpl(
+            articleRepository = get()
+        )
+    }
+
+    factory<GetArticleContentUseCase> {
+        GetArticleContentUseCaseImpl(
+            articleRepository = get()
+        )
+    }
+
+    factory<GetArticleUseCase> {
+        GetArticleUseCaseImpl(
+            articleRepository = get()
         )
     }
 

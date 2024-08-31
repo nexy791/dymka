@@ -6,6 +6,7 @@ import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
 import com.revenuecat.purchases.models.StoreProduct
 import com.revenuecat.purchases.models.googleProduct
+import com.ribsky.billing.BillingState
 import com.ribsky.billing.wrapper.BillingClientWrapper
 import com.ribsky.common.base.BaseSheet
 import com.ribsky.common.utils.party.Party
@@ -14,7 +15,7 @@ import com.ribsky.shop.databinding.DialogSubBinding
 class SubDialog(
     private val callback: Callback? = null,
     private val listItems: List<StoreProduct> = listOf(),
-    private val isDiscount: Boolean = false,
+    private val discount: BillingState?,
 ) : BaseSheet<DialogSubBinding>(DialogSubBinding::inflate) {
 
     interface Callback {
@@ -35,6 +36,7 @@ class SubDialog(
     }
 
     private fun initBtns() = with(binding) {
+        val isDiscount = discount is BillingState.Discount || discount is BillingState.WelcomeDiscount
         val weekSub =
             if (isDiscount) BillingClientWrapper.Product.WEEKLY_LITE else BillingClientWrapper.Product.WEEKLY_FULL
         val monthSub =
@@ -60,6 +62,7 @@ class SubDialog(
 
     @SuppressLint("SetTextI18n")
     private fun initTexts() = with(binding) {
+        val isDiscount = discount is BillingState.Discount || discount is BillingState.WelcomeDiscount
         btnSub.isGone = isDiscount
         btnSub.setOnClickListener {
             callback?.onDiscount()
@@ -68,7 +71,8 @@ class SubDialog(
         textDescription.apply {
             movementMethod = LinkMovementMethod.getInstance()
             text = """
-Скасування підписки у будь-який момент<br>
+Підписка поновлюється автоматично, поки її не скасувати у налаштуваннях або в магазині.<br>
+Скасування в будь-який момент<br>
 При покупці підписки «Назавжди» твої кошти списуються лише один раз<br><br>
 <a href="https://dymka.me/privacy.html">Політика конфіденційності</a><br><a href="https://dymka.me/rules.html">Правила користування</a>
             """.trimIndent().parseAsHtml()
@@ -144,7 +148,7 @@ class SubDialog(
 
     companion object {
         fun newInstance(
-            isDiscount: Boolean,
+            isDiscount: BillingState?,
             list: List<StoreProduct>,
             callback: Callback,
         ) = SubDialog(callback, list, isDiscount)

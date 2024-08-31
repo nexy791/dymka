@@ -3,8 +3,7 @@ package com.ribsky.lesson.adapter.chat.holder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
-import coil.load
-import coil.transform.CircleCropTransformation
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.adapter.chat.holder.base.BaseViewHolder
 import com.ribsky.lesson.databinding.ItemChatTextSpendingBinding
@@ -18,10 +17,7 @@ class ChatTextFromUserViewHolder(private val binding: ItemChatTextSpendingBindin
         callback: ChatAdapter.OnChatClickListener,
     ): Unit = with(binding) {
         text.text = item.text.parseAsHtml()
-        shapeableImageView.load(photoUrl) {
-            crossfade(true)
-            transformations(CircleCropTransformation())
-        }
+        shapeableImageView.loadImage(photoUrl)
     }
 
     companion object {

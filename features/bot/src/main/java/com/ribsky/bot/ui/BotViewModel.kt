@@ -13,6 +13,7 @@ import com.ribsky.bot.helper.reply.SmartReplyHelperImpl
 import com.ribsky.bot.helper.translator.TranslatorHelper
 import com.ribsky.bot.helper.translator.TranslatorHelperImpl
 import com.ribsky.bot.model.ChatModel
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
 import com.ribsky.domain.model.user.BaseUserModel
@@ -35,7 +36,7 @@ class BotViewModel(
     private val syncUserUseCase: SyncUserUseCase,
     private val getBotTokenUseCase: GetBotTokenUseCase,
     private val getDiscountUseCase: GetDiscountUseCase,
-) : ViewModel() {
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     private val _chatStatus: MutableLiveData<Resource<List<ChatModel>>> = MutableLiveData()
     val chatStatus: LiveData<Resource<List<ChatModel>>> get() = _chatStatus
@@ -55,36 +56,9 @@ class BotViewModel(
     private val _syncStatus: MutableLiveData<Resource<Unit>> = MutableLiveData()
     val syncStatus: LiveData<Resource<Unit>> get() = _syncStatus
 
-    private val _discountStatus = MutableLiveData<String?>()
-    val discount get() = _discountStatus.value
-
     private val botHelper: BotHelper by lazy { BotHelperImpl() }
     private val translatorHelper: TranslatorHelper by lazy { TranslatorHelperImpl() }
     private val smartReplyHelper: SmartReplyHelper by lazy { SmartReplyHelperImpl() }
-
-    init {
-        getIsFreeDiscountAvailable()
-    }
-
-    private fun getIsFreeDiscountAvailable() {
-        viewModelScope.launch {
-
-            if (subManager.isDiscount()) {
-                _discountStatus.value = "Назавжди ∞"
-                return@launch
-            }
-
-            val result = getDiscountUseCase.invoke()
-            result.fold(
-                onSuccess = {
-                    _discountStatus.value = "до $it"
-                },
-                onFailure = {
-                    _discountStatus.value = null
-                }
-            )
-        }
-    }
 
     fun getBot() {
         viewModelScope.launch {
@@ -255,5 +229,4 @@ class BotViewModel(
 
     val isBotCanReply get() = canBotReplyUseCase.invoke()
 
-    val isSub get() = subManager.isSub()
 }

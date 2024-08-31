@@ -11,9 +11,19 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/e_ukraine_bold"
-        android:text="Метод входу"
+        app:fontFamily="@font/e_ukraine_bold"
+        android:text="Увійти через…"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="#323232" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        app:fontFamily="@font/e_ukraine_thin"
+        android:text="Для створення акаунта нам необхідно твоє ім'я, фото профілю та email 😺"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="#323232" />
 
     <com.google.android.material.button.MaterialButton
@@ -23,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/e_ukraine_medium"
+        app:fontFamily="@font/e_ukraine_medium"
         android:gravity="start|center_vertical"
         android:insetTop="0dp"
         android:insetBottom="0dp"

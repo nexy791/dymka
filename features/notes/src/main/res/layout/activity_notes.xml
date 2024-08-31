@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|center_vertical"
-                    android:fontFamily="@font/e_ukraine_regular"
+                    app:fontFamily="@font/e_ukraine_regular"
                     android:gravity="end|center_vertical"
                     android:textColor="@color/md_theme_light_primary"
                     android:text=""

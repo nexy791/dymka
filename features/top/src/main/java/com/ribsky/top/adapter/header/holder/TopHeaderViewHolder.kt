@@ -3,10 +3,9 @@ package com.ribsky.top.adapter.header.holder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.request.CachePolicy
 import com.ribsky.common.alias.commonDrawable
 import com.ribsky.common.utils.ext.ViewExt.Companion.formatUserName
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.top.adapter.header.TopHeaderAdapter
 import com.ribsky.top.databinding.ItemProfileBinding
 import com.ribsky.top.model.TopModel
@@ -30,13 +29,9 @@ class TopHeaderViewHolder(private val binding: ItemProfileBinding) :
             "${item.position} місце"
         }
         tvDate.text = "Останнє оновлення: $time"
-        ivAccount.load(item.image) {
-            crossfade(true)
+        ivAccount.loadImage(item.image) {
             placeholder(commonDrawable.cat)
             error(commonDrawable.cat)
-            diskCachePolicy(CachePolicy.ENABLED)
-            networkCachePolicy(CachePolicy.ENABLED)
-            memoryCachePolicy(CachePolicy.ENABLED)
         }
         when (type) {
             ViewType.LESSONS -> btnPlace.apply {

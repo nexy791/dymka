@@ -1,6 +1,8 @@
 package com.ribsky.data.utils.moshi
 
 import com.ribsky.data.model.BestWordApiModel
+import com.ribsky.data.model.PromoApiModel
+import com.ribsky.data.model.SliderApiModel
 import com.ribsky.data.model.UserApiModel
 import com.ribsky.data.model.WordApiModel
 import com.squareup.moshi.JsonAdapter
@@ -23,6 +25,8 @@ object Adapters {
     val saved = adapterList<String>()
 
     val bestWords = adapterList<BestWordApiModel>()
+
+    val promo = adapter<PromoApiModel>()
 
     private inline fun <reified T> adapter(): JsonAdapter<T> = moshi.adapter(T::class.java)!!
 

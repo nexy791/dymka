@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="false"
+    android:id="@+id/chip_category"
+    android:layout_marginHorizontal="4dp"
+    android:layout_gravity="center"
+    app:fontFamily="@font/e_ukraine_regular"
+    android:text="🎮 Ігри"
+    android:textSize="16sp"
+    app:chipCornerRadius="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

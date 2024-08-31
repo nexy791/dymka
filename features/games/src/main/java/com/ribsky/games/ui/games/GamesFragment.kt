@@ -3,8 +3,7 @@ package com.ribsky.games.ui.games
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import coil.load
-import coil.transform.CircleCropTransformation
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.analytics.Analytics
 import com.ribsky.common.alias.commonRaw
 import com.ribsky.common.base.BaseFragment
@@ -18,7 +17,7 @@ import com.ribsky.core.Resource
 import com.ribsky.dialogs.factory.error.ConnectionErrorFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.progress.ProgressFactory
-import com.ribsky.dialogs.factory.sub.SubPromptFactory
+import com.ribsky.dialogs.factory.sub.SubPrompt.Companion.navigateSub
 import com.ribsky.domain.model.user.BaseUserModel
 import com.ribsky.games.adapter.games.GamesAdapter
 import com.ribsky.games.databinding.FragmentGamesBinding
@@ -99,7 +98,7 @@ class GamesFragment :
                 if (game.isActive) {
                     adapter?.setPicked(game)
                 } else {
-                    showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
+                    showBottomSheetDialog(navigateSub(viewModel.discount) {
                         Analytics.logEvent(Analytics.Event.PREMIUM_FROM_GAME)
                         shopNavigation.navigate(
                             requireContext(),
@@ -212,9 +211,7 @@ class GamesFragment :
     }
 
     private fun updateProfile(data: BaseUserModel) = with(binding) {
-        ivAccount.load(data.image) {
-            transformations(CircleCropTransformation())
-        }
+        ivAccount.loadImage(data.image)
         tvName.text = data.name
     }
 

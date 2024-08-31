@@ -1,12 +1,11 @@
 package com.ribsky.game.ui.lobby
 
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.google.android.gms.nearby.connection.ConnectionResolution
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes
 import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.ViewExt.Companion.showBottomSheetDialog
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.game.databinding.ActivityLobbyBinding
 import com.ribsky.game.dialogs.GameConfirmDialog
@@ -124,9 +123,7 @@ class LobbyActivity :
         initConnectionManager()
         updateState(state)
         rootRv.startRipple()
-        ivAccount.load(userPhoto) {
-            transformations(CircleCropTransformation())
-        }
+        ivAccount.loadImage(userPhoto)
         btnExit.setOnClickListener {
             finish()
         }

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.ribsky.billing.manager.SubManager
+import com.ribsky.common.base.BaseViewModel
 import com.ribsky.common.utils.dynamic.DynamicModule
 import com.ribsky.core.Resource
 import com.ribsky.core.mapper.ResultMapper.Companion.asResource
@@ -28,14 +29,11 @@ class MainViewModel(
     private val getDiscountUseCase: GetDiscountUseCase,
     private val isNeedToFillBioUseCase: IsNeedToFillBioUseCase,
     private val topInteractor: TopInteractor,
-) : ViewModel() {
+) : BaseViewModel(subManager, getDiscountUseCase) {
 
     private val _userStatus: MutableLiveData<Resource<BaseUserModel>> =
         MutableLiveData()
     val userStatus: LiveData<Resource<BaseUserModel>> get() = _userStatus
-
-    private val _discountStatus = MutableLiveData<Resource<String>>()
-    val discountStatus: LiveData<Resource<String>> = _discountStatus
 
     private val _dynamicModuleStatus: MutableLiveData<DynamicModule.State> =
         MutableLiveData(DynamicModule.State.NONE)
@@ -92,22 +90,12 @@ class MainViewModel(
 
     val isShouldShowRateDialog: Boolean get() = getRateDialogStatusUseCase.isShouldShowRateDialog()
 
-    val isSub get() = subManager.isSub()
-
     val isNeedToFillBio get() = isNeedToFillBioUseCase.invoke()
 
     fun getProfile() {
         viewModelScope.launch {
             _userStatus.value = Resource.loading()
             _userStatus.value = getUserUseCase.invoke().asResource()
-        }
-    }
-
-    fun getDiscount() {
-        viewModelScope.launch {
-            _discountStatus.value = Resource.loading()
-            val result = getDiscountUseCase.invoke().asResource()
-            _discountStatus.value = result
         }
     }
 

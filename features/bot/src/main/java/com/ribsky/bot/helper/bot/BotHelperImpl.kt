@@ -22,7 +22,7 @@ class BotHelperImpl : BotHelper {
         val userMessage = Message("user", question)
         client?.getChatCompletion(
             history + userMessage,
-            model = "gpt-3.5-turbo",
+            model = "gpt-4o-mini",
         ) { result, error ->
             if (error != null) {
                 error("$errorMessage<br><br>Помилка: ${error.message}")

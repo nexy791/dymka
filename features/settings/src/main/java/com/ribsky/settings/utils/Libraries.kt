@@ -11,9 +11,14 @@ object Libraries {
             "https://github.com/RedMadRobot/state-delegator",
         ),
         LibraryModel(
-            "Coil",
-            "Apache License 2.0",
-            "https://github.com/coil-kt/coil",
+            "Glide",
+            "BSD, part MIT and Apache 2.0.",
+            "https://github.com/bumptech/glide",
+        ),
+        LibraryModel(
+            "glide-svg",
+            "MIT License",
+            "https://github.com/qoqa/glide-svg"
         ),
         LibraryModel(
             "CircularProgressBar",
@@ -36,11 +41,6 @@ object Libraries {
             "https://github.com/GetStream/avatarview-android",
         ),
         LibraryModel(
-            "Android-easy-checkout",
-            "Apache License 2.0",
-            "https://github.com/alessandrojp/android-easy-checkout",
-        ),
-        LibraryModel(
             "Kpermissions",
             "Apache License 2.0",
             "https://github.com/fondesa/kpermissions",
@@ -54,6 +54,26 @@ object Libraries {
             "Shimmer",
             "BSD License",
             "https://github.com/facebook/shimmer-android",
+        ),
+        LibraryModel(
+            "RevenueCat",
+            "MIT License",
+            "https://github.com/RevenueCat/purchases-android",
+        ),
+        LibraryModel(
+            "OpenAI-Client-Android",
+            "MIT License",
+            "https://github.com/mardillu/OpenAI-Client-Android"
+        ),
+        LibraryModel(
+            "Balloon",
+            "Apache License 2.0",
+            "https://github.com/skydoves/Balloon"
+        ),
+        LibraryModel(
+            "Insetter",
+            "Apache License 2.0",
+            "https://github.com/chrisbanes/insetter"
         ),
     )
 }

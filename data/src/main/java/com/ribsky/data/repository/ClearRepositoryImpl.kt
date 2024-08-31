@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.google.firebase.auth.FirebaseAuth
 import com.ribsky.data.service.file.FileService
 import com.ribsky.data.service.offline.active.ActiveLessonDao
+import com.ribsky.data.service.offline.article.ArticlesDao
 import com.ribsky.data.service.offline.best.BestWordDao
 import com.ribsky.data.service.offline.lesson.LessonsDao
 import com.ribsky.data.service.offline.paragraph.ParagraphDao
@@ -20,7 +21,7 @@ class ClearRepositoryImpl(
     private val testsDao: TestsDao,
     private val paragraphDao: ParagraphDao,
     private val activeLessonDao: ActiveLessonDao,
-
+    private val articlesDao: ArticlesDao,
 ) : ClearRepository {
     override suspend fun clear() {
         firebaseAuth.signOut()
@@ -30,6 +31,7 @@ class ClearRepositoryImpl(
         testsDao.delete()
         paragraphDao.delete()
         activeLessonDao.delete()
+        articlesDao.delete()
         sharedPreferences.edit { clear() }
     }
 }

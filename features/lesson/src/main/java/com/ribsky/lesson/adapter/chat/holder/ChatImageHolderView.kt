@@ -2,8 +2,8 @@ package com.ribsky.lesson.adapter.chat.holder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import coil.load
 import com.google.firebase.storage.FirebaseStorage
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.lesson.adapter.chat.ChatAdapter
 import com.ribsky.lesson.adapter.chat.holder.base.BaseViewHolder
 import com.ribsky.lesson.databinding.ItemChatImageBinding
@@ -19,7 +19,7 @@ class ChatImageHolderView(private val binding: ItemChatImageBinding) :
         item: ChatModel.Image,
         callback: ChatAdapter.OnChatClickListener,
     ): Unit = with(binding) {
-        image.load(storage.getReferenceFromUrl(item.url))
+        image.loadImage(storage.getReferenceFromUrl(item.url))
     }
 
     companion object {

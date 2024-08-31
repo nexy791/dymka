@@ -3,12 +3,11 @@ package com.ribsky.bot.adapter.chat.holder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.ribsky.bot.adapter.chat.ChatAdapter
 import com.ribsky.bot.adapter.chat.holder.base.BaseViewHolder
 import com.ribsky.bot.databinding.ItemChatTextUserBinding
 import com.ribsky.bot.model.ChatModel
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 
 class ChatTextFromUserViewHolder(private val binding: ItemChatTextUserBinding) :
     BaseViewHolder<ChatModel>(binding) {
@@ -19,10 +18,7 @@ class ChatTextFromUserViewHolder(private val binding: ItemChatTextUserBinding) :
     ): Unit = with(binding) {
         val item = item as ChatModel.User
         text.text = item.message.parseAsHtml()
-        shapeableImageView.load(photoUrl) {
-            crossfade(true)
-            transformations(CircleCropTransformation())
-        }
+        shapeableImageView.loadImage(photoUrl)
     }
 
     companion object {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.speech.RecognizerIntent
+import android.text.method.LinkMovementMethod
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
@@ -42,6 +43,8 @@ import com.ribsky.dialogs.factory.bot.BotInfoFactory
 import com.ribsky.dialogs.factory.bot.BotLimitFactory
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.message.MessageActionFactory
+import com.ribsky.dialogs.factory.sub.SubPrompt
+import com.ribsky.dialogs.factory.sub.SubPrompt.Companion.navigateSub
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.navigation.features.BotNavigation
 import com.ribsky.navigation.features.ShareMessageNavigation
@@ -98,6 +101,12 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
     }
 
     override fun initView(): Unit = with(binding) {
+        privacy.apply {
+            movementMethod = LinkMovementMethod.getInstance()
+            text = """
+            Може помилятись, перевіряйте інформацію<br><a href="https://dymka.me/privacy.html">Політика конфіденційності</a> та <a href="https://dymka.me/rules.html">правила</a>
+        """.trimIndent().parseAsHtml()
+        }
         messageQuestion =
             intent?.getParcelableExtra<BotNavigation.Params>(BotNavigation.PARAM)?.text
         Analytics.logEvent(Analytics.Event.BOT_OPEN)
@@ -200,7 +209,7 @@ class BotActivity : BaseActivity<BotViewModel, ActivityBotBinding>(ActivityBotBi
             positiveButtonCallback = {
                 if (!viewModel.isSub) {
                     showBottomSheetDialog(
-                        SubPromptFactory(viewModel.discount) {
+                        navigateSub(viewModel.discount) {
                             Analytics.logEvent(Analytics.Event.PREMIUM_FROM_BOT)
                             shopNavigation.navigate(
                                 this@BotActivity,

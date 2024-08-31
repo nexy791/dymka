@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import coil.load
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.google.android.gms.nearby.connection.ConnectionResolution
 import com.google.android.gms.nearby.connection.Payload
@@ -20,6 +19,7 @@ import com.ribsky.common.base.BaseActivity
 import com.ribsky.common.utils.ext.AlertsExt.Companion.showExitAlert
 import com.ribsky.common.utils.ext.ResourceExt.Companion.toColor
 import com.ribsky.common.utils.ext.ViewExt.Companion.vibrate
+import com.ribsky.common.utils.glide.ImageLoader.Companion.loadImage
 import com.ribsky.core.Resource
 import com.ribsky.core.utils.DateUtils.Companion.formatDateMMSS
 import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
@@ -140,8 +140,8 @@ class GameActivity :
 
     private fun updateUsersUi(userHost: PayLoadModel.User?, userQuest: PayLoadModel.User?) =
         with(binding) {
-            userHost?.let { ivAccount.load(it.photo) }
-            userQuest?.let { ivAccountOther.load(it.photo) }
+            userHost?.let { ivAccount.loadImage(it.photo) }
+            userQuest?.let { ivAccountOther.loadImage(it.photo) }
         }
 
     private fun initConnection() {
@@ -259,7 +259,7 @@ class GameActivity :
         cardBook.isGone = false
         tvTitleCard.text = test.title
         tvDescriptionCard.text = test.description
-        tvIcon.load(storage.getReferenceFromUrl(test.image)) {
+        tvIcon.loadImage(storage.getReferenceFromUrl(test.image)) {
             placeholder(null)
             error(null)
         }
@@ -324,7 +324,7 @@ class GameActivity :
         loadingContent.isGone = true
         loadingWaiting.isGone = true
         containerWinner.apply {
-            imageViewWinner.load(user.photo)
+            imageViewWinner.loadImage(user.photo)
             tvPriceWaiting2.text = "Гравець ${user.name}\nпереміг з рахунком $score"
             isGone = false
         }

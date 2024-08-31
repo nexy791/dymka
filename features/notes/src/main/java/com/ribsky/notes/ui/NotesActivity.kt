@@ -16,6 +16,7 @@ import com.ribsky.dialogs.factory.error.ErrorFactory.Companion.showErrorDialog
 import com.ribsky.dialogs.factory.message.MessageActionFactory
 import com.ribsky.dialogs.factory.notes.NoteHowToAddFactory
 import com.ribsky.dialogs.factory.notes.NoteLimitFactory
+import com.ribsky.dialogs.factory.sub.SubPrompt.Companion.navigateSub
 import com.ribsky.dialogs.factory.sub.SubPromptFactory
 import com.ribsky.domain.model.note.BaseNoteModel
 import com.ribsky.navigation.features.NotesNavigation
@@ -62,7 +63,7 @@ class NotesActivity :
                     onConfirm = {},
                     onDismiss = {
                         if (!viewModel.isSub) {
-                            showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
+                            showBottomSheetDialog(navigateSub(viewModel.discount) {
                                 Analytics.logEvent(Analytics.Event.PREMIUM_FROM_NOTES)
                                 shopNavigation.navigate(
                                     this@NotesActivity,
@@ -147,13 +148,13 @@ class NotesActivity :
         if (viewModel.isSub) {
             binding.tvLimit.text = "$itemsCount/∞"
         } else {
-            binding.tvLimit.text = "$itemsCount/25"
+            binding.tvLimit.text = "$itemsCount/20"
         }
-        if (!viewModel.isSub && itemsCount == 25) {
+        if (!viewModel.isSub && itemsCount == 20) {
             showBottomSheetDialog(NoteLimitFactory(
                 onConfirm = {},
                 onDismiss = {
-                    showBottomSheetDialog(SubPromptFactory(viewModel.discount) {
+                    showBottomSheetDialog(navigateSub(viewModel.discount) {
                         Analytics.logEvent(Analytics.Event.PREMIUM_FROM_NOTES)
                         shopNavigation.navigate(
                             this@NotesActivity,

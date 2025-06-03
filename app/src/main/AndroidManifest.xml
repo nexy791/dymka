@@ -86,7 +86,18 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.ribsky.shop.ui.ShopActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="dymka"
+                    android:host="shop" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.ribsky.test.ui.TestDetailsActivity"
             android:screenOrientation="portrait" />

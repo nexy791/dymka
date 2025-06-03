@@ -1,5 +1,6 @@
 package com.ribsky.shop.ui
 
+import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isGone
@@ -27,6 +28,7 @@ import com.ribsky.domain.model.top.BaseTopModel
 import com.ribsky.navigation.features.LoaderNavigation
 import com.ribsky.navigation.features.ShareStoryNavigation
 import com.ribsky.navigation.features.ShopNavigation
+import com.ribsky.billing.manager.SubManager
 import com.ribsky.shop.adapter.cats.CatsAdapter
 import com.ribsky.shop.adapter.more.CatsMoreAdapter
 import com.ribsky.shop.databinding.ActivityShopBinding
@@ -41,6 +43,7 @@ class ShopActivity :
 
     private val shareNavigation: ShareStoryNavigation by inject()
     private val loaderNavigation: LoaderNavigation by inject()
+    private val subManager: SubManager by inject()
 
     private val analyticEventFrom: Analytics.Event by lazy {
         intent.getParcelableExtra<ShopNavigation.Params>(ShopNavigation.PARAM)?.param
@@ -66,6 +69,13 @@ class ShopActivity :
         override fun onDiscount() {
             shareNavigation.navigate(this@ShopActivity)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (intent?.data?.scheme == "dymka" && intent?.data?.host == "shop") {
+            subManager.saveDiscountState(true)
+        }
+        super.onCreate(savedInstanceState)
     }
 
     override fun initView() {
